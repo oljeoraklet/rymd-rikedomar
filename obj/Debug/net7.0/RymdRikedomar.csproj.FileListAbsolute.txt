@@ -13,3 +13,18 @@
 /Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.pdb
 /Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.genruntimeconfig.cache
 /Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/ref/RymdRikedomar.dll
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/bin/Debug/net7.0/RymdRikedomar
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/bin/Debug/net7.0/RymdRikedomar.deps.json
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/bin/Debug/net7.0/RymdRikedomar.runtimeconfig.json
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/bin/Debug/net7.0/RymdRikedomar.dll
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/bin/Debug/net7.0/RymdRikedomar.pdb
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.csproj.AssemblyReference.cache
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.GeneratedMSBuildEditorConfig.editorconfig
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.AssemblyInfoInputs.cache
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.AssemblyInfo.cs
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.csproj.CoreCompileInputs.cache
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.dll
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/refint/RymdRikedomar.dll
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.pdb
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/RymdRikedomar.genruntimeconfig.cache
+/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/Debug/net7.0/ref/RymdRikedomar.dll
