@@ -7,6 +7,7 @@ using RymdRikedomar.Entities.SpaceShip.Modules;
 
 namespace SpaceConsoleMenu
 {
+
     public class TradingStation
     {
         public List<(IGood Good, int Stock)> AvailableGoods { get; set; }
@@ -306,4 +307,8 @@ namespace SpaceConsoleMenu
             }
         }
     }
+
+
 }
+
+
