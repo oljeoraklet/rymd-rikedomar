@@ -1,6 +1,9 @@
-public interface ISpaceshipModule
+namespace RymdRikedomar.Entities.SpaceShip.Modules
 {
-    string ModuleName { get; set; }
+    public interface ISpaceshipModule
+    {
+        string ModuleName { get; set; }
 
-    // Any shared methods from BaseSpaceshipModule would go here
+        // Any shared methods from BaseSpaceshipModule would go here
+    }
 }

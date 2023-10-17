@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using RymdRikedomar.Entities.Goods;
+using RymdRikedomar.Entities.SpaceShip.Modules;
+
+
 
 namespace SpaceConsoleMenu
 {
@@ -123,6 +127,9 @@ namespace SpaceConsoleMenu
         {
             while (true)
             {
+                Console.WriteLine(tradingStation.FindGoodByName("Spice").Value.Good.PurchasePrice);
+                Console.WriteLine(tradingStation.FindGoodByName("Metal").Value.Good.PurchasePrice);
+                Console.WriteLine(player.Units);
                 int maxSpiceCanBuy = player.Units / tradingStation.FindGoodByName("Spice").Value.Good.PurchasePrice;
                 int maxMetalCanBuy = player.Units / tradingStation.FindGoodByName("Metal").Value.Good.PurchasePrice;
 

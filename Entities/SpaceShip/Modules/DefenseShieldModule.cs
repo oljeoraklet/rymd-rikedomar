@@ -1,10 +1,8 @@
-public class DefenseShieldModule : SpaceshipModule
-{
-    public decimal ShieldStrength { get; set; }
+using RymdRikedomar.Entities.SpaceShip;
+using RymdRikedomar.Entities.SpaceShip.Modules;
 
-    public override void ApplyModuleEffect(Spaceship spaceship)
-    {
-        // Implementation would depend on how you design the pirate attack mechanics.
-        // This is just a placeholder for now.
-    }
+public class DefenseShieldModule : ISpaceshipModule
+{
+    public string ModuleName { get; set; }
+
 }

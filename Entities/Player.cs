@@ -1,17 +1,23 @@
-public class Player
+using RymdRikedomar.Entities.Goods;
+using RymdRikedomar.Entities.SpaceShip;
+
+namespace RymdRikedomar.Entities
 {
-    public string Name { get; set; }
-    public decimal Currency { get; set; }
-    public List<BaseGood> Inventory { get; private set; }
-    public Spaceship Spaceship { get; set; }
-
-    public Player(string name)
+    public class Player
     {
-        Name = name;
-        Currency = 1000;  // Starting currency, can be adjusted
-        Inventory = new List<BaseGood>();
-        Spaceship = new Spaceship();  // Initialize with a basic spaceship
-    }
+        public string Name { get; set; }
+        public decimal Currency { get; set; }
+        public List<IGood> Inventory { get; private set; }
+        public Spaceship Spaceship { get; set; }
 
-    // Additional methods can be added later, such as buying or selling goods.
+        public Player(string name)
+        {
+            Name = name;
+            Currency = 1000;  // Starting currency, can be adjusted
+            Inventory = new List<IGood>();
+            Spaceship = new Spaceship();  // Initialize with a basic spaceship
+        }
+
+        // Additional methods can be added later, such as buying or selling goods.
+    }
 }

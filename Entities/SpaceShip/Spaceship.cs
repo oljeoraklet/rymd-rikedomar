@@ -1,17 +1,21 @@
-public class Spaceship
+using RymdRikedomar.Entities.SpaceShip.Modules;
+namespace RymdRikedomar.Entities.SpaceShip
 {
-    public decimal Fuel { get; set; }
-    public int CargoCapacity { get; set; }
-    public decimal FuelEfficiency { get; set; }
-    public List<SpaceshipModule> Modules { get; private set; }
-
-    public Spaceship()
+    public class Spaceship
     {
-        Fuel = 100;  // Default fuel
-        CargoCapacity = 50;  // Default cargo capacity
-        FuelEfficiency = 1;
-        Modules = new List<SpaceshipModule>();
-    }
+        public decimal Fuel { get; set; }
+        public int CargoCapacity { get; set; }
+        public decimal FuelEfficiency { get; set; }
+        public List<ISpaceshipModule> Modules { get; private set; }
 
-    // Further methods could be: Refuel, AddModule, etc.
+        public Spaceship()
+        {
+            Fuel = 100;  // Default fuel
+            CargoCapacity = 50;  // Default cargo capacity
+            FuelEfficiency = 1;
+            Modules = new List<ISpaceshipModule>();
+        }
+
+        // Further methods could be: Refuel, AddModule, etc.
+    }
 }

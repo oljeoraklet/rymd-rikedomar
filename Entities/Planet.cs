@@ -1,13 +1,18 @@
-public class Planet
+using RymdRikedomar.Entities.Goods;
+
+namespace RymdRikedomar.Entities
 {
-    public string Name { get; set; }
-    public List<IGood> AvailableGoods { get; private set; }
-
-    public Planet(string name)
+    public class Planet
     {
-        Name = name;
-        AvailableGoods = new List<IGood>();
-    }
+        public string Name { get; set; }
+        public List<IGood> AvailableGoods { get; private set; }
 
-    // Methods can include: AddGood, RemoveGood, ChangePrice, etc.
+        public Planet(string name)
+        {
+            Name = name;
+            AvailableGoods = new List<IGood>();
+        }
+
+        // Methods can include: AddGood, RemoveGood, ChangePrice, etc.
+    }
 }

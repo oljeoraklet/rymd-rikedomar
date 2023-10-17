@@ -1,9 +1,8 @@
-public class FuelEfficiencyModule : SpaceshipModule
-{
-    public decimal EfficiencyIncreasePercentage { get; set; } // e.g., 0.10 for 10%
+using RymdRikedomar.Entities.SpaceShip;
+using RymdRikedomar.Entities.SpaceShip.Modules;
 
-    public override void ApplyModuleEffect(Spaceship spaceship)
-    {
-        spaceship.Fuel *= (1 + EfficiencyIncreasePercentage); // Increases the fuel by the given percentage.
-    }
+public class FuelEfficiencyModule : ISpaceshipModule
+{
+    public string ModuleName { get; set; }
+
 }

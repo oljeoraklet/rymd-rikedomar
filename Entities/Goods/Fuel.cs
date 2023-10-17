@@ -1,3 +1,6 @@
+
+using RymdRikedomar.Entities.Goods;
+
 public class Fuel : IGood
 {
     public string Name { get; set; } = "Fuel";
