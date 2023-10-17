@@ -1,0 +1,15 @@
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/bin/Debug/net7.0/RymdRikedomar
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/bin/Debug/net7.0/RymdRikedomar.deps.json
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/bin/Debug/net7.0/RymdRikedomar.runtimeconfig.json
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/bin/Debug/net7.0/RymdRikedomar.dll
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/bin/Debug/net7.0/RymdRikedomar.pdb
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.csproj.AssemblyReference.cache
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.GeneratedMSBuildEditorConfig.editorconfig
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.AssemblyInfoInputs.cache
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.AssemblyInfo.cs
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.csproj.CoreCompileInputs.cache
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.dll
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/refint/RymdRikedomar.dll
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.pdb
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/RymdRikedomar.genruntimeconfig.cache
+/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/Debug/net7.0/ref/RymdRikedomar.dll
