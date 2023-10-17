@@ -218,10 +218,11 @@ namespace SpaceConsoleMenu
 
             if (int.TryParse(Console.ReadLine(), out int amount) && amount > 0)
             {
-                int totalCost = amount * selectedGood.SellingPrice;
+
 
                 if (isBuying)
                 {
+                    int totalCost = amount * selectedGood.PurchasePrice;
                     if (totalCost <= player.Units && amount <= stock)
                     {
                         player.Units -= totalCost;
@@ -237,6 +238,8 @@ namespace SpaceConsoleMenu
                 }
                 else
                 {
+                    int totalCost = amount * selectedGood.SellingPrice;
+
                     if (amount <= player.Goods[goodName])
                     {
                         player.Units += totalCost;
