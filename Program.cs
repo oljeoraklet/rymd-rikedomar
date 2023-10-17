@@ -8,7 +8,6 @@ using RymdRikedomar.Entities.SpaceShip.Modules;
 
 namespace SpaceConsoleMenu
 {
-
     class Program
     {
         static void Main(string[] args)
