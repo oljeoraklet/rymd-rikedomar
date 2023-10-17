@@ -6,7 +6,7 @@ public class Spice : IGood
     public int PurchasePrice { get; set; }
     public int SellingPrice { get; set; }
     public string Quality { get; set; }
-    public void CalculatePrice()
+    public void Update()
     {
         if (Quality == "Fresh")
         {
@@ -34,7 +34,7 @@ public class Spice : IGood
     public Spice()
     {
         Quality = "Fresh";
-        CalculatePrice();
+        Update();
     }
 
 

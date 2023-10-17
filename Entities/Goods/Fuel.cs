@@ -7,7 +7,7 @@ public class Fuel : IGood
     public int PurchasePrice { get; set; }
     public int SellingPrice { get; set; }
     public decimal Efficiency { get; set; }
-    public void CalculatePrice() { }
+    public void Update() { }
 
 
     // Rest of the class remains unchanged
