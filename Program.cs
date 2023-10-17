@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RymdRikedomar.Entities;
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 
@@ -36,27 +37,13 @@ namespace SpaceConsoleMenu
         }
     }
 
-
-    public class Player
-    {
-        public int Units { get; set; } = 1000;
-        public Dictionary<string, int> Goods { get; set; } = new Dictionary<string, int>
-    {
-        { "Spice", 0 },
-        { "Metal", 0 }
-    };
-    }
-
-
-
-
     class Program
     {
         static void Main(string[] args)
         {
 
             TradingStation tradingStation = new TradingStation();
-            Player player = new Player();
+            Player player = new Player("Olle");
             bool exit = false;
 
             while (!exit)
@@ -95,7 +82,7 @@ namespace SpaceConsoleMenu
                             "Upgrade Engine",
                             "Upgrade Weapons",
                             "Return to Main Menu"
-                        });
+                        }, "Available units: " + player.Units + " units \n");
                         break;
 
                     case 2:
@@ -104,7 +91,7 @@ namespace SpaceConsoleMenu
                             "Buy Fuel",
                             "Check Fuel Status",
                             "Return to Main Menu"
-                        });
+                        }, "Available units: " + player.Units + " units \n");
                         break;
 
                     case 3:
@@ -138,7 +125,7 @@ namespace SpaceConsoleMenu
             $"Spice (Price: {tradingStation.FindGoodByName("Spice").Value.Good.PurchasePrice} units, Available: {tradingStation.FindGoodByName("Spice").Value.Stock}, You can buy up to: {Math.Min(maxSpiceCanBuy, tradingStation.FindGoodByName("Spice").Value.Stock)} with your current units)",
             $"Metal (Price: {tradingStation.FindGoodByName("Metal").Value.Good.PurchasePrice} units, Available: {tradingStation.FindGoodByName("Metal").Value.Stock}, You can buy up to: {Math.Min(maxMetalCanBuy, tradingStation.FindGoodByName("Metal").Value.Stock)} with your current units)",
             "Return"
-        });
+        }, "Available units: " + player.Units + " units \n");
 
                 switch (choice)
                 {
@@ -163,10 +150,10 @@ namespace SpaceConsoleMenu
             {
                 int choice = DisplayMenu("Sell Goods", new List<string>
         {
-            $"Spice (Price: {tradingStation.FindGoodByName("Spice").Value.Good.SellingPrice} units, You have: {player.Goods["Spice"]})",
-            $"Metal (Price: {tradingStation.FindGoodByName("Metal").Value.Good.SellingPrice} units, You have: {player.Goods["Metal"]})",
+            $"Spice (Price: {tradingStation.FindGoodByName("Spice").Value.Good.SellingPrice} units, You have: {player.FindGoodByName("Spice").Value.Stock})",
+            $"Metal (Price: {tradingStation.FindGoodByName("Metal").Value.Good.SellingPrice} units, You have: {player.FindGoodByName("Metal").Value.Stock})",
             "Return"
-        });
+        }, "Available units: " + player.Units + " units \n");
 
                 switch (choice)
                 {
@@ -188,6 +175,7 @@ namespace SpaceConsoleMenu
         static void Transaction(TradingStation tradingStation, Player player, string goodName, bool isBuying)
         {
             Console.Clear();
+            Console.WriteLine("Available units: " + player.Units + " units \n");
             var selectedGoodEntry = tradingStation.FindGoodByName(goodName);
 
             if (!selectedGoodEntry.HasValue)
@@ -212,7 +200,7 @@ namespace SpaceConsoleMenu
             }
             else
             {
-                Console.WriteLine($"You have {player.Goods[goodName]} {goodName}.");
+                Console.WriteLine($"You have {player.FindGoodByName(goodName).Value.Stock} {goodName}.");
                 Console.WriteLine($"How many {goodName} would you like to sell?");
             }
 
@@ -227,7 +215,7 @@ namespace SpaceConsoleMenu
                     {
                         player.Units -= totalCost;
                         tradingStation.UpdateStock(selectedGood, stock - amount);
-                        player.Goods[goodName] += amount;
+                        player.UpdateStock(selectedGood, player.FindGoodByName(selectedGood.Name).Value.Stock + amount);
 
                         Console.WriteLine($"You bought {amount} {goodName} for {totalCost} units.");
                     }
@@ -240,11 +228,11 @@ namespace SpaceConsoleMenu
                 {
                     int totalCost = amount * selectedGood.SellingPrice;
 
-                    if (amount <= player.Goods[goodName])
+                    if (amount <= player.FindGoodByName(selectedGood.Name).Value.Stock)
                     {
                         player.Units += totalCost;
                         tradingStation.UpdateStock(selectedGood, stock + amount);
-                        player.Goods[goodName] -= amount;
+                        player.UpdateStock(selectedGood, player.FindGoodByName(selectedGood.Name).Value.Stock - amount);
 
                         Console.WriteLine($"You sold {amount} {goodName} for {totalCost} units.");
                     }
@@ -267,7 +255,7 @@ namespace SpaceConsoleMenu
 
 
 
-        static int DisplayMenu(string title, List<string> options)
+        static int DisplayMenu(string title, List<string> options, string currency = "")
         {
             int selectedIndex = 0;
             while (true)
@@ -275,7 +263,7 @@ namespace SpaceConsoleMenu
                 Console.Clear();
                 Console.WriteLine(title);
                 Console.WriteLine(new string('-', title.Length));
-                Console.WriteLine();
+                Console.WriteLine(currency);
 
                 for (int i = 0; i < options.Count; i++)
                 {
