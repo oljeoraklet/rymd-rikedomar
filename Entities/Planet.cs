@@ -1,12 +1,12 @@
 public class Planet
 {
     public string Name { get; set; }
-    public List<BaseGood> AvailableGoods { get; private set; }
+    public List<IGood> AvailableGoods { get; private set; }
 
     public Planet(string name)
     {
         Name = name;
-        AvailableGoods = new List<BaseGood>();
+        AvailableGoods = new List<IGood>();
     }
 
     // Methods can include: AddGood, RemoveGood, ChangePrice, etc.

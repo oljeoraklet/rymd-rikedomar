@@ -1,16 +1,9 @@
-public class Spice : BaseGood
+public class Spice : IGood
 {
-    // Additional properties specific to Spice can go here.
-    // Example: Quality, Rarity, etc.
-    public string Quality { get; set; }  // e.g., "Premium", "Standard", "Low Grade"
+    public string Name { get; set; } = "Spice";
+    public int PurchasePrice { get; set; }
+    public int SellingPrice { get; set; }
+    public string Quality { get; set; }
 
-    public Spice()
-    {
-        Name = "Spice";
-        // You can set default prices, but it's better to set them dynamically based on game conditions.
-        PurchasePrice = 100;  // Example price
-        SellingPrice = 120;  // Example price
-    }
-
-    // Any additional methods specific to Spice can be added.
+    // Rest of the class remains unchanged
 }

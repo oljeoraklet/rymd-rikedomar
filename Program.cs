@@ -5,23 +5,23 @@ namespace SpaceConsoleMenu
 {
     public class TradingStation
     {
-        public List<(BaseGood Good, int Stock)> AvailableGoods { get; set; }
+        public List<(IGood Good, int Stock)> AvailableGoods { get; set; }
 
         public TradingStation()
         {
-            AvailableGoods = new List<(BaseGood, int)>
+            AvailableGoods = new List<(IGood, int)>
         {
             (new Spice(), 100),
             (new Metal(), 100)
         };
         }
 
-        public (BaseGood Good, int Stock)? FindGoodByName(string name)
+        public (IGood Good, int Stock)? FindGoodByName(string name)
         {
             return AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
         }
 
-        public void UpdateStock(BaseGood good, int newStock)
+        public void UpdateStock(IGood good, int newStock)
         {
             var item = AvailableGoods.FirstOrDefault(g => g.Good == good);
             if (item.Good != null)
@@ -190,7 +190,7 @@ namespace SpaceConsoleMenu
                 return;
             }
 
-            BaseGood selectedGood = selectedGoodEntry.Value.Good;
+            IGood selectedGood = selectedGoodEntry.Value.Good;
             int stock = selectedGoodEntry.Value.Stock;
 
             if (isBuying)
