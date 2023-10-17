@@ -3,7 +3,7 @@ using RymdRikedomar.Entities.Goods;
 
 public class Metal : IGood
 {
-    public string Name { get; set; } = "Metal";
+    public string Name { get; set; } = "Metall";
     public int PurchasePrice { get; set; }
     public int SellingPrice { get; set; }
     public string MetalType { get; set; }

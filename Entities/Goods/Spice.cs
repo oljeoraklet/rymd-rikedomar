@@ -2,7 +2,7 @@ using RymdRikedomar.Entities.Goods;
 
 public class Spice : IGood
 {
-    public string Name { get; set; } = "Spice";
+    public string Name { get; set; } = "Krydda";
     public int PurchasePrice { get; set; }
     public int SellingPrice { get; set; }
     public string Quality { get; set; }
