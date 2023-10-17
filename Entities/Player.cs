@@ -7,7 +7,7 @@ namespace RymdRikedomar.Entities
     {
         public string Name { get; set; }
         public int Units { get; set; }
-        public List<(IGood, int)> Inventory { get; private set; }
+        public List<(IGood Good, int Stock)> Inventory { get; private set; }
         public Spaceship Spaceship { get; set; }
 
         public Player(string name)
@@ -22,9 +22,32 @@ namespace RymdRikedomar.Entities
             Spaceship = new Spaceship();  // Initialize with a basic spaceship
         }
 
-        public (IGood Good, int Stock)? FindGoodByName(string name)
+        public (int PurchasePrice, int SellingPrice) FindPricesByName(string name)
         {
-            return Inventory.FirstOrDefault(g => g.Item1.Name == name);
+            var good = Inventory.FirstOrDefault(g => g.Good.Name == name);
+
+            if (good.Good != null)
+            {
+                return (good.Good.PurchasePrice, good.Good.SellingPrice);
+            }
+
+            return (0, 0);
+        }
+
+        public int FindStockByName(string name)
+        {
+            var good = Inventory.FirstOrDefault(g => g.Good.Name == name);
+
+            if (good.Good != null)
+            {
+                return good.Stock;
+            }
+
+            return 0;
+        }
+        public (IGood Good, int Stock) FindGoodByName(string name)
+        {
+            return Inventory.FirstOrDefault(g => g.Good.Name == name);
         }
 
         public void UpdateStock(IGood good, int newStock)

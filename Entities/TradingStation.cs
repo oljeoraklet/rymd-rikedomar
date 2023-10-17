@@ -13,6 +13,29 @@ public class TradingStation
         };
     }
 
+    public (int PurchasePrice, int SellingPrice) FindPricesByName(string name)
+    {
+        var good = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
+
+        if (good.Good != null)
+        {
+            return (good.Good.PurchasePrice, good.Good.SellingPrice);
+        }
+
+        return (0, 0);
+    }
+
+    public int FindStockByName(string name)
+    {
+        var good = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
+
+        if (good.Good != null)
+        {
+            return good.Stock;
+        }
+
+        return 0;
+    }
     public (IGood Good, int Stock)? FindGoodByName(string name)
     {
         return AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
