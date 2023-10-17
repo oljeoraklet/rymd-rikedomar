@@ -12,9 +12,10 @@ namespace SpaceConsoleMenu
     {
         static void Main(string[] args)
         {
+            List<Planet> planets = new() { new("Zephyria", 0), new("Bobo", 2), new("Aquillon", 5), new("Pyralis", 6), new("Astronia", 8), new("Terravox", 11), new("Luminara", 12), new("Dracoria", 15), new("Nebulon", 17), new("Celestria", 18), new("Volteron", 20) };
 
-            TradingStation tradingStation = new TradingStation();
-            Player player = new Player("Olle");
+            TradingStation tradingStation = new();
+            Player player = new("Olle");
             bool exit = false;
 
             while (!exit)
