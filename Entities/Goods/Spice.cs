@@ -6,18 +6,7 @@ public class Spice : IGood
     public int PurchasePrice { get; set; }
     public int SellingPrice { get; set; }
     public string Quality { get; set; }
-
-
-    public Spice()
-    {
-        Random random = new Random();
-        float randomNumber = (float)random.NextDouble();
-        Console.WriteLine(randomNumber);
-        Quality = "Fresh";
-        CalculatePrice();
-    }
-
-    private void CalculatePrice()
+    public void Update()
     {
         if (Quality == "Fresh")
         {
@@ -40,5 +29,14 @@ public class Spice : IGood
             SellingPrice = 20;
         }
     }
+
+
+    public Spice()
+    {
+        Quality = "Fresh";
+        Update();
+    }
+
+
     // Rest of the class remains unchanged
 }

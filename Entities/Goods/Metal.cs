@@ -8,6 +8,7 @@ public class Metal : IGood
     public int SellingPrice { get; set; }
     public string MetalType { get; set; }
     public decimal Purity { get; set; }
+    public void Update() { }
 
     public Metal()
     {
