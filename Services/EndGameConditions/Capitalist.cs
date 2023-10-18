@@ -8,14 +8,8 @@ namespace RymdRikedomar.Services.EndGameConditions
         public bool IsConditionMet(Player player)
         {
             //If player has 1000 credits return true else return false
-            if (player.Units >= 100000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return player.Units >= 100000;
+
         }
     }
 }
