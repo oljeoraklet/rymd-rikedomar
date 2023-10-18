@@ -12,6 +12,8 @@ namespace SpaceConsoleMenu
 {
     class Program
     {
+        static bool turnOver = false;
+        static int turnCounter = 0;
         static void Main(string[] args)
         {
             Player player = new("Olle");
@@ -20,6 +22,7 @@ namespace SpaceConsoleMenu
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();
             bool exit = false;
+
 
             //Init events
             MarketBoom marketBoom = new MarketBoom();
@@ -57,76 +60,85 @@ namespace SpaceConsoleMenu
 
             while (!exit)
             {
-                Console.Clear();
-                switch (DisplayMenu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
+                turnOver = false;
+
+                while (!turnOver)
+                {
+                    Console.Clear();
+                    switch (DisplayMenu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
                 {
                     "Köp/Sälj Varor",
                     "Uppgradera Rymdskeppet",
                     "Tanka Rymdskeppet",
                     "Res till en annan planet",
-                    "Avsluta"
+                    "Avsluta",
                 }))
-                {
-                    case 0:
-                        switch (DisplayMenu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
+                    {
+                        case 0:
+                            switch (DisplayMenu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
                     {
                         "Köp Varor",
                         "Sälj Varor",
                         "Tillbaka Till Huvudmenyn"
                     }))
-                        {
-                            case 0: // Buy Goods
-                                TradingStation.BuyGoods(currentPlanet.TradingStation, player);
-                                break;
+                            {
+                                case 0: // Buy Goods
+                                    TradingStation.BuyGoods(currentPlanet.TradingStation, player);
+                                    break;
 
-                            case 1: // Sell Goods
-                                TradingStation.SellGoods(currentPlanet.TradingStation, player);
-                                break;
-                        }
-                        break;
+                                case 1: // Sell Goods
+                                    TradingStation.SellGoods(currentPlanet.TradingStation, player);
+                                    break;
+                            }
+                            break;
 
-                    case 1:
-                        DisplayMenu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
+                        case 1:
+                            DisplayMenu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
                         {
                             "Uppgradera Motor",
                             "Uppgradera Vapen",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
-                        break;
+                            break;
 
-                    case 2:
-                        int refuelChoice = DisplayMenu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
+                        case 2:
+                            int refuelChoice = DisplayMenu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
                         {
                             "Köp Bränsle",
                             "Bränslestatus",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
 
-                        switch (refuelChoice)
-                        {
-                            case 0: // Buy Fuel
-                                TradingStation.BuyFuel(spaceship, player);
-                                break;
-                            case 1: // Fuel Status
-                                TradingStation.ShowFuelStatus(spaceship);
-                                break;
-                            case 2: // Return to Main Menu
-                                    // Do nothing, just return to the main menu.
-                                break;
-                        }
-                        break;
+                            switch (refuelChoice)
+                            {
+                                case 0: // Buy Fuel
+                                    TradingStation.BuyFuel(spaceship, player);
+                                    break;
+                                case 1: // Fuel Status
+                                    TradingStation.ShowFuelStatus(spaceship);
+                                    break;
+                                case 2: // Return to Main Menu
+                                        // Do nothing, just return to the main menu.
+                                    break;
+                            }
+                            break;
 
 
-                    case 3: // Travel to another planet
-                        currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player);
-                        break;
+                        case 3: // Travel to another planet
+                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player);
+                            break;
+
+                        case 4:
+                            exit = true;
+                            turnOver = true;
+                            break;
+                    }
 
 
-
-                    case 4:
-                        exit = true;
-                        break;
                 }
+
+
+
             }
         }
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)
@@ -169,6 +181,8 @@ namespace SpaceConsoleMenu
                 {
                     spaceship.ConsumeFuel(distance);
                     player.VisitedPlanets.Add(sortedPlanets[choice]);
+                    turnCounter++;
+                    turnOver = true;
                     return sortedPlanets[choice];
                 }
                 else
