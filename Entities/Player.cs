@@ -1,5 +1,6 @@
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip;
+using RymdRikedomar.Services.EndGameConditions;
 
 namespace RymdRikedomar.Entities
 {

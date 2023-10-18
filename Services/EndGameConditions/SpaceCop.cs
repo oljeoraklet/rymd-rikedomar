@@ -1,18 +1,21 @@
 using RymdRikedomar.Entities;
 
-public class SpaceCop : IEndGameCondition
+namespace RymdRikedomar.Services.EndGameConditions
 {
-    public string ConditionName { get { return "Space Cop"; } }
-    public bool IsConditionMet(Player player)
+    public class SpaceCop : IEndGameCondition
     {
-        //If player has 1000 credits return true else return false
-        if (player.DefeatedPirates >= 5)
+        public string ConditionName { get { return "Rymdsnut"; } }
+        public bool IsConditionMet(Player player)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            //If player has 1000 credits return true else return false
+            if (player.DefeatedPirates >= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

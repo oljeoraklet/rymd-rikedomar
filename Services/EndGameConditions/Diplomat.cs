@@ -1,18 +1,21 @@
 using RymdRikedomar.Entities;
 
-public class Diplomat : IEndGameCondition
+namespace RymdRikedomar.Services.EndGameConditions
 {
-    public string ConditionName { get { return "Diplomat"; } }
-    public bool IsConditionMet(Player player)
+    public class Diplomat : IEndGameCondition
     {
-        //If player has visited 10 planets return true else return false
-        if (player.VisitedPlanets.Count >= 10)
+        public string ConditionName { get { return "Diplomat"; } }
+        public bool IsConditionMet(Player player)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            //If player has visited 10 planets return true else return false
+            if (player.VisitedPlanets.Count >= 10)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

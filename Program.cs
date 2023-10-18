@@ -264,8 +264,8 @@ namespace SpaceConsoleMenu
             {
                 int choice = DisplayMenu("Sell Goods", new List<string>
         {
-            $"Krydda (Price: {tradingStation.FindPricesByName("Krydda").SellingPrice} enheter, Du har: {player.FindStockByName("Krydda")})",
-            $"Metall (Price: {tradingStation.FindPricesByName("Metall").SellingPrice} enheter, Du har {player.FindStockByName("Metall")})",
+            $"Krydda (Pris: {tradingStation.FindPricesByName("Krydda").SellingPrice} enheter, Du har: {player.FindStockByName("Krydda")})",
+            $"Metall (Pris: {tradingStation.FindPricesByName("Metall").SellingPrice} enheter, Du har {player.FindStockByName("Metall")})",
             "Tillbaka"
         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
 

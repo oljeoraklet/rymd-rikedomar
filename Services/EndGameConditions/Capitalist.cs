@@ -1,18 +1,21 @@
 using RymdRikedomar.Entities;
 
-public class Capitalist : IEndGameCondition
+namespace RymdRikedomar.Services.EndGameConditions
 {
-    public string ConditionName { get { return "Capitalist"; } }
-    public bool IsConditionMet(Player player)
+    public class Capitalist : IEndGameCondition
     {
-        //If player has 1000 credits return true else return false
-        if (player.Units >= 100000)
+        public string ConditionName { get { return "Kapitalist"; } }
+        public bool IsConditionMet(Player player)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            //If player has 1000 credits return true else return false
+            if (player.Units >= 100000)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
