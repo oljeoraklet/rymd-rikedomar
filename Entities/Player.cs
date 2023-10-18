@@ -76,6 +76,12 @@ namespace RymdRikedomar.Entities
         }
 
         // Additional methods can be added later, such as buying or selling goods.
+
+        //Methods to subscribe to events
+
+        public void MarketBoomEventHandler(MarketBoom marketBoomEvent) { }
+        public void PirateEventHandler(PirateEvent pirateEvent) { }
+        public void NoEventHandler(NoEvent randomEvent) { }
     }
 
 }

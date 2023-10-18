@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/RymdRikedomar.csproj": {}
+    "/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/RymdRikedomar.csproj": {}
   },
   "projects": {
-    "/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/RymdRikedomar.csproj": {
+    "/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/RymdRikedomar.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/RymdRikedomar.csproj",
+        "projectUniqueName": "/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/RymdRikedomar.csproj",
         "projectName": "RymdRikedomar",
-        "projectPath": "/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/RymdRikedomar.csproj",
-        "packagesPath": "/Users/_oraklet/.nuget/packages/",
-        "outputPath": "/Users/_oraklet/Documents/Skola/Termin 5/OOP2/projekt/rymdRikedomar/RymdRikedomar/obj/",
+        "projectPath": "/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/RymdRikedomar.csproj",
+        "packagesPath": "/Users/adamhagglund/.nuget/packages/",
+        "outputPath": "/Users/adamhagglund/Documents/Skola/OOPII/RymdRikedomar/rymd-rikedomar/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/_oraklet/.nuget/NuGet/NuGet.Config"
+          "/Users/adamhagglund/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -53,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.200/RuntimeIdentifierGraph.json"
         }
       }
     }
