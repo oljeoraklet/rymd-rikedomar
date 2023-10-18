@@ -21,6 +21,40 @@ namespace SpaceConsoleMenu
             Spaceship spaceship = new();
             bool exit = false;
 
+            //Init events
+            MarketBoom marketBoom = new MarketBoom();
+            PirateEvent pirateEvent = new PirateEvent();
+            NoEvent noEvent = new NoEvent();
+
+            //Subscribe to events
+            void subscribeToEvents()
+            {
+                marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
+                pirateEvent.PirateEventEvent += player.PirateEventHandler;
+                noEvent.NoEventEvent += player.NoEventHandler;
+            }
+            subscribeToEvents();
+
+            void RandomEvent()
+            {
+                Random rnd = new Random();
+                int random = rnd.Next(3);
+                switch (random)
+                {
+                    case 0:
+                        marketBoom.OnRandomEvent(marketBoom, planets);
+                        break;
+                    case 1:
+                        pirateEvent.OnRandomEvent(pirateEvent);
+                        break;
+                    case 2:
+                        noEvent.OnRandomEvent(noEvent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             while (!exit)
             {
                 Console.Clear();
@@ -102,6 +136,8 @@ namespace SpaceConsoleMenu
                              .Take(3)
                              .ToList();
         }
+
+
 
         public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player)
         {
