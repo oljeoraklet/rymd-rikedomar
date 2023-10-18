@@ -5,6 +5,7 @@ using RymdRikedomar.Entities;
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 using RymdRikedomar.Entities.SpaceShip;
+using System.Net.NetworkInformation;
 
 
 
@@ -12,7 +13,7 @@ namespace SpaceConsoleMenu
 {
     class Program
     {
-        static bool turnOver = false;
+        static bool turnOver;
         static int turnCounter = 0;
         static void Main(string[] args)
         {
@@ -29,14 +30,10 @@ namespace SpaceConsoleMenu
             PirateEvent pirateEvent = new PirateEvent();
             NoEvent noEvent = new NoEvent();
 
-            //Subscribe to events
-            void subscribeToEvents()
-            {
-                marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
-                pirateEvent.PirateEventEvent += player.PirateEventHandler;
-                noEvent.NoEventEvent += player.NoEventHandler;
-            }
-            subscribeToEvents();
+            //Subscribe to events using multicast delegate
+            marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
+            pirateEvent.PirateEventEvent += player.PirateEventHandler;
+            noEvent.NoEventEvent += player.NoEventHandler;
 
             void RandomEvent()
             {
@@ -61,6 +58,15 @@ namespace SpaceConsoleMenu
             while (!exit)
             {
                 turnOver = false;
+                bool eventOver = false;
+
+                while (!eventOver)
+                {
+                    Console.Clear();
+                    marketBoom.OnRandomEvent(marketBoom, planets);
+                    Console.ReadKey();
+                    eventOver = true;
+                }
 
                 while (!turnOver)
                 {
