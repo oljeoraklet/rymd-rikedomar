@@ -101,21 +101,21 @@ namespace SpaceConsoleMenu
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)
         {
             return allPlanets.Where(p => p != currentPlanet)
-                             .OrderBy(p => Math.Abs(p.xDistance - currentPlanet.xDistance))
+                             .OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
                              .Take(3)
                              .ToList();
         }
 
         public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player)
         {
-            var sortedPlanets = planets.OrderBy(p => Math.Abs(p.xDistance - currentPlanet.xDistance))
+            var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
                                         .Where(p => p != currentPlanet)
                                         .Take(3)
                                         .ToList();
 
             List<string> planetMenuOptions = sortedPlanets.Select(p =>
             {
-                int distance = Math.Abs(p.xDistance - currentPlanet.xDistance);
+                int distance = Math.Abs(p.XDistance - currentPlanet.XDistance);
                 return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance})";
             }).ToList();
 
@@ -129,7 +129,7 @@ namespace SpaceConsoleMenu
             }
             else
             {
-                int distance = Math.Abs(sortedPlanets[choice].xDistance - currentPlanet.xDistance);
+                int distance = Math.Abs(sortedPlanets[choice].XDistance - currentPlanet.XDistance);
                 float fuelNeeded = distance / spaceship.FuelEfficiency;
 
                 if (spaceship.Fuel >= fuelNeeded)

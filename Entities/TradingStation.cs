@@ -15,11 +15,11 @@ public class TradingStation
 
     public (int PurchasePrice, int SellingPrice) FindPricesByName(string name)
     {
-        var good = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
+        var (Good, Stock) = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
 
-        if (good.Good != null)
+        if (Good != null)
         {
-            return (good.Good.PurchasePrice, good.Good.SellingPrice);
+            return (Good.PurchasePrice, Good.SellingPrice);
         }
 
         return (0, 0);
@@ -27,11 +27,11 @@ public class TradingStation
 
     public int FindStockByName(string name)
     {
-        var good = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
+        var (Good, Stock) = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
 
-        if (good.Good != null)
+        if (Good != null)
         {
-            return good.Stock;
+            return Stock;
         }
 
         return 0;
