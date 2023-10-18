@@ -14,14 +14,14 @@ namespace SpaceConsoleMenu
     {
         static void Main(string[] args)
         {
+            Player player = new("Olle");
             List<Planet> planets = new() { new("Zephyria", 0), new("Bobo", 2), new("Aquillon", 5), new("Pyralis", 6), new("Astronia", 8), new("Terravox", 11), new("Luminara", 12), new("Dracoria", 15), new("Nebulon", 17), new("Celestria", 18), new("Volteron", 20) };
-
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
+            player.VisitedPlanets.Add(currentPlanet);
 
             Spaceship spaceship = new();
 
             TradingStation tradingStation = new();
-            Player player = new("Olle");
             bool exit = false;
 
             while (!exit)
@@ -87,7 +87,7 @@ namespace SpaceConsoleMenu
 
 
                     case 3: // Travel to another planet
-                        currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship);
+                        currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player);
                         break;
 
 
@@ -106,7 +106,7 @@ namespace SpaceConsoleMenu
                              .ToList();
         }
 
-        public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship)
+        public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player)
         {
             var sortedPlanets = planets.OrderBy(p => Math.Abs(p.xDistance - currentPlanet.xDistance))
                                         .Where(p => p != currentPlanet)
@@ -135,6 +135,7 @@ namespace SpaceConsoleMenu
                 if (spaceship.Fuel >= fuelNeeded)
                 {
                     spaceship.ConsumeFuel(distance);
+                    player.VisitedPlanets.Add(sortedPlanets[choice]);
                     return sortedPlanets[choice];
                 }
                 else
