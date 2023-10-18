@@ -1,8 +1,10 @@
 using RymdRikedomar.Entities.SpaceShip;
-using RymdRikedomar.Entities.SpaceShip.Modules;
 
-public class FuelEfficiencyModule : ISpaceshipModule
+namespace RymdRikedomar.Entities.SpaceShip.Modules
 {
-    public string ModuleName { get; set; }
+    public class FuelEfficiencyModule : ISpaceshipModule
+    {
+        public string ModuleName { get { return "Fuel Efficiency Module"; } }
 
+    }
 }

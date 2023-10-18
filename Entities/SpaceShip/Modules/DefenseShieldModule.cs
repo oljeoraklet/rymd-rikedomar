@@ -1,8 +1,10 @@
 using RymdRikedomar.Entities.SpaceShip;
-using RymdRikedomar.Entities.SpaceShip.Modules;
 
-public class DefenseShieldModule : ISpaceshipModule
+namespace RymdRikedomar.Entities.SpaceShip.Modules
 {
-    public string ModuleName { get; set; }
+    public class DefenseShieldModule : ISpaceshipModule
+    {
+        public string ModuleName { get { return "Defense Shield Module"; } }
 
+    }
 }
