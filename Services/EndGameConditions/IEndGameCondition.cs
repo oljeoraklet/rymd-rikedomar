@@ -1,7 +1,10 @@
 using RymdRikedomar.Entities;
 
-public interface IEndGameCondition
+namespace RymdRikedomar.Services.EndGameConditions
 {
-    string ConditionName { get; }
-    bool IsConditionMet(Player player);
+    public interface IEndGameCondition
+    {
+        string ConditionName { get; }
+        bool IsConditionMet(Player player);
+    }
 }
