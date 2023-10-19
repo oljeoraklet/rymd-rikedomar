@@ -14,6 +14,8 @@ namespace RymdRikedomar.Entities
         public List<Planet> VisitedPlanets;
         public int DefeatedPirates { get; set; }
 
+        public int influencePoints = 0;
+
         public IEndGameCondition EndGameCondition { get; set; }
 
         public Player(string name)
@@ -80,6 +82,7 @@ namespace RymdRikedomar.Entities
         //Methods to subscribe to events
 
         public void MarketBoomEventHandler(MarketBoom marketBoomEvent) { }
+        public void DonationEventHandler(DonationEvent donationEvent) { }
         public void PirateEventHandler(PirateEvent pirateEvent) { }
         public void NoEventHandler(NoEvent randomEvent) { }
     }

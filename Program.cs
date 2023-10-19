@@ -29,16 +29,19 @@ namespace SpaceConsoleMenu
             MarketBoom marketBoom = new MarketBoom();
             PirateEvent pirateEvent = new PirateEvent();
             NoEvent noEvent = new NoEvent();
+            DonationEvent donationEvent = new DonationEvent();
 
             //Subscribe to events using multicast delegate
             marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
             pirateEvent.PirateEventEvent += player.PirateEventHandler;
             noEvent.NoEventEvent += player.NoEventHandler;
+            donationEvent.DonationEventEvent += player.DonationEventHandler;
+
 
             void RandomEvent()
             {
                 Random rnd = new Random();
-                int random = rnd.Next(3);
+                int random = rnd.Next(4);
                 switch (random)
                 {
                     case 0:
@@ -50,6 +53,9 @@ namespace SpaceConsoleMenu
                     case 2:
                         noEvent.OnRandomEvent(noEvent);
                         break;
+                    case 3:
+                        donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
+                        break;
                     default:
                         break;
                 }
@@ -60,13 +66,17 @@ namespace SpaceConsoleMenu
                 turnOver = false;
                 bool eventOver = false;
 
-                while (!eventOver)
+                if (turnCounter != 0)
                 {
-                    Console.Clear();
-                    marketBoom.OnRandomEvent(marketBoom, planets);
-                    Console.ReadKey();
-                    eventOver = true;
+                    while (!eventOver)
+                    {
+                        Console.Clear();
+                        RandomEvent();
+                        Console.ReadKey();
+                        eventOver = true;
+                    }
                 }
+
 
                 while (!turnOver)
                 {
