@@ -22,6 +22,7 @@ namespace SpaceConsoleMenu
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();
+            DisplayMenu menu = new();
             bool exit = false;
 
 
@@ -71,7 +72,7 @@ namespace SpaceConsoleMenu
                 while (!turnOver)
                 {
                     Console.Clear();
-                    switch (DisplayMenu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
+                    switch (menu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
                 {
                     "Köp/Sälj Varor",
                     "Uppgradera Rymdskeppet",
@@ -81,7 +82,7 @@ namespace SpaceConsoleMenu
                 }))
                     {
                         case 0:
-                            switch (DisplayMenu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
+                            switch (menu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
                     {
                         "Köp Varor",
                         "Sälj Varor",
@@ -89,17 +90,17 @@ namespace SpaceConsoleMenu
                     }))
                             {
                                 case 0: // Buy Goods
-                                    TradingStation.BuyGoods(currentPlanet.TradingStation, player);
+                                    currentPlanet.TradingStation.BuyGoods(player);
                                     break;
 
                                 case 1: // Sell Goods
-                                    TradingStation.SellGoods(currentPlanet.TradingStation, player);
+                                    currentPlanet.TradingStation.SellGoods(player);
                                     break;
                             }
                             break;
 
                         case 1:
-                            DisplayMenu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
+                            menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
                         {
                             "Uppgradera Motor",
                             "Uppgradera Vapen",
@@ -108,7 +109,7 @@ namespace SpaceConsoleMenu
                             break;
 
                         case 2:
-                            int refuelChoice = DisplayMenu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
+                            int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
                         {
                             "Köp Bränsle",
                             "Bränslestatus",
@@ -118,10 +119,10 @@ namespace SpaceConsoleMenu
                             switch (refuelChoice)
                             {
                                 case 0: // Buy Fuel
-                                    TradingStation.BuyFuel(spaceship, player);
+                                    currentPlanet.TradingStation.BuyFuel(spaceship, player);
                                     break;
                                 case 1: // Fuel Status
-                                    TradingStation.ShowFuelStatus(spaceship);
+                                    currentPlanet.TradingStation.ShowFuelStatus(spaceship);
                                     break;
                                 case 2: // Return to Main Menu
                                         // Do nothing, just return to the main menu.
@@ -131,7 +132,7 @@ namespace SpaceConsoleMenu
 
 
                         case 3: // Travel to another planet
-                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player);
+                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
                             break;
 
                         case 4:
@@ -157,7 +158,7 @@ namespace SpaceConsoleMenu
 
 
 
-        public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player)
+        public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
         {
             var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
                                         .Where(p => p != currentPlanet)
@@ -172,7 +173,7 @@ namespace SpaceConsoleMenu
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");
 
-            int choice = DisplayMenu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions);
+            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions);
 
             if (choice == planetMenuOptions.Count - 1)
             {

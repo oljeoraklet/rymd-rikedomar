@@ -1,4 +1,5 @@
 using RymdRikedomar.Entities.Goods;
+using SpaceConsoleMenu;
 
 namespace RymdRikedomar.Entities
 {
@@ -19,7 +20,7 @@ namespace RymdRikedomar.Entities
             AvailableGoods = new();
             XDistance = xDistance;
             IsVisited = false;
-            TradingStation = new();
+            TradingStation = new(new DisplayMenu());
         }
 
         // Methods can include: AddGood, RemoveGood, ChangePrice, etc.
