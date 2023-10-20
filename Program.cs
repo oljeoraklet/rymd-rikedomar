@@ -49,7 +49,7 @@ namespace SpaceConsoleMenu
                         marketBoom.OnRandomEvent(marketBoom, planets);
                         break;
                     case 1:
-                        pirateEvent.OnRandomEvent(pirateEvent);
+                        pirateEvent.OnRandomEvent(pirateEvent, player);
                         break;
                     case 2:
                         noEvent.OnRandomEvent(noEvent);

@@ -6,6 +6,10 @@ namespace RymdRikedomar.Entities.SpaceShip
         public float Fuel { get; set; }
         public int CargoCapacity { get; set; }
         public int FuelEfficiency { get; set; }
+
+        public int WeaponDamage { get; private set; }
+
+        public int Health = 3;
         public List<ISpaceshipModule> Modules { get; private set; }
 
         public Spaceship()
@@ -13,6 +17,7 @@ namespace RymdRikedomar.Entities.SpaceShip
             Fuel = 10;  // Default fuel
             CargoCapacity = 50;  // Default cargo capacity
             FuelEfficiency = 1;
+            WeaponDamage = 0;
             Modules = new List<ISpaceshipModule>();
         }
 

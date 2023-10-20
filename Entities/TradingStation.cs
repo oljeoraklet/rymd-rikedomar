@@ -8,6 +8,7 @@ public class TradingStation
     public List<(IGood Good, int Stock)> AvailableGoods { get; set; }
     private DisplayMenu TradingStationMenu { get; set; }
 
+
     public TradingStation(DisplayMenu _displayMenu)
     {
         TradingStationMenu = _displayMenu;
