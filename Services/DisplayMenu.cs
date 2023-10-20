@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace SpaceConsoleMenu
 {
-    class DisplayMenu
+    public class DisplayMenu
     {
-        public static int Menu(string title, List<string> options, string currency = "")
+        public int Menu(string title, List<string> options, string currency = "")
         {
             int selectedIndex = 0;
             while (true)
