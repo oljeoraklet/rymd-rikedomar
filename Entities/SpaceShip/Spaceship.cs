@@ -6,6 +6,8 @@ namespace RymdRikedomar.Entities.SpaceShip
         public float Fuel { get; set; }
         public int CargoCapacity { get; set; }
         public int FuelEfficiency { get; set; }
+
+        public int weaponDamage = 0;
         public List<ISpaceshipModule> Modules { get; private set; }
 
         public Spaceship()
