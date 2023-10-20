@@ -83,7 +83,7 @@ public class PirateEvent
                 }
                 else
                 {
-                    player.Health--;
+                    player.Spaceship.Health--;
                 }
                 break;
             case 1:
@@ -94,8 +94,8 @@ public class PirateEvent
     bool SpacePirateFight(Player player)
     {
         Random rnd = new Random();
-        int random = rnd.Next(2 + player.Spaceship.weaponDamage);
-        if (random <= 0 + player.Spaceship.weaponDamage)
+        int random = rnd.Next(2 + player.Spaceship.WeaponDamage);
+        if (random <= 0 + player.Spaceship.WeaponDamage)
         {
             Console.WriteLine("You won the fight!");
             Console.WriteLine(" ");
