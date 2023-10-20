@@ -4,10 +4,14 @@ public class PirateEvent
 
     public event PirateEventHandler PirateEventEvent;
 
+    StringPrinter stringPrinter = new StringPrinter();
+    string pirateMsg1 = "Stop right there, explorer! You have been attacked by pirates!";
+    string pirateMsg2 = "You have two options: fight or gives us materials!";
+
     void PirateHandler()
     {
-        Console.WriteLine("Stop right there, explorer! You have been attacked by pirates!");
-        Console.WriteLine("You have two options: fight or gives us materials!");
+        stringPrinter.Print(pirateMsg1);
+        stringPrinter.Print(pirateMsg2);
     }
 
     public void OnRandomEvent(PirateEvent pirateEvent)
