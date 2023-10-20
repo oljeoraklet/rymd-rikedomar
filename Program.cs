@@ -72,7 +72,7 @@ namespace SpaceConsoleMenu
                     {
                         Console.Clear();
                         RandomEvent();
-                        Console.ReadKey();
+                        // Console.ReadKey();
                         eventOver = true;
                     }
                 }
