@@ -5,12 +5,16 @@ public class NoEvent
 
     public event NoEventHandler NoEventEvent;
 
+    StringPrinter stringPrinter = new StringPrinter();
     public void OnRandomEvent(NoEvent noEvent)
     {
         if (NoEventEvent != null)
         {
-            Console.WriteLine("Nothing special happened this day...");
+            string msg = "Nothing special happened this day...";
+            stringPrinter.Print(msg);
+            Console.WriteLine("Press any key to continue...");
             NoEventEvent(noEvent);
         }
     }
+
 }

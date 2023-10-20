@@ -9,13 +9,16 @@ public class DonationEvent
 
     public void OnRandomEvent(DonationEvent donationEvent, Planet currentPlanet, Player player)
     {
+
+        StringPrinter stringPrinter = new StringPrinter();
         if (donationEvent != null)
         {
             string planetName = currentPlanet.Name;
             string msg = $"...bzzhh...bzzhhh...Traveler {player.Name}...We..need...bzzhhh...your..help..on..bzhhh...{planetName}...";
-            PrintString(msg);
+            stringPrinter.Print(msg);
 
             int rnd = RandomNumber(2);
+
 
             var goodTuple = RetrieveGood(player);
             int requestedAmount = goodTuple.Item1 / 2;
@@ -25,7 +28,7 @@ public class DonationEvent
             {
                 case 0:
                     string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
-                    PrintString(unitDonateMsg);
+                    stringPrinter.Print(unitDonateMsg);
                     bool donateUnitsOrNot = HandleDonationInput();
                     if (donateUnitsOrNot)
                     {
@@ -41,16 +44,20 @@ public class DonationEvent
                     break;
                 case 1:
                     string goodsDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...you, {player.Name}...to..donate..bzhhh...{requestedAmount} {requestedGood}...";
-                    PrintString(goodsDonateMsg);
+                    stringPrinter.Print(goodsDonateMsg);
                     bool donateGoodsOrNot = HandleDonationInput();
                     if (donateGoodsOrNot)
                     {
                         RemoveFromInventory(requestedGood, requestedAmount, player);
                         player.influencePoints++;
+                        Console.WriteLine($"You have donated {requestedAmount} {requestedGood} to {planetName}");
+                        Console.WriteLine("Press any key to continue...");
                         break;
                     }
                     else
                     {
+                        Console.WriteLine($"You did not donate anything to {planetName}.");
+                        Console.WriteLine("Press any key to continue...");
                         break;
                     }
                 default:
@@ -81,19 +88,6 @@ public class DonationEvent
         Random rnd = new Random();
         int random = rnd.Next(num);
         return random;
-    }
-
-    void PrintString(string str)
-    {
-        foreach (char c in str)
-        {
-            Console.Write(c);
-            Thread.Sleep(50);
-        }
-        Console.WriteLine();
-        Console.WriteLine(" ");
-        Console.WriteLine("------------------------------------------------------------------------------------------------");
-        Console.WriteLine(" ");
     }
 
     bool HandleDonationInput()
