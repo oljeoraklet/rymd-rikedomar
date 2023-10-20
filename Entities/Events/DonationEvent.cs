@@ -34,14 +34,16 @@ public class DonationEvent
                     {
                         player.Units -= 100;
                         player.influencePoints++;
+                        Console.WriteLine($"You have donated 100 units to {planetName}");
+                        Console.WriteLine("Press any key to continue...");
                         break;
                     }
                     else
                     {
-                        player.Units -= 100;
+                        Console.WriteLine($"You did not donate to {planetName}.");
+                        Console.WriteLine("Press any key to continue...");
+                        break;
                     }
-
-                    break;
                 case 1:
                     string goodsDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...you, {player.Name}...to..donate..bzhhh...{requestedAmount} {requestedGood}...";
                     stringPrinter.Print(goodsDonateMsg);
