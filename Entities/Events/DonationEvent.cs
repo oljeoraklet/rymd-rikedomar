@@ -82,7 +82,8 @@ public class DonationEvent
     public void RemoveFromInventory(IGood good, int amount, Player player)
     {
         var inventoryItem = player.Inventory.FirstOrDefault(item => item.Good == good);
-        inventoryItem.Stock -= amount;
+
+        player.UpdateStock(inventoryItem.Good, inventoryItem.Stock - amount);
     }
 
     int RandomNumber(int num)

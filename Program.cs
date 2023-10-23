@@ -71,10 +71,8 @@ namespace SpaceConsoleMenu
                 {
                     while (!eventOver)
                     {
-                        // Console.Clear();
-                        // RandomEvent();
-                        // Console.ReadKey();
-                        pirateEvent.OnRandomEvent(pirateEvent, player);
+                        Console.Clear();
+                        RandomEvent();
                         Console.ReadKey();
                         eventOver = true;
                     }
