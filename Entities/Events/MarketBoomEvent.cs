@@ -13,6 +13,7 @@ public class MarketBoom
         {
             string planetName = Planet(planets).Name;
             Console.WriteLine($"The market is booming on {planetName}!");
+            Planet(planets).Demand *= 2;
 
             MarketBoomEvent(marketBoomEvent);
         }
