@@ -28,5 +28,10 @@ namespace RymdRikedomar.Entities.SpaceShip
         }
 
         // Further methods could be: Refuel, AddModule, etc.
+
+        public void WeaponDamageUpgrade()
+        {
+            WeaponDamage += 1;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using RymdRikedomar.Entities;
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip;
@@ -5,9 +6,9 @@ using SpaceConsoleMenu;
 
 public class TradingStation
 {
+    //Here we are using a Strategy Pattern to dependency inject certain goods to the tradingstation. 
     public List<(IGood Good, int Stock)> AvailableGoods { get; set; }
     private DisplayMenu TradingStationMenu { get; set; }
-
 
     public TradingStation(DisplayMenu _displayMenu)
     {

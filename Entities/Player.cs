@@ -8,7 +8,7 @@ namespace RymdRikedomar.Entities
     {
         public string Name { get; set; }
         public int Units { get; set; }
-        public List<(IGood Good, int Stock)> Inventory { get; private set; }
+        public List<(IGood Good, int Stock)> Inventory { get; set; }
         public Spaceship Spaceship { get; set; }
 
         public List<Planet> VisitedPlanets;
@@ -16,7 +16,7 @@ namespace RymdRikedomar.Entities
 
         public int influencePoints = 0;
 
-        public int Health = 3;
+
 
         public IEndGameCondition EndGameCondition { get; set; }
 
