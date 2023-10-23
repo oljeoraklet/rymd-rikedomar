@@ -83,16 +83,17 @@ namespace SpaceConsoleMenu
             //     turnOver = false;
             //     bool eventOver = false;
 
-            //     if (turnCounter != 0)
-            //     {
-            //         while (!eventOver)
-            //         {
-            //             Console.Clear();
-            //             RandomEvent();
-            //             Console.ReadKey();
-            //             eventOver = true;
-            //         }
-            //     }
+            if (turnCounter != 0)
+            {
+                while (!eventOver)
+                {
+                    Console.Clear();
+                    RandomEvent();
+                    Console.ReadKey();
+                    eventOver = true;
+                }
+
+            }
 
 
             //     while (!turnOver)

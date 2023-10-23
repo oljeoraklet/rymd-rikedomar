@@ -17,7 +17,7 @@ namespace RymdRikedomar.Entities
 
         public int influencePoints = 0;
 
-        public int Health = 3;
+
 
         public IEndGameCondition EndGameCondition { get; set; }
 

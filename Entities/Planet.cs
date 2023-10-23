@@ -12,6 +12,10 @@ namespace RymdRikedomar.Entities
 
         public int XDistance { get; }
 
+        public double Demand { get; set; }
+
+        public double Supply { get; private set; }
+
         public TradingStation TradingStation { get; set; }
 
         public Planet(string name, int xDistance)
@@ -20,10 +24,20 @@ namespace RymdRikedomar.Entities
             AvailableGoods = new();
             XDistance = xDistance;
             IsVisited = false;
+            Demand = CalculateDemand();
+            Supply = Demand + 0.3;
             TradingStation = new(new DisplayMenu());
         }
 
         // Methods can include: AddGood, RemoveGood, ChangePrice, etc.
+
+        double CalculateDemand()
+        {
+            Random random = new();
+            double randomNumber = random.NextDouble() * (1.2 - 0.8) + 0.8;
+            return randomNumber;
+        }
     }
+
 
 }
