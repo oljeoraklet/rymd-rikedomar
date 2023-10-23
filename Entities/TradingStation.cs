@@ -1,140 +1,110 @@
-using System.Reflection.Metadata;
 using RymdRikedomar.Entities;
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip;
+using RymdRikedomar.Entities.SpaceShip.Modules;
+using RymdRikedomar.Entities.TradingStation;
 using SpaceConsoleMenu;
 
-public class TradingStation
+
+public class TradingStation<T> where T : IStoreItem
 {
-    //Here we are using a Strategy Pattern to dependency inject certain goods to the tradingstation. 
-    public List<(IGood Good, int Stock)> AvailableGoods { get; set; }
+    public List<StoreItem<T>> AvailableItems { get; set; }
     private DisplayMenu TradingStationMenu { get; set; }
+
 
     public TradingStation(DisplayMenu _displayMenu)
     {
         TradingStationMenu = _displayMenu;
-        AvailableGoods = new List<(IGood, int)>
-        {
-            (new Spice(), 100),
-            (new Metal(), 100)
-        };
+        AvailableItems = new List<StoreItem<T>>();
     }
-
-    public (int PurchasePrice, int SellingPrice) FindPricesByName(string name)
-    {
-        var (Good, Stock) = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
-
-        if (Good != null)
-        {
-            return (Good.PurchasePrice, Good.SellingPrice);
-        }
-
-        return (0, 0);
-    }
-
-    public int FindStockByName(string name)
-    {
-        var (Good, Stock) = AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
-
-        if (Good != null)
-        {
-            return Stock;
-        }
-
-        return 0;
-    }
-    public (IGood Good, int Stock)? FindGoodByName(string name)
-    {
-        return AvailableGoods.FirstOrDefault(g => g.Good.Name == name);
-    }
-
-    public void UpdateStock(IGood good, int newStock)
-    {
-        var item = AvailableGoods.FirstOrDefault(g => g.Good == good);
-        if (item.Good != null)
-        {
-            AvailableGoods.Remove(item);
-            AvailableGoods.Add((item.Good, newStock));
-        }
-    }
-
     public void BuyGoods(Player player)
     {
         while (true)
         {
-            Console.WriteLine(FindPricesByName("Krydda").PurchasePrice);
-            Console.WriteLine(FindPricesByName("Metall").PurchasePrice);
-            Console.WriteLine(player.Units);
-            int maxKryddaCanBuy = player.Units / FindPricesByName("Krydda").PurchasePrice;
-            int maxMetalCanBuy = player.Units / FindPricesByName("Metall").PurchasePrice;
+            // Filter available items based on the provided product type
+            var filteredItems = AvailableItems.Where(item => item.Item is IGood).ToList();
 
-            int choice = TradingStationMenu.Menu("Buy Goods", new List<string>
-        {
-            $"Krydda (Pris: {FindPricesByName("Krydda").PurchasePrice} enheter, Tillgängligt: {FindStockByName("Krydda")}, Du kan köpa: {Math.Min(maxKryddaCanBuy, FindStockByName("Krydda"))} med dina nuvarande enheter)",
-            $"Metall (Pris: {FindPricesByName("Metall").PurchasePrice} units, Tillgänligt: {FindStockByName("Metall")}, Du kan köpa: {Math.Min(maxMetalCanBuy, FindStockByName("Metall"))} med dina nuvarande enheter)",
-            "Tillbaka"
-        }, "Tillgängliga enheter: " + player.Units + " units \n");
-
-            switch (choice)
+            // Generate dynamic menu options based on filtered items
+            List<string> menuOptions = new List<string>();
+            foreach (var item in filteredItems)
             {
-                case 0: // Krydda
-                    Transaction(player, "Krydda", true);
-                    break;
-                case 1: // Metall
-                    Transaction(player, "Metall", true);
-                    break;
-                case 2: // Return
-                    return;
+                int maxCanBuy = player.Units / item.Item.PurchasePrice;
+                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name;
+                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
+                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {itemName}, Du kan köpa: {Math.Min(maxCanBuy, amount)} med dina nuvarande enheter)");
+            }
+            menuOptions.Add("Tillbaka");
+
+            // Display prices and available units for filtered items
+            foreach (var item in filteredItems)
+            {
+                Console.WriteLine($"{item.Item.Name} Pris: {item.Item.PurchasePrice}");
+            }
+            Console.WriteLine($"Tillgängliga enheter: {player.Units} units \n");
+
+            // Display menu and get choice
+            int choice = TradingStationMenu.Menu("Buy Goods", menuOptions, $"Tillgängliga enheter: {player.Units} units \n");
+
+            if (choice == menuOptions.Count - 1) // "Tillbaka" option
+            {
+                return;
+            }
+            else
+            {
+                Transaction(player, filteredItems[choice].Item.Name, true);
+
             }
         }
     }
 
-
-
-
-    public void SellGoods(Player player)
+    public void SellGoods<TProduct>(Player player) where TProduct : IStoreItem
     {
         while (true)
         {
-            int choice = TradingStationMenu.Menu("Sell Goods", new List<string>
-        {
-            $"Krydda (Pris: {FindPricesByName("Krydda").SellingPrice} enheter, Du har: {player.FindStockByName("Krydda")})",
-            $"Metall (Pris: {FindPricesByName("Metall").SellingPrice} enheter, Du har {player.FindStockByName("Metall")})",
-            "Tillbaka"
-        }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
+            // Filter available items based on the provided product type
+            var filteredItems = AvailableItems.Where(item => item.Item is IGood).ToList();
 
-            switch (choice)
+            // Generate dynamic menu options based on filtered items
+            List<string> menuOptions = new List<string>();
+            foreach (var item in filteredItems)
             {
-                case 0: // Krydda
-                    Transaction(player, "Krydda", false);
-                    break;
-                case 1: // Metall
-                    Transaction(player, "Metall", false);
-                    break;
-                case 2: // Return
-                    return;
+                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name ?? "null";
+                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
+                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.SellingPrice} enheter, Du har: {amount})");
+            }
+            menuOptions.Add("Tillbaka");
+
+            // Display menu and get choice
+            int choice = TradingStationMenu.Menu("Sell Goods", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
+
+            if (choice == menuOptions.Count - 1) // "Tillbaka" option
+            {
+                return;
+            }
+            else
+            {
+                Transaction(player, filteredItems[choice].Item.Name, false);
+
             }
         }
     }
-
-
-
-
     void Transaction(Player player, string goodName, bool isBuying)
     {
         Console.Clear();
         Console.WriteLine("Tillgängliga Enheter: " + player.Units + " enheter \n");
-        var selectedGoodEntry = FindGoodByName(goodName);
+        var selectedGoodEntry = AvailableItems.Find(item => item.Item.Name == goodName);
 
-        if (!selectedGoodEntry.HasValue)
+
+        if (selectedGoodEntry == null)
         {
             Console.WriteLine("Varan är inte tillgänglig!");
             Console.ReadKey();
             return;
         }
 
-        IGood selectedGood = selectedGoodEntry.Value.Good;
-        int stock = selectedGoodEntry.Value.Stock;
+        T selectedGood = selectedGoodEntry.Item;
+        int stock = selectedGoodEntry.Stock;
+        int playerStock = player.Inventory.Find(i => i.Item.Name == goodName)?.Stock ?? 0;
 
         if (isBuying)
         {
@@ -148,24 +118,27 @@ public class TradingStation
         }
         else
         {
-            Console.WriteLine($"Du har {player.FindStockByName(goodName)} {goodName}.");
+            Console.WriteLine($"Du har {playerStock} {goodName}.");
             Console.WriteLine($"Hur många {goodName} vill du sälja?");
         }
 
         if (int.TryParse(Console.ReadLine(), out int amount) && amount > 0)
         {
-
-
             if (isBuying)
             {
                 int totalCost = amount * selectedGood.PurchasePrice;
                 if (totalCost <= player.Units && amount <= stock)
                 {
-                    player.Units -= totalCost;
-                    UpdateStock(selectedGood, stock - amount);
-                    player.UpdateStock(selectedGood, player.FindStockByName(selectedGood.Name) + amount);
+                    selectedGoodEntry.BuyItem(amount, player);
 
-                    Console.WriteLine($"Du köpte {amount} {goodName} för {totalCost} enheter.");
+                    if (typeof(T) == typeof(ISpaceshipModule))
+                    {
+                        Console.WriteLine($"Du köpte {goodName}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Du köpte {amount} {goodName} för {totalCost} enheter.");
+                    }
                 }
                 else
                 {
@@ -176,11 +149,9 @@ public class TradingStation
             {
                 int totalCost = amount * selectedGood.SellingPrice;
 
-                if (amount <= player.FindStockByName(selectedGood.Name))
+                if (amount <= playerStock)
                 {
-                    player.Units += totalCost;
-                    UpdateStock(selectedGood, stock + amount);
-                    player.UpdateStock(selectedGood, player.FindStockByName(selectedGood.Name) - amount);
+                    selectedGoodEntry.SellItem(amount, player);
 
                     Console.WriteLine($"Du sålde {amount} {goodName} för {totalCost} enheter.");
                 }
@@ -199,18 +170,17 @@ public class TradingStation
             Console.ReadKey();
         }
     }
-
     public void BuyFuel(Spaceship spaceship, Player player)
     {
         int fuelPrice = 1; // Assuming 1 unit of currency for 1 unit of fuel.
         float fuelNeeded = 100 - spaceship.Fuel; // Assuming 100 is the max fuel capacity.
 
         List<string> buyFuelOptions = new List<string>
-    {
-        $"Köp {fuelNeeded} enheter bränsle för {fuelNeeded * fuelPrice} enheter valuta (Fyll på)",
-        $"Köp en anpassad mängd bränsle",
-        "\nTillbaka till tanka menyn"
-    };
+            {
+                $"Köp {fuelNeeded} enheter bränsle för {fuelNeeded * fuelPrice} enheter valuta (Fyll på)",
+                $"Köp en anpassad mängd bränsle",
+                "\nTillbaka till tanka menyn"
+            };
 
         int choice = TradingStationMenu.Menu($"Tanka Rymdskeppet", buyFuelOptions, $"Tillgänglig bränsle: {spaceship.Fuel} enheter\nTillgängliga enheter valuta: {player.Units} enheter\n");
 
