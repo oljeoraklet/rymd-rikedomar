@@ -1,8 +1,9 @@
+using RymdRikedomar.Entities.TradingStation;
+
 namespace RymdRikedomar.Entities.SpaceShip.Modules
 {
-    public interface ISpaceshipModule
+    public interface ISpaceshipModule : IStoreItem
     {
-        string ModuleName { get; }
 
         // Any shared methods from BaseSpaceshipModule would go here
     }
