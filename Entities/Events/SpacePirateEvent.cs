@@ -127,17 +127,21 @@ public class PirateEvent
         var good = player.Inventory
             .OrderByDescending(good => good.Stock)
             .Take(1)
-            .Select(good => (good.Stock, good.Good));
+            .Select(good => (good.Stock, good.Item));
 
-        Console.WriteLine($"The pirates took {good.First().Stock / 2} {good.First().Good}!");
+        Console.WriteLine($"The pirates took {good.First().Stock / 2} {good.First().Item}!");
         Console.WriteLine(" ");
         Console.WriteLine("Press any key to continue...");
 
 
-        if (good != null)
+
+        var item = player.Inventory.Find(i => i.Item.Name == good.First().Item.Name);
+        if (item != null)
         {
-            player.UpdateStock(good.First().Good, good.First().Stock - good.First().Stock / 2);
+            item.Stock -= good.First().Stock / 2;
+            return;
         }
+
     }
 
     public void OnRandomEvent(PirateEvent pirateEvent, Player player)

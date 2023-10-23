@@ -70,20 +70,24 @@ public class DonationEvent
         }
     }
 
-    (int, IGood) RetrieveGood(Player player)
+    (int, IGood?) RetrieveGood(Player player)
     {
-        var goods = player.Inventory
-            .OrderByDescending(goods => goods.Stock)
-            .Select(goods => (goods.Stock, goods.Good));
-
-        return goods.First();
+        var inventory = player.Inventory;
+        int inventoryCount = inventory.Count;
+        int randomIndex = RandomNumber(inventoryCount);
+        var good = inventory[randomIndex].Item;
+        int stock = inventory[randomIndex].Stock;
+        return (stock, good as IGood);
     }
 
     public void RemoveFromInventory(IGood good, int amount, Player player)
     {
-        var inventoryItem = player.Inventory.FirstOrDefault(item => item.Good == good);
-
-        player.UpdateStock(inventoryItem.Good, inventoryItem.Stock - amount);
+        var item = player.Inventory.Find(i => i.Item.Name == good.Name);
+        if (item != null)
+        {
+            item.Stock -= amount;
+            return;
+        }
     }
 
     int RandomNumber(int num)

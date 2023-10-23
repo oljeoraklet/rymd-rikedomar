@@ -16,7 +16,7 @@ namespace RymdRikedomar.Entities
 
         public double Supply { get; private set; }
 
-        public TradingStation TradingStation { get; set; }
+        public TradingStation<IStoreItem> TradingStation { get; set; }
 
         public Planet(string name, int xDistance)
         {
