@@ -6,9 +6,6 @@ using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 using RymdRikedomar.Entities.SpaceShip;
 using System.Net.NetworkInformation;
-using RymdRikedomar.Entities.TradingStation;
-
-
 
 namespace SpaceConsoleMenu
 {
@@ -117,10 +114,10 @@ namespace SpaceConsoleMenu
                                     switch (buyChoice)
                                     {
                                         case 0: // Krydda
-                                            currentPlanet.TradingStation.BuyGoods<Spice>(player);
+                                            currentPlanet.TradingStation.BuyGoods(player);
                                             break;
                                         case 1: // Metall
-                                            currentPlanet.TradingStation.BuyGoods<Metal>(player);
+                                            currentPlanet.TradingStation.BuyGoods(player);
                                             break;
                                         case 2: // Return to previous menu
                                             break;
@@ -138,10 +135,10 @@ namespace SpaceConsoleMenu
                                     switch (sellChoice)
                                     {
                                         case 0: // Krydda
-                                            currentPlanet.TradingStation.SellGoods<Spice>(player);
+                                            currentPlanet.TradingStation.SellGoods(player);
                                             break;
                                         case 1: // Metall
-                                            currentPlanet.TradingStation.SellGoods<Metal>(player);
+                                            currentPlanet.TradingStation.SellGoods(player);
                                             break;
                                         case 2: // Return to previous menu
                                             break;
