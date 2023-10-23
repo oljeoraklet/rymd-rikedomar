@@ -1,4 +1,5 @@
 using RymdRikedomar.Entities;
+using RymdRikedomar.Entities.Goods;
 
 public class PirateEvent
 {
@@ -87,6 +88,7 @@ public class PirateEvent
                 }
                 break;
             case 1:
+                SpacePirateDonation(player);
                 break;
         }
     }
@@ -118,7 +120,41 @@ public class PirateEvent
 
     static void SpacePirateDonation(Player player)
     {
+        var good = player.Inventory
+            .OrderByDescending(good => good.Stock)
+            .Take(1)
+            .Select(good => (good.Stock, good.Good));
 
+        if (good != null)
+        {
+            RemoveFromInventory(good.First().Good, good.First().Stock / 2, player);
+        }
+
+
+
+        Console.WriteLine($"The pirates took {good.First().Stock / 2} {good.First().Good}!");
+        Console.WriteLine(good.First().Good + " " + good.First().Stock);
+        Console.WriteLine(" ");
+        Console.WriteLine("Press any key to continue...");
+
+
+    }
+
+    static void RemoveFromInventory(IGood good, int amount, Player player)
+    {
+        var inventoryItem = player.Inventory.FirstOrDefault(item => item.Good == good);
+
+        if (inventoryItem.Stock > 0)
+        {
+            inventoryItem.Stock -= amount;
+            Console.WriteLine(inventoryItem.Stock);
+
+            if (inventoryItem.Stock < 0)
+            {
+                player.Inventory.Remove(inventoryItem);
+            }
+        }
+        Console.WriteLine(inventoryItem.Stock);
     }
 
     public void OnRandomEvent(PirateEvent pirateEvent, Player player)
