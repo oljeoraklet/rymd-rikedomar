@@ -98,7 +98,8 @@ namespace SpaceConsoleMenu
                     while (!eventOver)
                     {
                         Console.Clear();
-                        RandomEvent();
+                        // RandomEvent();
+                        donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
                         Console.ReadKey();
                         eventOver = true;
                     }

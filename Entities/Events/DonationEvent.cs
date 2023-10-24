@@ -19,58 +19,83 @@ public class DonationEvent
 
             int rnd = RandomNumber(2);
 
-
-            var goodTuple = RetrieveGood(player);
-            int requestedAmount = goodTuple.Item1 / 2;
-            IGood requestedGood = goodTuple.Item2;
-
-            switch (rnd)
+            if (player.Inventory.Count == 0)
             {
-                case 0:
-                    string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
-                    stringPrinter.Print(unitDonateMsg);
-                    bool donateUnitsOrNot = HandleDonationInput();
-                    if (donateUnitsOrNot)
-                    {
-                        player.Units -= 100;
-                        player.influencePoints++;
-                        Console.WriteLine($"You have donated 100 units to {planetName}");
-                        Console.WriteLine("Press any key to continue...");
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"You did not donate to {planetName}.");
-                        Console.WriteLine("Press any key to continue...");
-                        break;
-                    }
-                case 1:
-                    string goodsDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...you, {player.Name}...to..donate..bzhhh...{requestedAmount} {requestedGood}...";
-                    stringPrinter.Print(goodsDonateMsg);
-                    bool donateGoodsOrNot = HandleDonationInput();
-                    if (donateGoodsOrNot)
-                    {
-                        RemoveFromInventory(requestedGood, requestedAmount, player);
-                        player.influencePoints++;
-                        Console.WriteLine($"You have donated {requestedAmount} {requestedGood} to {planetName}");
-                        Console.WriteLine("Press any key to continue...");
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"You did not donate anything to {planetName}.");
-                        Console.WriteLine("Press any key to continue...");
-                        break;
-                    }
-                default:
-                    break;
+                string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
+                stringPrinter.Print(unitDonateMsg);
+                bool donateUnitsOrNot = HandleDonationInput();
+                if (donateUnitsOrNot)
+                {
+                    player.Units -= 100;
+                    player.influencePoints++;
+                    Console.WriteLine($"You have donated 100 units to {planetName}");
+                    Console.WriteLine("Press any key to continue...");
+
+                }
+                else
+                {
+                    Console.WriteLine($"You did not donate to {planetName}.");
+                    Console.WriteLine("Press any key to continue...");
+                }
             }
+            else
+            {
+
+
+                var goodTuple = RetrieveGood(player);
+                int requestedAmount = goodTuple.Item1 / 2;
+                IGood requestedGood = goodTuple.Item2;
+
+
+                switch (rnd)
+                {
+                    case 0:
+                        string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
+                        stringPrinter.Print(unitDonateMsg);
+                        bool donateUnitsOrNot = HandleDonationInput();
+                        if (donateUnitsOrNot)
+                        {
+                            player.Units -= 100;
+                            player.influencePoints++;
+                            Console.WriteLine($"You have donated 100 units to {planetName}");
+                            Console.WriteLine("Press any key to continue...");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You did not donate to {planetName}.");
+                            Console.WriteLine("Press any key to continue...");
+                            break;
+                        }
+                    case 1:
+                        string goodsDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...you, {player.Name}...to..donate..bzhhh...{requestedAmount} {requestedGood}...";
+                        stringPrinter.Print(goodsDonateMsg);
+                        bool donateGoodsOrNot = HandleDonationInput();
+                        if (donateGoodsOrNot)
+                        {
+                            RemoveFromInventory(requestedGood, requestedAmount, player);
+                            player.influencePoints++;
+                            Console.WriteLine($"You have donated {requestedAmount} {requestedGood} to {planetName}");
+                            Console.WriteLine("Press any key to continue...");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You did not donate anything to {planetName}.");
+                            Console.WriteLine("Press any key to continue...");
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+
 
             DonationEventEvent(donationEvent);
         }
     }
 
-    (int, IGood?) RetrieveGood(Player player)
+    (int, IGood) RetrieveGood(Player player)
     {
         var inventory = player.Inventory;
         int inventoryCount = inventory.Count;

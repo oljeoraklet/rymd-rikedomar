@@ -70,13 +70,12 @@ public class PirateEvent
 
     }
 
-    void SpacePirateAction(int selectedIndex, Player player)
+    static void SpacePirateAction(int selectedIndex, Player player)
     {
+        Console.Clear();
         switch (selectedIndex)
         {
             case 0:
-                Console.WriteLine("Are you sure you want to fight?");
-                Console.ReadKey();
                 bool fightCondition = SpacePirateFight(player);
                 if (fightCondition)
                 {
@@ -93,7 +92,7 @@ public class PirateEvent
         }
     }
 
-    bool SpacePirateFight(Player player)
+    static bool SpacePirateFight(Player player)
     {
         Random rnd = new Random();
         int random = rnd.Next(2 + player.Spaceship.WeaponDamage);
@@ -124,6 +123,13 @@ public class PirateEvent
 
     static void SpacePirateDonation(Player player)
     {
+        if (player.Inventory.Count == 0)
+        {
+            Console.WriteLine("You have no materials to give! Guess you have to fight!");
+            Console.ReadKey();
+            SpacePirateAction(0, player);
+            return;
+        }
         var good = player.Inventory
             .OrderByDescending(good => good.Stock)
             .Take(1)
