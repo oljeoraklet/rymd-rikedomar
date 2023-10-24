@@ -5,7 +5,7 @@ using RymdRikedomar.Entities.SpaceShip.Modules;
 using SpaceConsoleMenu;
 
 
-public class TradingStation<T> where T : IStoreItem
+public class TradingStation<T> : ITradingStation where T : IStoreItem
 {
     public List<StoreItem<T>> AvailableItems { get; set; }
     private DisplayMenu TradingStationMenu { get; set; }
