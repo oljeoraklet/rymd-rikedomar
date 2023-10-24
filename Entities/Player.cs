@@ -18,18 +18,19 @@ namespace RymdRikedomar.Entities
 
         public bool hasWon = false;
 
-        public IEndGameCondition winningCondition;
+        public IEndGameCondition winningCondition { get; private set; }
 
-        List<IEndGameCondition> endGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
+        private List<IEndGameCondition> endGameCondtions;
 
 
-        public Player(string name)
+        public Player(string name, List<IEndGameCondition> endGameConditions)
         {
             Name = name;
             Units = 1000;  // Starting currency, can be adjusted
             Inventory = new List<StoreItem<IStoreItem>>();
             Spaceship = new Spaceship();  // Initialize with a basic spaceship
             VisitedPlanets = new List<Planet>();
+            this.endGameCondtions = endGameConditions;
             DefeatedPirates = 0;
         }
 
@@ -45,7 +46,8 @@ namespace RymdRikedomar.Entities
 
         public void notifyConditions()
         {
-            foreach (IEndGameCondition condition in endGameConditions)
+
+            foreach (IEndGameCondition condition in endGameCondtions)
             {
                 bool conditionIsMet = condition.IsConditionMet(this);
 
