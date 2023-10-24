@@ -16,12 +16,35 @@ namespace SpaceConsoleMenu
         static void Main(string[] args)
         {
 
+            TradingStationFactory tradingStationFactory = new();
 
+            Planet Zephyria = PlanetFactory.CreatePlanet("Zephyria", 0, tradingStationFactory.createTradingStation());
+            Planet Bobo = PlanetFactory.CreatePlanet("Bobo", 2, tradingStationFactory.createTradingStation());
+            Planet Aquillon = PlanetFactory.CreatePlanet("Aquillon", 5, tradingStationFactory.createTradingStation());
+            Planet Pyralis = PlanetFactory.CreatePlanet("Pyralis", 6, tradingStationFactory.createTradingStation());
+            Planet Astronia = PlanetFactory.CreatePlanet("Astronia", 8, tradingStationFactory.createTradingStation());
+            Planet Terravox = PlanetFactory.CreatePlanet("Terravox", 11, tradingStationFactory.createTradingStation());
+            Planet Luminara = PlanetFactory.CreatePlanet("Luminara", 12, tradingStationFactory.createTradingStation());
+            Planet Dracoria = PlanetFactory.CreatePlanet("Dracoria", 15, tradingStationFactory.createTradingStation());
+            Planet Nebulon = PlanetFactory.CreatePlanet("Nebulon", 17, tradingStationFactory.createTradingStation());
+            Planet Celestria = PlanetFactory.CreatePlanet("Celestria", 18, tradingStationFactory.createTradingStation());
+            Planet Volteron = PlanetFactory.CreatePlanet("Volteron", 20, tradingStationFactory.createTradingStation());
 
+            List<Planet> planets = new();
 
+            planets.Add(Zephyria);
+            planets.Add(Bobo);
+            planets.Add(Aquillon);
+            planets.Add(Pyralis);
+            planets.Add(Astronia);
+            planets.Add(Terravox);
+            planets.Add(Luminara);
+            planets.Add(Dracoria);
+            planets.Add(Nebulon);
+            planets.Add(Celestria);
+            planets.Add(Volteron);
 
             Player player = new("Olle");
-            List<Planet> planets = new() { new("Zephyria", 0), new("Bobo", 2), new("Aquillon", 5), new("Pyralis", 6), new("Astronia", 8), new("Terravox", 11), new("Luminara", 12), new("Dracoria", 15), new("Nebulon", 17), new("Celestria", 18), new("Volteron", 20) };
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();

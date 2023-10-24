@@ -18,7 +18,7 @@ namespace RymdRikedomar.Entities
 
         public TradingStation<IStoreItem> TradingStation { get; set; }
 
-        public Planet(string name, int xDistance)
+        public Planet(string name, int xDistance, TradingStation<IStoreItem> tradingStation)
         {
             Name = name;
             AvailableGoods = new();
@@ -26,7 +26,7 @@ namespace RymdRikedomar.Entities
             IsVisited = false;
             Demand = CalculateDemand();
             Supply = Demand + 0.3;
-            TradingStation = new(new DisplayMenu());
+            TradingStation = tradingStation;
         }
 
         // Methods can include: AddGood, RemoveGood, ChangePrice, etc.

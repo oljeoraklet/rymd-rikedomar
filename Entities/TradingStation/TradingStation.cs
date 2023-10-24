@@ -11,12 +11,10 @@ public class TradingStation<T> where T : IStoreItem
     private DisplayMenu TradingStationMenu { get; set; }
 
 
-    public TradingStation(DisplayMenu _displayMenu)
+    public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems)
     {
         TradingStationMenu = _displayMenu;
-        AvailableItems = new List<StoreItem<T>>();
-
-        AvailableItems.Add(new StoreItem<T>((T)(object)new StellarCrystals(), 10));
+        AvailableItems = availableItems;
     }
     public void BuyGoods(Player player)
     {
