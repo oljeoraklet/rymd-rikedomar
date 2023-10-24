@@ -127,45 +127,10 @@ namespace SpaceConsoleMenu
                     }))
                             {
                                 case 0: // Buy Goods
-                                    int buyChoice = menu.Menu($"Vilken vara vill du köpa?", new List<string>
-                                    {
-                                        "Krydda",
-                                        "Metall",
-                                        "Tillbaka"
-                                    });
-
-                                    switch (buyChoice)
-                                    {
-                                        case 0: // Krydda
-                                            currentPlanet.TradingStation.BuyGoods(player);
-                                            break;
-                                        case 1: // Metall
-                                            currentPlanet.TradingStation.BuyGoods(player);
-                                            break;
-                                        case 2: // Return to previous menu
-                                            break;
-                                    }
+                                    currentPlanet.TradingStation.BuyGoods(player);
                                     break;
-
                                 case 1: // Sell Goods
-                                    int sellChoice = menu.Menu($"Vilken vara vill du sälja?", new List<string>
-                                    {
-                                        "Krydda",
-                                        "Metall",
-                                        "Tillbaka"
-                                    });
-
-                                    switch (sellChoice)
-                                    {
-                                        case 0: // Krydda
-                                            currentPlanet.TradingStation.SellGoods(player);
-                                            break;
-                                        case 1: // Metall
-                                            currentPlanet.TradingStation.SellGoods(player);
-                                            break;
-                                        case 2: // Return to previous menu
-                                            break;
-                                    }
+                                    currentPlanet.TradingStation.SellGoods(player);
                                     break;
                             }
                             break;

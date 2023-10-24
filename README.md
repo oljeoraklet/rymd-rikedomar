@@ -1,8 +1,8 @@
-# Hej och välkomna till RymdRikedomar!
+# Välkomna till RymdRikedomar!
 
 Detta är ett konsolbaserat spel där du som äventyrare utforskar rymden. Det finns olika typer av mål med spelet. \
 \
-I början får du välja mellan 3 olika mål: 
+Du kan vinna spelet genom att uppfylla 3 olika mål: 
 1. Diplomat
 >Du ska besöka 10 planeter så fort som möjligt. Se upp, bränslet kan ta slut eller så blir du attackerad av pirater.
 2. Rymdsnut
