@@ -17,35 +17,24 @@ public class TradingStation<T> where T : IStoreItem
         AvailableItems = new List<StoreItem<T>>();
 
         AvailableItems.Add(new StoreItem<T>((T)(object)new StellarCrystals(), 10));
+        AvailableItems.Add(new StoreItem<T>((T)(object)new Spice(), 10));
     }
-    public void BuyGoods(Player player)
+    public void BuyGoods(Player player, string productName)
     {
         while (true)
         {
             // Filter available items based on the provided product type
-            var filteredItems = AvailableItems.Where(item => item.Item is IStoreItem).ToList();
+            var item = AvailableItems.Where(i => i.Item.Name == productName).FirstOrDefault();
 
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
-            foreach (var item in filteredItems)
-            {
-                int maxCanBuy = player.Units / item.Item.PurchasePrice;
-                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name;
-                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
-                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {itemName}, Du kan köpa: {Math.Min(maxCanBuy, amount)} med dina nuvarande enheter)");
-            }
+
+            int maxCanBuy = player.Units / item.Item.PurchasePrice;
+            int amount = player.Inventory.Find(i => i.Item.Name == productName)?.Stock ?? 0;
+            menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {item.Stock}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
             menuOptions.Add("Tillbaka");
-
-            // Display prices and available units for filtered items
-            foreach (var item in filteredItems)
-            {
-                Console.WriteLine($"{item.Item.Name} Pris: {item.Item.PurchasePrice}");
-            }
-            Console.WriteLine("Bajs");
-            Console.WriteLine($"Tillgängliga enheter: {player.Units} enheter \n");
-
             // Display menu and get choice
-            int choice = TradingStationMenu.Menu("Buy Goods", menuOptions, $"Tillgängliga enheter: {player.Units} enheter \n" + filteredItems.Count());
+            int choice = TradingStationMenu.Menu("Köp varor -- Krydda", menuOptions, $"Tillgängliga enheter: {player.Units} enheter \n");
 
             if (choice == menuOptions.Count - 1) // "Tillbaka" option
             {
@@ -53,7 +42,7 @@ public class TradingStation<T> where T : IStoreItem
             }
             else
             {
-                Transaction(player, filteredItems[choice].Item.Name, true);
+                Transaction(player, productName, true);
 
             }
         }
@@ -63,18 +52,17 @@ public class TradingStation<T> where T : IStoreItem
 
 
 
-    public void SellGoods(Player player)
+    public void SellGoods(Player player, string productName)
     {
         while (true)
         {
             // Filter available items based on the provided product type
-            var filteredItems = AvailableItems.Where(item => item.Item is IGood).ToList();
+            var filteredItems = AvailableItems.Where(i => i.Item.Name == productName).ToList();
 
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new List<string>();
             foreach (var item in filteredItems)
             {
-                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name ?? "null";
                 int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
                 menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.SellingPrice} enheter, Du har: {amount})");
             }

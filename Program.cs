@@ -15,11 +15,6 @@ namespace SpaceConsoleMenu
         static int turnCounter = 0;
         static void Main(string[] args)
         {
-
-
-
-
-
             Player player = new("Olle");
             List<Planet> planets = new() { new("Zephyria", 0), new("Bobo", 2), new("Aquillon", 5), new("Pyralis", 6), new("Astronia", 8), new("Terravox", 11), new("Luminara", 12), new("Dracoria", 15), new("Nebulon", 17), new("Celestria", 18), new("Volteron", 20) };
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
@@ -114,10 +109,10 @@ namespace SpaceConsoleMenu
                                     switch (buyChoice)
                                     {
                                         case 0: // Krydda
-                                            currentPlanet.TradingStation.BuyGoods(player);
+                                            currentPlanet.TradingStation.BuyGoods(player, "Krydda");
                                             break;
                                         case 1: // Metall
-                                            currentPlanet.TradingStation.BuyGoods(player);
+                                            currentPlanet.TradingStation.BuyGoods(player, "Metall");
                                             break;
                                         case 2: // Return to previous menu
                                             break;
@@ -135,10 +130,10 @@ namespace SpaceConsoleMenu
                                     switch (sellChoice)
                                     {
                                         case 0: // Krydda
-                                            currentPlanet.TradingStation.SellGoods(player);
+                                            currentPlanet.TradingStation.SellGoods(player, "Krydda");
                                             break;
                                         case 1: // Metall
-                                            currentPlanet.TradingStation.SellGoods(player);
+                                            currentPlanet.TradingStation.SellGoods(player, "Metall");
                                             break;
                                         case 2: // Return to previous menu
                                             break;
