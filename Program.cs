@@ -184,7 +184,15 @@ namespace SpaceConsoleMenu
                     player.notifyConditions();
                 }
                 Console.Clear();
-                Console.WriteLine($"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}");
+                string endGameText = $"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}";
+                Console.WriteLine(endGameText);
+                Console.WriteLine(" ");
+                Console.WriteLine(new string('-', endGameText.Length));
+                Console.WriteLine(" ");
+                Console.WriteLine("Tryck valfri tangent för att avsluta spelet...");
+
+                Console.ReadKey();
+                exit = true;
             }
         }
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)
