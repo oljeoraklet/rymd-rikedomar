@@ -20,16 +20,17 @@ public class TradingStation<T> where T : IStoreItem
     {
         while (true)
         {
-            var filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
-
+            IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+            IEnumerator<StoreItem<T>> enumerator = filteredItems.GetEnumerator();
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
-            foreach (var item in filteredItems)
+
+            while (enumerator.MoveNext())
             {
-                int maxCanBuy = player.Units / item.Item.PurchasePrice;
-                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name;
-                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
-                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {item.Stock}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
+                int maxCanBuy = player.Units / enumerator.Current.Item.PurchasePrice;
+                string itemName = enumerator.Current.Item.Name;
+                int amountPlayerHas = player.Inventory.Find(i => i.Item.Name == itemName)?.Stock ?? 0;
+                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.PurchasePrice} enheter, Tillgängligt: {enumerator.Current.Stock}, Du kan köpa: {Math.Min(maxCanBuy, enumerator.Current.Stock)} med dina nuvarande enheter)");
             }
             menuOptions.Add("Tillbaka");
 
@@ -41,13 +42,15 @@ public class TradingStation<T> where T : IStoreItem
 
             int buyChoice = TradingStationMenu.Menu($"Vilken vara vill du köpa?", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
 
+            IStoreItem chosenProduct = filteredItems.ElementAt(buyChoice).Item;
+
             if (buyChoice == menuOptions.Count - 1) // Last option is "Tillbaka"
             {
                 break; // Return to the previous menu
             }
-            else if (buyChoice >= 0 && buyChoice < filteredItems.Count)
+            else if (buyChoice >= 0 && buyChoice < filteredItems.Count())
             {
-                Transaction(player, filteredItems[buyChoice].Item.Name, true);
+                Transaction(player, chosenProduct.Name, true);
             }
             else
             {
@@ -66,32 +69,33 @@ public class TradingStation<T> where T : IStoreItem
         while (true)
         {
             // Filter available items based on the provided product type
-            var filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+            IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+            IEnumerator<StoreItem<T>> enumerator = filteredItems.GetEnumerator();
 
             // Generate dynamic menu options based on filtered items
-            List<string> menuOptions = new List<string>();
-            foreach (var item in filteredItems)
+            List<string> menuOptions = new();
+            while (enumerator.MoveNext())
             {
-                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
-                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.SellingPrice} enheter, Du har: {amount})");
+                int amount = player.Inventory.Find(i => i.Item.Name == enumerator.Current.Item.Name)?.Stock ?? 0;
+                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.SellingPrice} enheter, Du har: {amount})");
             }
             menuOptions.Add("Tillbaka");
-
             // Display menu and get choice
             int choice = TradingStationMenu.Menu("Sell Goods", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
+
+            IStoreItem chosenProduct = filteredItems.ElementAt(choice).Item;
 
             if (choice == menuOptions.Count - 1) // "Tillbaka" option
             {
                 return;
             }
-            else if (choice >= 0 && choice < filteredItems.Count)
+            else if (choice >= 0 && choice < filteredItems.Count())
             {
-                Transaction(player, filteredItems[choice].Item.Name, false);
+                Transaction(player, chosenProduct.Name, false);
             }
             else
             {
                 Console.WriteLine("Invalid choice.");
-
             }
         }
     }
