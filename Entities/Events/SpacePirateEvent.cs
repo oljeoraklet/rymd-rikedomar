@@ -8,8 +8,8 @@ public class PirateEvent
     public event PirateEventHandler PirateEventEvent;
 
     StringPrinter stringPrinter = new StringPrinter();
-    string pirateMsg1 = "Aaarrgghh.... We are space pirates!";
-    string pirateMsg2 = "You have two options...aaarghh... fight or gives us materials!";
+    string pirateMsg1 = "Aaarrgghh.... Vi är rymdpirater!";
+    string pirateMsg2 = "Du har två val...aaarghh... slåss eller ge oss material!";
 
     void PirateHandler(Player player)
     {
@@ -19,7 +19,7 @@ public class PirateEvent
 
         int selectedIndex = 0;
 
-        List<string> options = new List<string> { "Fight", "Give materials" };
+        List<string> options = new List<string> { "Slåss", "Ge material" };
         bool menuActive = true;
 
         while (menuActive)
@@ -98,24 +98,24 @@ public class PirateEvent
         int random = rnd.Next(2 + player.Spaceship.WeaponDamage);
         if (random <= 0 + player.Spaceship.WeaponDamage)
         {
-            Console.WriteLine("You won the fight!");
+            Console.WriteLine("Du vann striden!");
             Console.WriteLine(" ");
             Console.WriteLine("------------------------------------------------------------------------------------------------");
             Console.WriteLine(" ");
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("Tryck valfri tangent för att fortsätta");
             return true;
         }
         else
         {
-            Console.WriteLine("You lost the fight and lost 1 health!");
+            Console.WriteLine("Du förlorade striden och förlorade 1 hälsa!");
             Console.WriteLine(" ");
             Console.WriteLine("------------------------------------------------------------------------------------------------");
             Console.WriteLine(" ");
-            Console.WriteLine($"You have {player.Spaceship.Health} health left!");
+            Console.WriteLine($"Du har {player.Spaceship.Health} hälsa kvar!");
             Console.WriteLine(" ");
             Console.WriteLine("------------------------------------------------------------------------------------------------");
             Console.WriteLine(" ");
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("Tryck valfri tangent för att fortsätta");
             return false;
         }
 
@@ -125,7 +125,7 @@ public class PirateEvent
     {
         if (player.Inventory.Count == 0)
         {
-            Console.WriteLine("You have no materials to give! Guess you have to fight!");
+            Console.WriteLine("Du har inget material! Förbered dig på att slåss!");
             Console.ReadKey();
             SpacePirateAction(0, player);
             return;
@@ -135,9 +135,9 @@ public class PirateEvent
             .Take(1)
             .Select(good => (good.Stock, good.Item));
 
-        Console.WriteLine($"The pirates took {good.First().Stock / 2} {good.First().Item}!");
+        Console.WriteLine($"Piraterna tog {good.First().Stock / 2} {good.First().Item}!");
         Console.WriteLine(" ");
-        Console.WriteLine("Press any key to continue...");
+        Console.WriteLine("Tryck valfri tangent för att fortsätta...");
 
 
 
