@@ -10,9 +10,9 @@ public class NoEvent
     {
         if (NoEventEvent != null)
         {
-            string msg = "Nothing special happened this day...";
+            string msg = "Inget särskilt hände denna dag...";
             stringPrinter.Print(msg);
-            Console.WriteLine("Press any key to continue...");
+            Console.WriteLine("Tryck valfri tangent för att fortsätta...");
             NoEventEvent(noEvent);
         }
     }
