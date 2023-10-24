@@ -19,32 +19,44 @@ public class TradingStation<T> where T : IStoreItem
         AvailableItems.Add(new StoreItem<T>((T)(object)new StellarCrystals(), 10));
         AvailableItems.Add(new StoreItem<T>((T)(object)new Spice(), 10));
     }
-    public void BuyGoods(Player player, string productName)
+    public void BuyGoods(Player player)
     {
         while (true)
         {
-            // Filter available items based on the provided product type
-            var item = AvailableItems.Where(i => i.Item.Name == productName).FirstOrDefault();
+            var filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
 
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
-
-            int maxCanBuy = player.Units / item.Item.PurchasePrice;
-            int amount = player.Inventory.Find(i => i.Item.Name == productName)?.Stock ?? 0;
-            menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {item.Stock}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
-            menuOptions.Add("Tillbaka");
-            // Display menu and get choice
-            int choice = TradingStationMenu.Menu("Köp varor -- Krydda", menuOptions, $"Tillgängliga enheter: {player.Units} enheter \n");
-
-            if (choice == menuOptions.Count - 1) // "Tillbaka" option
+            foreach (var item in filteredItems)
             {
-                return;
+                int maxCanBuy = player.Units / item.Item.PurchasePrice;
+                string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name;
+                int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
+                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {itemName}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
+            }
+            menuOptions.Add("Tillbaka");
+
+            // Display prices and available units for filtered items
+            foreach (var item in filteredItems)
+            {
+                Console.WriteLine($"{item.Item.Name} Pris: {item.Item.PurchasePrice}");
+            }
+
+            int buyChoice = TradingStationMenu.Menu($"Vilken vara vill du köpa?", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
+
+            if (buyChoice == menuOptions.Count - 1) // Last option is "Tillbaka"
+            {
+                break; // Return to the previous menu
+            }
+            else if (buyChoice >= 0 && buyChoice < filteredItems.Count)
+            {
+                Transaction(player, filteredItems[buyChoice].Item.Name, true);
             }
             else
             {
-                Transaction(player, productName, true);
-
+                Console.WriteLine("Invalid choice.");
             }
+            // Filter available items based on the provided product type
         }
     }
 
@@ -52,12 +64,12 @@ public class TradingStation<T> where T : IStoreItem
 
 
 
-    public void SellGoods(Player player, string productName)
+    public void SellGoods(Player player)
     {
         while (true)
         {
             // Filter available items based on the provided product type
-            var filteredItems = AvailableItems.Where(i => i.Item.Name == productName).ToList();
+            var filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
 
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new List<string>();
@@ -75,9 +87,13 @@ public class TradingStation<T> where T : IStoreItem
             {
                 return;
             }
-            else
+            else if (choice >= 0 && choice < filteredItems.Count)
             {
                 Transaction(player, filteredItems[choice].Item.Name, false);
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice.");
 
             }
         }
@@ -85,7 +101,6 @@ public class TradingStation<T> where T : IStoreItem
     void Transaction(Player player, string goodName, bool isBuying)
     {
         Console.Clear();
-        Console.WriteLine("Tillgängliga Enheter: " + player.Units + " enheter \n");
         var selectedGoodEntry = AvailableItems.Find(item => item.Item.Name == goodName);
 
 
@@ -102,19 +117,26 @@ public class TradingStation<T> where T : IStoreItem
 
         if (isBuying)
         {
-            Console.Write("Buying");
             int maxBuyable = player.Units / selectedGood.PurchasePrice;
+            string title = $"Köp {goodName}";
+            Console.WriteLine(title);
+            Console.WriteLine(new string('-', title.Length));
+            Console.WriteLine($"Du har {player.Units} enheter tillgängliga.");
+            Console.WriteLine($"Du har {playerStock} {goodName}.\n");
 
-            Console.WriteLine($"Du har {player.Units} enheter tillgänlgiga.");
-            Console.WriteLine($"{goodName}: {selectedGood.PurchasePrice} enheter/st.");
-            Console.WriteLine($"Tillängligt: {stock}");
+            Console.WriteLine($"{goodName}\n{selectedGood.PurchasePrice} enheter/st");
+            Console.WriteLine($"Tillängligt: {stock} st\n");
             Console.WriteLine($"Med dina enheter kan du köpa {Math.Min(maxBuyable, stock)} {goodName}.");
             Console.WriteLine($"Hur många {goodName} vill du köpa?");
+            Console.WriteLine("\n(Tryck på enter för att gå tillbaka)");
         }
         else
         {
             Console.WriteLine($"Du har {playerStock} {goodName}.");
+            Console.WriteLine($"Du har {player.Units} enheter tillgängliga \n");
+
             Console.WriteLine($"Hur många {goodName} vill du sälja?");
+            Console.WriteLine("(Tryck på enter för att gå tillbaka)");
         }
 
         if (int.TryParse(Console.ReadLine(), out int amount) && amount > 0)
@@ -160,9 +182,7 @@ public class TradingStation<T> where T : IStoreItem
         }
         else
         {
-            Console.WriteLine("Skriv in ett giltigt nummer!");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            return;
         }
     }
 
