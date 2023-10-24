@@ -29,7 +29,7 @@ public class TradingStation<T> where T : IStoreItem
                 int maxCanBuy = player.Units / item.Item.PurchasePrice;
                 string itemName = filteredItems.Find(i => i.Item.Name == item.Item.Name).Item.Name;
                 int amount = player.Inventory.Find(i => i.Item.Name == item.Item.Name)?.Stock ?? 0;
-                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {itemName}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
+                menuOptions.Add($"{item.Item.Name} (Pris: {item.Item.PurchasePrice} enheter, Tillgängligt: {item.Stock}, Du kan köpa: {Math.Min(maxCanBuy, item.Stock)} med dina nuvarande enheter)");
             }
             menuOptions.Add("Tillbaka");
 
