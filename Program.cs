@@ -90,27 +90,29 @@ namespace SpaceConsoleMenu
 
             while (!exit)
             {
-                turnOver = false;
-                bool eventOver = false;
-
-                if (turnCounter != 0)
+                while (!player.hasWon)
                 {
-                    while (!eventOver)
+                    turnOver = false;
+                    bool eventOver = false;
+
+                    if (turnCounter != 0)
                     {
-                        Console.Clear();
-                        // RandomEvent();
-                        donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
-                        Console.ReadKey();
-                        eventOver = true;
+                        while (!eventOver)
+                        {
+                            Console.Clear();
+                            // RandomEvent();
+                            donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
+                            Console.ReadKey();
+                            eventOver = true;
+                        }
+
                     }
 
-                }
 
-
-                while (!turnOver)
-                {
-                    Console.Clear();
-                    switch (menu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
+                    while (!turnOver)
+                    {
+                        Console.Clear();
+                        switch (menu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
                 {
                     "Köp/Sälj Varor",
                     "Uppgradera Rymdskeppet",
@@ -118,67 +120,71 @@ namespace SpaceConsoleMenu
                     "Res till en annan planet",
                     "Avsluta",
                 }))
-                    {
-                        case 0:
-                            switch (menu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
+                        {
+                            case 0:
+                                switch (menu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
                     {
                         "Köp Varor",
                         "Sälj Varor",
                         "Tillbaka Till Huvudmenyn"
                     }))
-                            {
-                                case 0: // Buy Goods
-                                    currentPlanet.TradingStation.BuyGoods(player);
-                                    break;
-                                case 1: // Sell Goods
-                                    currentPlanet.TradingStation.SellGoods(player);
-                                    break;
-                            }
-                            break;
+                                {
+                                    case 0: // Buy Goods
+                                        currentPlanet.TradingStation.BuyGoods(player);
+                                        break;
+                                    case 1: // Sell Goods
+                                        currentPlanet.TradingStation.SellGoods(player);
+                                        break;
+                                }
+                                break;
 
-                        case 1:
-                            menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
+                            case 1:
+                                menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
                         {
                             "Uppgradera Motor",
                             "Uppgradera Vapen",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
-                            break;
-                        case 2:
-                            int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
+                                break;
+                            case 2:
+                                int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
                         {
                             "Köp Bränsle",
                             "Bränslestatus",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
 
-                            switch (refuelChoice)
-                            {
-                                case 0: // Buy Fuel
-                                    currentPlanet.TradingStation.BuyFuel(spaceship, player);
-                                    break;
-                                case 1: // Fuel Status
-                                    currentPlanet.TradingStation.ShowFuelStatus(spaceship);
-                                    break;
-                                case 2: // Return to Main Menu
-                                        // Do nothing, just return to the main menu.
-                                    break;
-                            }
-                            break;
+                                switch (refuelChoice)
+                                {
+                                    case 0: // Buy Fuel
+                                        currentPlanet.TradingStation.BuyFuel(spaceship, player);
+                                        break;
+                                    case 1: // Fuel Status
+                                        currentPlanet.TradingStation.ShowFuelStatus(spaceship);
+                                        break;
+                                    case 2: // Return to Main Menu
+                                            // Do nothing, just return to the main menu.
+                                        break;
+                                }
+                                break;
 
 
-                        case 3: // Travel to another planet
-                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
-                            break;
+                            case 3: // Travel to another planet
+                                currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
+                                break;
 
-                        case 4:
-                            exit = true;
-                            turnOver = true;
-                            break;
+                            case 4:
+                                exit = true;
+                                turnOver = true;
+                                break;
+                        }
+
+
                     }
-
-
+                    player.notifyConditions();
                 }
+                Console.Clear();
+                Console.WriteLine($"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}");
             }
         }
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)

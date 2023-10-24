@@ -16,9 +16,11 @@ namespace RymdRikedomar.Entities
 
         public int influencePoints = 0;
 
+        public bool hasWon = false;
 
+        public IEndGameCondition winningCondition;
 
-        public IEndGameCondition EndGameCondition { get; set; }
+        List<IEndGameCondition> endGameConditions = new();
 
         public Player(string name)
         {
@@ -26,14 +28,8 @@ namespace RymdRikedomar.Entities
             Units = 1000;  // Starting currency, can be adjusted
             Inventory = new List<StoreItem<IStoreItem>>();
             Spaceship = new Spaceship();  // Initialize with a basic spaceship
-            EndGameCondition = new Diplomat();
             VisitedPlanets = new List<Planet>();
             DefeatedPirates = 0;
-        }
-
-        public bool CheckIfEndConditionsAreMet()
-        {
-            return EndGameCondition.IsConditionMet(this);
         }
 
         // Additional methods can be added later, such as buying or selling goods.
@@ -44,6 +40,23 @@ namespace RymdRikedomar.Entities
         public void DonationEventHandler(DonationEvent donationEvent) { }
         public void PirateEventHandler(PirateEvent pirateEvent) { }
         public void NoEventHandler(NoEvent randomEvent) { }
+
+
+        public void notifyConditions()
+        {
+            foreach (IEndGameCondition condition in endGameConditions)
+            {
+                bool conditionIsMet = condition.IsConditionMet(this);
+
+                if (conditionIsMet)
+                {
+                    winningCondition = condition;
+                    hasWon = true;
+                }
+            }
+        }
+
+
     }
 
 }
