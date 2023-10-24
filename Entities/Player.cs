@@ -20,7 +20,7 @@ namespace RymdRikedomar.Entities
 
         public IEndGameCondition winningCondition;
 
-        List<IEndGameCondition> endGameConditions = new() { new SpaceCop() };
+        List<IEndGameCondition> endGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
 
 
         public Player(string name)
