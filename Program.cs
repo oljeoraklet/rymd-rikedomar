@@ -6,6 +6,7 @@ using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 using RymdRikedomar.Entities.SpaceShip;
 using System.Net.NetworkInformation;
+using RymdRikedomar.Services.EndGameConditions;
 
 namespace SpaceConsoleMenu
 {
@@ -18,17 +19,19 @@ namespace SpaceConsoleMenu
 
             TradingStationFactory tradingStationFactory = new();
 
-            Planet Zephyria = PlanetFactory.CreatePlanet("Zephyria", 0, tradingStationFactory.createTradingStation());
-            Planet Bobo = PlanetFactory.CreatePlanet("Bobo", 2, tradingStationFactory.createTradingStation());
-            Planet Aquillon = PlanetFactory.CreatePlanet("Aquillon", 5, tradingStationFactory.createTradingStation());
-            Planet Pyralis = PlanetFactory.CreatePlanet("Pyralis", 6, tradingStationFactory.createTradingStation());
-            Planet Astronia = PlanetFactory.CreatePlanet("Astronia", 8, tradingStationFactory.createTradingStation());
-            Planet Terravox = PlanetFactory.CreatePlanet("Terravox", 11, tradingStationFactory.createTradingStation());
-            Planet Luminara = PlanetFactory.CreatePlanet("Luminara", 12, tradingStationFactory.createTradingStation());
-            Planet Dracoria = PlanetFactory.CreatePlanet("Dracoria", 15, tradingStationFactory.createTradingStation());
-            Planet Nebulon = PlanetFactory.CreatePlanet("Nebulon", 17, tradingStationFactory.createTradingStation());
-            Planet Celestria = PlanetFactory.CreatePlanet("Celestria", 18, tradingStationFactory.createTradingStation());
-            Planet Volteron = PlanetFactory.CreatePlanet("Volteron", 20, tradingStationFactory.createTradingStation());
+            Planet Zephyria = new("Zephyria", 0, tradingStationFactory.createTradingStation());
+            Planet Bobo = new("Bobo", 2, tradingStationFactory.createTradingStation());
+            Planet Aquillon = new("Aquillon", 5, tradingStationFactory.createTradingStation());
+            Planet Pyralis = new("Pyralis", 6, tradingStationFactory.createTradingStation());
+            Planet Astronia = new("Astronia", 8, tradingStationFactory.createTradingStation());
+            Planet Terravox = new("Terravox", 11, tradingStationFactory.createTradingStation());
+            Planet Luminara = new("Luminara", 12, tradingStationFactory.createTradingStation());
+            Planet Dracoria = new("Dracoria", 15, tradingStationFactory.createTradingStation());
+            Planet Nebulon = new("Nebulon", 17, tradingStationFactory.createTradingStation());
+            Planet Celestria = new("Celestria", 18, tradingStationFactory.createTradingStation());
+            Planet Volteron = new("Volteron", 20, tradingStationFactory.createTradingStation());
+
+
 
             List<Planet> planets = new();
 
@@ -44,7 +47,9 @@ namespace SpaceConsoleMenu
             planets.Add(Celestria);
             planets.Add(Volteron);
 
-            Player player = new("Olle");
+            List<IEndGameCondition> EndGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
+
+            Player player = new("Olle", EndGameConditions);
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();
@@ -100,8 +105,7 @@ namespace SpaceConsoleMenu
                         while (!eventOver)
                         {
                             Console.Clear();
-                            // RandomEvent();
-                            donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
+                            RandomEvent();
                             Console.ReadKey();
                             eventOver = true;
                         }
@@ -184,7 +188,15 @@ namespace SpaceConsoleMenu
                     player.notifyConditions();
                 }
                 Console.Clear();
-                Console.WriteLine($"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}");
+                string endGameText = $"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}";
+                Console.WriteLine(endGameText);
+                Console.WriteLine(" ");
+                Console.WriteLine(new string('-', endGameText.Length));
+                Console.WriteLine(" ");
+                Console.WriteLine("Tryck valfri tangent för att avsluta spelet...");
+
+                Console.ReadKey();
+                exit = true;
             }
         }
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)

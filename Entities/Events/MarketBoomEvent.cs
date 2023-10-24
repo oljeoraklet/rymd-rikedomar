@@ -12,7 +12,7 @@ public class MarketBoom
         if (marketBoomEvent != null)
         {
             string planetName = Planet(planets).Name;
-            Console.WriteLine($"The market is booming on {planetName}!");
+            Console.WriteLine($"Efterfrågan går i taket på {planetName}!");
             Planet(planets).Demand *= 2;
 
             MarketBoomEvent(marketBoomEvent);

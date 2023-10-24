@@ -11,31 +11,34 @@ public class DonationEvent
     {
 
         StringPrinter stringPrinter = new StringPrinter();
+
+        string anyKeyMsg = "Tryck valfri tangent för att fortsätta....";
+
         if (donationEvent != null)
         {
             string planetName = currentPlanet.Name;
-            string msg = $"...bzzhh...bzzhhh...Traveler {player.Name}...We..need...bzzhhh...your..help..on..bzhhh...{planetName}...";
+            string msg = $"...bzzhh...bzzhhh...Utforskare {player.Name}...Vi..behöver...bzzhhh...din..hjälp..på..bzhhh...{planetName}...";
             stringPrinter.Print(msg);
 
             int rnd = RandomNumber(2);
 
             if (player.Inventory.Count == 0)
             {
-                string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
+                string unitDonateMsg = $"...bzzhh...bzzhhh...Vi..behöver...bzzhhh...att du, {player.Name}..donerar..bzhhh...100 units...";
                 stringPrinter.Print(unitDonateMsg);
                 bool donateUnitsOrNot = HandleDonationInput();
                 if (donateUnitsOrNot)
                 {
                     player.Units -= 100;
                     player.influencePoints++;
-                    Console.WriteLine($"You have donated 100 units to {planetName}");
-                    Console.WriteLine("Press any key to continue...");
+                    Console.WriteLine($"Du har donerat 100 units till {planetName}");
+                    Console.WriteLine(anyKeyMsg);
 
                 }
                 else
                 {
-                    Console.WriteLine($"You did not donate to {planetName}.");
-                    Console.WriteLine("Press any key to continue...");
+                    Console.WriteLine($"Du valde att inte donera till {planetName}.");
+                    Console.WriteLine(anyKeyMsg);
                 }
             }
             else
@@ -50,39 +53,39 @@ public class DonationEvent
                 switch (rnd)
                 {
                     case 0:
-                        string unitDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...{player.Name}...to..donate..bzhhh...100 units...";
+                        string unitDonateMsg = $"...bzzhh...bzzhhh...Vi..behöver...bzzhhh...att du, {player.Name}..donerar..bzhhh...100 units...";
                         stringPrinter.Print(unitDonateMsg);
                         bool donateUnitsOrNot = HandleDonationInput();
                         if (donateUnitsOrNot)
                         {
                             player.Units -= 100;
                             player.influencePoints++;
-                            Console.WriteLine($"You have donated 100 units to {planetName}");
-                            Console.WriteLine("Press any key to continue...");
+                            Console.WriteLine($"Du har donerat 100 units till {planetName}");
+                            Console.WriteLine(anyKeyMsg);
                             break;
                         }
                         else
                         {
-                            Console.WriteLine($"You did not donate to {planetName}.");
-                            Console.WriteLine("Press any key to continue...");
+                            Console.WriteLine($"Du valde att inte donera till {planetName}.");
+                            Console.WriteLine(anyKeyMsg);
                             break;
                         }
                     case 1:
-                        string goodsDonateMsg = $"...bzzhh...bzzhhh...We..need...bzzhhh...you, {player.Name}...to..donate..bzhhh...{requestedAmount} {requestedGood}...";
+                        string goodsDonateMsg = $"...bzzhh...bzzhhh...Vi..behöver...bzzhhh...att du, {player.Name}...donerar..bzhhh...{requestedAmount} {requestedGood}...";
                         stringPrinter.Print(goodsDonateMsg);
                         bool donateGoodsOrNot = HandleDonationInput();
                         if (donateGoodsOrNot)
                         {
                             RemoveFromInventory(requestedGood, requestedAmount, player);
                             player.influencePoints++;
-                            Console.WriteLine($"You have donated {requestedAmount} {requestedGood} to {planetName}");
-                            Console.WriteLine("Press any key to continue...");
+                            Console.WriteLine($"Du har donerat {requestedAmount} {requestedGood} till {planetName}");
+                            Console.WriteLine(anyKeyMsg);
                             break;
                         }
                         else
                         {
-                            Console.WriteLine($"You did not donate anything to {planetName}.");
-                            Console.WriteLine("Press any key to continue...");
+                            Console.WriteLine($"Du valde att inte donera till {planetName}.");
+                            Console.WriteLine(anyKeyMsg);
                             break;
                         }
                     default:
@@ -124,7 +127,7 @@ public class DonationEvent
 
     bool HandleDonationInput()
     {
-        Console.WriteLine("Do you want to donate? (y/n)");
+        Console.WriteLine("Vill du donera? (y/n)");
         string input = Console.ReadLine();
         if (input == "y")
         {
@@ -136,7 +139,7 @@ public class DonationEvent
         }
         else
         {
-            Console.WriteLine("Invalid input, try again!");
+            Console.WriteLine("Fel input, försök igen!");
             return HandleDonationInput();
         }
     }
