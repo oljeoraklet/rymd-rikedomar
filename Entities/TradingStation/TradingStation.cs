@@ -1,3 +1,4 @@
+using System.Dynamic;
 using RymdRikedomar.Entities;
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip;
@@ -14,9 +15,10 @@ using SpaceConsoleMenu;
 public class TradingStation<T> : ITradingStation where T : IStoreItem
 {
     public List<StoreItem<T>> AvailableItems { get; set; }
+    static bool IsGood(StoreItem<T> storeItem) => storeItem.Item is IGood;
+
+    static bool IsModule(StoreItem<T> storeItem) => storeItem.Item is ISpaceshipModule;
     private DisplayMenu TradingStationMenu { get; set; }
-
-
     public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems)
     {
         TradingStationMenu = _displayMenu;
@@ -26,7 +28,8 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
     {
         while (true)
         {
-            IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+            // IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+            IEnumerable<StoreItem<T>> filteredItems = GetItemsFromItemType(AvailableItems, IsGood);
             IEnumerator<StoreItem<T>> enumerator = filteredItems.GetEnumerator();
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
@@ -177,7 +180,14 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
-
+    static List<StoreItem<T>> GetItemsFromItemType(List<StoreItem<T>> items, Predicate<StoreItem<T>> condition)
+    {
+        List<StoreItem<T>> filtered = new();
+        foreach (StoreItem<T> item in items)
+            if (condition(item))
+                filtered.Add(item);
+        return filtered;
+    }
     public void BuyFuel(Spaceship spaceship, Player player)
     {
         int fuelPrice = 1; // Assuming 1 unit of currency for 1 unit of fuel.
