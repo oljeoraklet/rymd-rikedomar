@@ -13,29 +13,18 @@ namespace SpaceConsoleMenu
     class Program
     {
         static bool turnOver;
+
+        static TradingStationFactory tradingStationFactory = new();
+        static IEnumerable<Planet> planets = GeneratePlanets(tradingStationFactory);
+        static IEnumerator<Planet> planetEnumerator = GeneratePlanets(tradingStationFactory).GetEnumerator();
+        static Planet? currentPlanet;
+        static List<Planet> discoveredPlanets = new();
+
+        static List<Planet>? closestPlanets;
         static int turnCounter = 0;
         static void Main(string[] args)
         {
-
-            TradingStationFactory tradingStationFactory = new();
-
-            //Här använder i ett "Strategy Pattern"
-            //Vi använder detta genom att skapa en TradingStation med som har olika varor beroende på vilken planet vi är på, som sedan dependency injectas in i planeten.
-            //Vi använder Strategy Pattern för att kunna skapa olika beteenden på en planet genom att ge planeterna olika utbud.
-
-            Planet Zephyria = new("Zephyria", 0, tradingStationFactory.createTradingStation());
-            Planet Bobo = new("Bobo", 2, tradingStationFactory.createTradingStation());
-            Planet Aquillon = new("Aquillon", 5, tradingStationFactory.createTradingStation());
-            Planet Pyralis = new("Pyralis", 6, tradingStationFactory.createTradingStation());
-            Planet Astronia = new("Astronia", 8, tradingStationFactory.createTradingStation());
-            Planet Terravox = new("Terravox", 11, tradingStationFactory.createTradingStation());
-            Planet Luminara = new("Luminara", 12, tradingStationFactory.createTradingStation());
-            Planet Dracoria = new("Dracoria", 15, tradingStationFactory.createTradingStation());
-            Planet Nebulon = new("Nebulon", 17, tradingStationFactory.createTradingStation());
-            Planet Celestria = new("Celestria", 18, tradingStationFactory.createTradingStation());
-            Planet Volteron = new("Volteron", 20, tradingStationFactory.createTradingStation());
-
-
+            //Här använder vi Factory Pattern
             //Här använder vi Collections
             //Vi använder en Colllection genom att initializera en lista där typ-parametern är en Planet. Vi lägger sedan till Planeter till vår lista.
             //Detta gör vi för att vi vill kunna spara och hålla alla planeter vi skapar och för att vi ska kunna få tillgång till dem i vårt spel.
@@ -44,7 +33,6 @@ namespace SpaceConsoleMenu
             //Vi använder en "List<T>" och använder denna generiska lista för att spara Planets
             //Vi vill göra detta för att ha någonstans att spara våra planeter. 
 
-            IEnumerable<Planet> planets = new List<Planet> { Zephyria, Bobo, Aquillon, Pyralis, Astronia, Terravox, Luminara, Dracoria, Nebulon, Celestria, Volteron };
 
             //Här använder vi Collection Initializers
             //Vi skapar en lista av endgameconditions och istället för att använda ordet "add" så använder vi oss av en Collection Initializer för att lägga till våra endgameconditions.
@@ -99,9 +87,9 @@ namespace SpaceConsoleMenu
             //Vi har tidigare skapat "planets" som en IEnumerable, vilket gör det möjligt för oss att använda LINQ. 
             //Vi använder senare Lazy Evaluation genom att använda .First(), då vi enbart bryr oss om att ta första elementet i listan.
             //Vi vill ta ut det första elementet ur listan för att göra dett till vår nuvarande planet, vilket är där spelaren startar. 
-
-            Planet currentPlanet = planets.First();
+            currentPlanet = new Planet("Tellus", tradingStationFactory.createTradingStation(), 0);
             player.VisitedPlanets.Add(currentPlanet);
+            closestPlanets = planets.Take(3).ToList();
             Spaceship spaceship = new();
             DisplayMenu menu = new();
             bool exit = false;
@@ -129,7 +117,7 @@ namespace SpaceConsoleMenu
                 switch (random)
                 {
                     case 0:
-                        marketBoom.OnRandomEvent(marketBoom, planets.ToList());
+                        donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
                         break;
                     case 1:
                         pirateEvent.OnRandomEvent(pirateEvent, player);
@@ -138,8 +126,6 @@ namespace SpaceConsoleMenu
                         noEvent.OnRandomEvent(noEvent);
                         break;
                     case 3:
-                        donationEvent.OnRandomEvent(donationEvent, currentPlanet, player);
-                        break;
                     default:
                         break;
                 }
@@ -228,7 +214,7 @@ namespace SpaceConsoleMenu
 
 
                         case 3: // Travel to another planet
-                            currentPlanet = TravelToAnotherPlanet(planets.ToList(), currentPlanet, spaceship, player, menu);
+                            currentPlanet = TravelToAnotherPlanet(currentPlanet, spaceship, player, menu);
                             break;
 
                         case 4:
@@ -257,17 +243,50 @@ namespace SpaceConsoleMenu
 
             }
         }
-        public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)
+
+
+        public static IEnumerable<Planet> GeneratePlanets(TradingStationFactory tradingStationFactory)
         {
-            return allPlanets.Where(p => p != currentPlanet)
-                             .OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
-                             .Take(3)
-                             .ToList();
+
+            List<string> planetNames = new() { "Zephyria", "Bobo", "Pyralis", "Aquillon", "Astronia", "Terravox", "Luminara", "Dracoria", "Nebulon", "Celestria", "Volteron" };
+            while (planetNames.Count > 0)
+            {
+
+                Random rnd = new();
+                int index = rnd.Next(planetNames.Count);
+                int baseDistance = 3;
+                int distance = baseDistance + rnd.Next(1, 5);
+                string planetName = planetNames[index];
+                planetNames.RemoveAt(index);
+                //Här använder i ett "Strategy Pattern"
+                //Vi använder detta genom att skapa en TradingStation med som har olika varor beroende på vilken planet vi är på, som sedan dependency injectas in i planeten.
+                //Vi använder Strategy Pattern för att kunna skapa olika beteenden på en planet genom att ge planeterna olika utbud.
+                yield return new(planetName, tradingStationFactory.createTradingStation(), distance);
+            }
+        }
+        public static List<Planet> GenerateClosestPlanets(List<Planet> closestPlanets, Planet previousPlanet)
+        {
+            //Här använder vi LINQ
+            //Vi använder LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet.
+            //Vi använder LINQ för att kunna ta de tre närmsta planeterna från nuvarande planet.
+
+            //Vi använder här även Lambdas i funktionerna
+            //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
+            //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
+            Random rnd = new();
+            int[] distances = { rnd.Next(1, 5), rnd.Next(1, 5), rnd.Next(1, 5) };
+            if (previousPlanet != null)
+            {
+                distances[2] = 1;
+            }
+
+            closestPlanets = closestPlanets.OrderBy(p => distances[closestPlanets.IndexOf(p)]).ToList();
+            return closestPlanets.Take(3).ToList();
         }
 
 
 
-        public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
+        public static Planet TravelToAnotherPlanet(Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
         {
 
             //Här används LINQ
@@ -277,15 +296,10 @@ namespace SpaceConsoleMenu
             //Vi använder här även Lambdas i funktionerna
             //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
             //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
-            var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
-                                        // .Where(p => p != currentPlanet)
-                                        .Skip(1)
-                                        .Take(3)
-                                        .ToList();
 
-            List<string> planetMenuOptions = sortedPlanets.Select(p =>
+            List<string> planetMenuOptions = closestPlanets.Select(p =>
             {
-                int distance = Math.Abs(p.XDistance - currentPlanet.XDistance);
+                int distance = Math.Abs(p.Distance - currentPlanet.Distance);
                 return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance})";
             }).ToList();
 
@@ -299,16 +313,28 @@ namespace SpaceConsoleMenu
             }
             else
             {
-                int distance = Math.Abs(sortedPlanets[choice].XDistance - currentPlanet.XDistance);
+
+                int distance = Math.Abs(closestPlanets[choice].Distance - currentPlanet.Distance);
                 float fuelNeeded = distance / spaceship.FuelEfficiency;
 
                 if (spaceship.Fuel >= fuelNeeded)
                 {
                     spaceship.ConsumeFuel(distance);
-                    player.VisitedPlanets.Add(sortedPlanets[choice]);
+                    player.VisitedPlanets.Add(closestPlanets[choice]);
+                    foreach (Planet planet in closestPlanets)
+                    {
+                        if (!discoveredPlanets.Contains(planet))
+                        {
+                            discoveredPlanets.Add(planet);
+                        }
+                    }
+                    Planet travelledToPlanet = closestPlanets[choice];
+                    closestPlanets.Clear();
+                    closestPlanets = planets.Take(2).ToList();
+                    closestPlanets.Add(currentPlanet);
                     turnCounter++;
                     turnOver = true;
-                    return sortedPlanets[choice];
+                    return travelledToPlanet;
                 }
                 else
                 {
