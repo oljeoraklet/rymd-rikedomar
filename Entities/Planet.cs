@@ -10,7 +10,7 @@ namespace RymdRikedomar.Entities
 
         public bool IsVisited { get; set; }
 
-        public int XDistance { get; }
+        public int Distance;
 
         public double Demand { get; set; }
 
@@ -22,12 +22,12 @@ namespace RymdRikedomar.Entities
         //Vi gör detta för att vi vill kunna skapa olika typer av tradingstations för varje planet. 
         public ITradingStation TradingStation { get; set; }
 
-        public Planet(string name, int xDistance, ITradingStation tradingStation)
+        public Planet(string name, ITradingStation tradingStation, int distance)
         {
             Name = name;
             AvailableGoods = new();
-            XDistance = xDistance;
             IsVisited = false;
+            Distance = distance;
             Demand = CalculateDemand();
             Supply = Demand + 0.3;
             TradingStation = tradingStation;
