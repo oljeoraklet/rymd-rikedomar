@@ -43,19 +43,8 @@ namespace SpaceConsoleMenu
             //I och med denna collection använder vi också Generics
             //Vi använder en "List<T>" och använder denna generiska lista för att spara Planets
             //Vi vill göra detta för att ha någonstans att spara våra planeter. 
-            List<Planet> planets = new();
 
-            planets.Add(Zephyria);
-            planets.Add(Bobo);
-            planets.Add(Aquillon);
-            planets.Add(Pyralis);
-            planets.Add(Astronia);
-            planets.Add(Terravox);
-            planets.Add(Luminara);
-            planets.Add(Dracoria);
-            planets.Add(Nebulon);
-            planets.Add(Celestria);
-            planets.Add(Volteron);
+            IEnumerable<Planet> planets = new List<Planet> { Zephyria, Bobo, Aquillon, Pyralis, Astronia, Terravox, Luminara, Dracoria, Nebulon, Celestria, Volteron };
 
             //Här använder vi Collection Initializers
             //Vi skapar en lista av endgameconditions och istället för att använda ordet "add" så använder vi oss av en Collection Initializer för att lägga till våra endgameconditions.
@@ -105,7 +94,13 @@ namespace SpaceConsoleMenu
             // }
 
             Player player = new("adg", EndGameConditions);
-            Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
+
+            //Här används Lazy Evaluation
+            //Vi har tidigare skapat "planets" som en IEnumerable, vilket gör det möjligt för oss att använda LINQ. 
+            //Vi använder senare Lazy Evaluation genom att använda .First(), då vi enbart bryr oss om att ta första elementet i listan.
+            //Vi vill ta ut det första elementet ur listan för att göra dett till vår nuvarande planet, vilket är där spelaren startar. 
+
+            Planet currentPlanet = planets.First();
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();
             DisplayMenu menu = new();
@@ -134,7 +129,7 @@ namespace SpaceConsoleMenu
                 switch (random)
                 {
                     case 0:
-                        marketBoom.OnRandomEvent(marketBoom, planets);
+                        marketBoom.OnRandomEvent(marketBoom, planets.ToList());
                         break;
                     case 1:
                         pirateEvent.OnRandomEvent(pirateEvent, player);
@@ -233,7 +228,7 @@ namespace SpaceConsoleMenu
 
 
                         case 3: // Travel to another planet
-                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
+                            currentPlanet = TravelToAnotherPlanet(planets.ToList(), currentPlanet, spaceship, player, menu);
                             break;
 
                         case 4:
@@ -283,7 +278,8 @@ namespace SpaceConsoleMenu
             //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
             //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
             var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
-                                        .Where(p => p != currentPlanet)
+                                        // .Where(p => p != currentPlanet)
+                                        .Skip(1)
                                         .Take(3)
                                         .ToList();
 
