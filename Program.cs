@@ -19,6 +19,10 @@ namespace SpaceConsoleMenu
 
             TradingStationFactory tradingStationFactory = new();
 
+            //Här använder i ett "Strategy Pattern"
+            //Vi använder detta genom att skapa en TradingStation med som har olika varor beroende på vilken planet vi är på, som sedan dependency injectas in i planeten.
+            //Vi använder Strategy Pattern för att kunna skapa olika beteenden på en planet genom att ge planeterna olika utbud.
+
             Planet Zephyria = new("Zephyria", 0, tradingStationFactory.createTradingStation());
             Planet Bobo = new("Bobo", 2, tradingStationFactory.createTradingStation());
             Planet Aquillon = new("Aquillon", 5, tradingStationFactory.createTradingStation());
@@ -32,7 +36,13 @@ namespace SpaceConsoleMenu
             Planet Volteron = new("Volteron", 20, tradingStationFactory.createTradingStation());
 
 
+            //Här använder vi Collections
+            //Vi använder en Colllection genom att initializera en lista där typ-parametern är en Planet. Vi lägger sedan till Planeter till vår lista.
+            //Detta gör vi för att vi vill kunna spara och hålla alla planeter vi skapar och för att vi ska kunna få tillgång till dem i vårt spel.
 
+            //I och med denna collection använder vi också Generics
+            //Vi använder en "List<T>" och använder denna generiska lista för att spara Planets
+            //Vi vill göra detta för att ha någonstans att spara våra planeter. 
             List<Planet> planets = new();
 
             planets.Add(Zephyria);
@@ -47,9 +57,54 @@ namespace SpaceConsoleMenu
             planets.Add(Celestria);
             planets.Add(Volteron);
 
+            //Här använder vi Collection Initializers
+            //Vi skapar en lista av endgameconditions och istället för att använda ordet "add" så använder vi oss av en Collection Initializer för att lägga till våra endgameconditions.
+            //Vi använder detta för att på ett snyggt och smidigt sätt skapa en lista av endgameconditions, genom att minska rader kod och skapa bättre readability.
+
             List<IEndGameCondition> EndGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
 
-            Player player = new("Olle", EndGameConditions);
+
+            void Print(string str)
+            {
+                foreach (char c in str)
+                {
+                    Console.Write(c);
+                    Thread.Sleep(40);
+                }
+                Console.WriteLine(" ");
+
+            }
+
+
+            // Console.Clear();
+            // Print("Välkommen till RymdRikedomar!");
+            // Console.WriteLine(" ");
+            // Print("Spelet går ut på att du ska utforska ett universum, där du kan besöka olika planeter och handla med dem.");
+            // Console.WriteLine(" ");
+            // Print("Du kan vinna på fyra olika sätt:");
+            // Console.WriteLine(" ");
+            // Console.WriteLine("1. Bli en rymdpolis genom att besegra fem rymdpirater!");
+            // Console.WriteLine("2. Utforska alla planeter i universumet");
+            // Console.WriteLine("3. Bli inflytelserik genom att skapa goda relationer genom donationer till planeterna.");
+            // Console.WriteLine("4. Vinn genom att bli så rik som möjligt!");
+            // Console.WriteLine(" ");
+            // Print("Tryck valfri tangent för att fortsätta...");
+            // Console.ReadKey();
+            // Console.Clear();
+            // Print("Vad heter du?");
+            // string playerName = Console.ReadLine();
+            // Console.Clear();
+            // Print("Tack!");
+            // Console.WriteLine(" ");
+            // Console.WriteLine("Tryck på valfri tangent för att sätta igång spelet.");
+            // Console.ReadKey();
+
+            // if (playerName == null)
+            // {
+            //     playerName = "Utforskare";
+            // }
+
+            Player player = new("adg", EndGameConditions);
             Planet currentPlanet = planets.First(p => p.Name == "Zephyria");
             player.VisitedPlanets.Add(currentPlanet);
             Spaceship spaceship = new();
@@ -63,7 +118,9 @@ namespace SpaceConsoleMenu
             NoEvent noEvent = new NoEvent();
             DonationEvent donationEvent = new DonationEvent();
 
-            //Subscribe to events using multicast delegate
+            //Här använder vi multicast delegater
+            // Vi vill använda multicast delegater för att kunna skapa en prenumeration för spelaren till eventsen.
+            // Vi använder multicast delegater för att kunna prenumerera på flera events samtidigt.
             marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
             pirateEvent.PirateEventEvent += player.PirateEventHandler;
             noEvent.NoEventEvent += player.NoEventHandler;
@@ -93,30 +150,32 @@ namespace SpaceConsoleMenu
                 }
             }
 
-            while (!exit)
+            while (!exit && !player.hasWon)
             {
-                while (!player.hasWon)
+
+                turnOver = false;
+                bool eventOver = false;
+
+                if (turnCounter != 0)
                 {
-                    turnOver = false;
-                    bool eventOver = false;
-
-                    if (turnCounter != 0)
-                    {
-                        while (!eventOver)
-                        {
-                            Console.Clear();
-                            RandomEvent();
-                            Console.ReadKey();
-                            eventOver = true;
-                        }
-
-                    }
-
-
-                    while (!turnOver)
+                    while (!eventOver)
                     {
                         Console.Clear();
-                        switch (menu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
+                        RandomEvent();
+                        Console.ReadKey();
+                        Console.Clear();
+                        Print($"Du landar på {currentPlanet.Name}...");
+                        Console.ReadKey();
+                        eventOver = true;
+                    }
+
+                }
+
+
+                while (!turnOver)
+                {
+                    Console.Clear();
+                    switch (menu.Menu($"Välkommen till {currentPlanet.Name}", new List<string>
                 {
                     "Köp/Sälj Varor",
                     "Uppgradera Rymdskeppet",
@@ -124,79 +183,83 @@ namespace SpaceConsoleMenu
                     "Res till en annan planet",
                     "Avsluta",
                 }))
-                        {
-                            case 0:
-                                switch (menu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
+                    {
+                        case 0:
+                            switch (menu.Menu($"Köp/Sälj Varor - {currentPlanet.Name}", new List<string>
                     {
                         "Köp Varor",
                         "Sälj Varor",
                         "Tillbaka Till Huvudmenyn"
                     }))
-                                {
-                                    case 0: // Buy Goods
-                                        currentPlanet.TradingStation.BuyGoods(player);
-                                        break;
-                                    case 1: // Sell Goods
-                                        currentPlanet.TradingStation.SellGoods(player);
-                                        break;
-                                }
-                                break;
+                            {
+                                case 0: // Buy Goods
+                                    currentPlanet.TradingStation.BuyGoods(player);
+                                    break;
+                                case 1: // Sell Goods
+                                    currentPlanet.TradingStation.SellGoods(player);
+                                    break;
+                            }
+                            break;
 
-                            case 1:
-                                menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
+                        case 1:
+                            menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
                         {
                             "Uppgradera Motor",
                             "Uppgradera Vapen",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
-                                break;
-                            case 2:
-                                int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
+                            break;
+                        case 2:
+                            int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
                         {
                             "Köp Bränsle",
                             "Bränslestatus",
                             "Tillbaka till Huvudmenyn"
                         }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
 
-                                switch (refuelChoice)
-                                {
-                                    case 0: // Buy Fuel
-                                        currentPlanet.TradingStation.BuyFuel(spaceship, player);
-                                        break;
-                                    case 1: // Fuel Status
-                                        currentPlanet.TradingStation.ShowFuelStatus(spaceship);
-                                        break;
-                                    case 2: // Return to Main Menu
-                                            // Do nothing, just return to the main menu.
-                                        break;
-                                }
-                                break;
+                            switch (refuelChoice)
+                            {
+                                case 0: // Buy Fuel
+                                    currentPlanet.TradingStation.BuyFuel(spaceship, player);
+                                    break;
+                                case 1: // Fuel Status
+                                    currentPlanet.TradingStation.ShowFuelStatus(spaceship);
+                                    break;
+                                case 2: // Return to Main Menu
+                                        // Do nothing, just return to the main menu.
+                                    break;
+                            }
+                            break;
 
 
-                            case 3: // Travel to another planet
-                                currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
-                                break;
+                        case 3: // Travel to another planet
+                            currentPlanet = TravelToAnotherPlanet(planets, currentPlanet, spaceship, player, menu);
+                            break;
 
-                            case 4:
-                                exit = true;
-                                turnOver = true;
-                                break;
-                        }
-
-
+                        case 4:
+                            exit = true;
+                            turnOver = true;
+                            break;
                     }
-                    player.notifyConditions();
-                }
-                Console.Clear();
-                string endGameText = $"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}";
-                Console.WriteLine(endGameText);
-                Console.WriteLine(" ");
-                Console.WriteLine(new string('-', endGameText.Length));
-                Console.WriteLine(" ");
-                Console.WriteLine("Tryck valfri tangent för att avsluta spelet...");
 
-                Console.ReadKey();
-                exit = true;
+
+                }
+                player.notifyConditions();
+
+                if (player.hasWon)
+                {
+                    Console.Clear();
+                    string endGameText = $"Grattis! Du har vunnit spelet som {player.winningCondition.ConditionName}";
+                    Console.WriteLine(endGameText);
+                    Console.WriteLine(" ");
+                    Console.WriteLine(new string('-', endGameText.Length));
+                    Console.WriteLine(" ");
+                    Console.WriteLine("Tryck valfri tangent för att avsluta spelet...");
+
+                    Console.ReadKey();
+                    exit = true;
+                }
+
             }
         }
         public static List<Planet> FindThreeClosestPlanets(List<Planet> allPlanets, Planet currentPlanet)
@@ -211,6 +274,14 @@ namespace SpaceConsoleMenu
 
         public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
         {
+
+            //Här används LINQ
+            //Vi använder LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet.
+            //Vi använder LINQ för att kunna ta de tre närmsta planeterna från nuvarande planet.
+
+            //Vi använder här även Lambdas i funktionerna
+            //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
+            //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
             var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
                                         .Where(p => p != currentPlanet)
                                         .Take(3)

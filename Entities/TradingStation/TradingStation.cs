@@ -4,7 +4,13 @@ using RymdRikedomar.Entities.SpaceShip;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 using SpaceConsoleMenu;
 
+//Här används generic types
+//Vi använder generic types för TradingStation för att denna klass ska kunna användas för alla typer av varor.
+//Detta gör att vi kan skapa en TradingStation för alla typer av varor, och inte bara för IStoreItem.
 
+//Vi använder även Type Parameter Constraints
+//Vi använder dettta genom att sätta "where" efter type parametern.
+//Vi sätter "where T : IStoreItem" för att säga att T måste implementera IStoreItem. Detta ger oss typsäkerhet att alla varor som finns på en tradingstation är av typen IStoreItem.
 public class TradingStation<T> : ITradingStation where T : IStoreItem
 {
     public List<StoreItem<T>> AvailableItems { get; set; }

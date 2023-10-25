@@ -34,16 +34,21 @@ namespace RymdRikedomar.Entities
             DefeatedPirates = 0;
         }
 
-        // Additional methods can be added later, such as buying or selling goods.
+
 
         //Methods to subscribe to events
 
+
+        //Här använder vi events
+        //Vi skapar en metod för varje event som vi vill prenumerera på
+        //Vi använder events för att vi vill at vår player ska kunna få ta del av events som sker i spelets gång. 
         public void MarketBoomEventHandler(MarketBoom marketBoomEvent) { }
         public void DonationEventHandler(DonationEvent donationEvent) { }
         public void PirateEventHandler(PirateEvent pirateEvent) { }
         public void NoEventHandler(NoEvent randomEvent) { }
 
 
+        //Här använder vi en metod för att uppdatera alla observers i vårt ObserverPattern
         public void notifyConditions()
         {
 
