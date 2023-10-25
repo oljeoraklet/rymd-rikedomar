@@ -40,6 +40,9 @@ namespace SpaceConsoleMenu
             //Vi använder en Colllection genom att initializera en lista där typ-parametern är en Planet. Vi lägger sedan till Planeter till vår lista.
             //Detta gör vi för att vi vill kunna spara och hålla alla planeter vi skapar och för att vi ska kunna få tillgång till dem i vårt spel.
 
+            //I och med denna collection använder vi också Generics
+            //Vi använder en "List<T>" och använder denna generiska lista för att spara Planets
+            //Vi vill göra detta för att ha någonstans att spara våra planeter. 
             List<Planet> planets = new();
 
             planets.Add(Zephyria);
