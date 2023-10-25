@@ -19,6 +19,10 @@ namespace SpaceConsoleMenu
 
             TradingStationFactory tradingStationFactory = new();
 
+            //Här använder i ett "Strategy Pattern"
+            //Vi använder detta genom att skapa en TradingStation med som har olika varor beroende på vilken planet vi är på, som sedan dependency injectas in i planeten.
+            //Vi använder Strategy Pattern för att kunna skapa olika beteenden på en planet genom att ge planeterna olika utbud.
+
             Planet Zephyria = new("Zephyria", 0, tradingStationFactory.createTradingStation());
             Planet Bobo = new("Bobo", 2, tradingStationFactory.createTradingStation());
             Planet Aquillon = new("Aquillon", 5, tradingStationFactory.createTradingStation());
@@ -32,6 +36,9 @@ namespace SpaceConsoleMenu
             Planet Volteron = new("Volteron", 20, tradingStationFactory.createTradingStation());
 
 
+            //Här använder vi Collections
+            //Vi använder en Colllection genom att initializera en lista där typ-parametern är en Planet. Vi lägger sedan till Planeter till vår lista.
+            //Detta gör vi för att vi vill kunna spara och hålla alla planeter vi skapar och för att vi ska kunna få tillgång till dem i vårt spel.
 
             List<Planet> planets = new();
 
@@ -46,6 +53,10 @@ namespace SpaceConsoleMenu
             planets.Add(Nebulon);
             planets.Add(Celestria);
             planets.Add(Volteron);
+
+            //Här använder vi Collection Initializers
+            //Vi skapar en lista av endgameconditions och istället för att använda ordet "add" så använder vi oss av en Collection Initializer för att lägga till våra endgameconditions.
+            //Vi använder detta för att på ett snyggt och smidigt sätt skapa en lista av endgameconditions, genom att minska rader kod och skapa bättre readability.
 
             List<IEndGameCondition> EndGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
 
@@ -63,7 +74,9 @@ namespace SpaceConsoleMenu
             NoEvent noEvent = new NoEvent();
             DonationEvent donationEvent = new DonationEvent();
 
-            //Subscribe to events using multicast delegate
+            //Här använder vi multicast delegater
+            // Vi vill använda multicast delegater för att kunna skapa en prenumeration för spelaren till eventsen.
+            // Vi använder multicast delegater för att kunna prenumerera på flera events samtidigt.
             marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
             pirateEvent.PirateEventEvent += player.PirateEventHandler;
             noEvent.NoEventEvent += player.NoEventHandler;
@@ -211,6 +224,14 @@ namespace SpaceConsoleMenu
 
         public static Planet TravelToAnotherPlanet(List<Planet> planets, Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
         {
+
+            //Här används LINQ
+            //Vi använder LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet.
+            //Vi använder LINQ för att kunna ta de tre närmsta planeterna från nuvarande planet.
+
+            //Vi använder här även Lambdas i funktionerna
+            //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
+            //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
             var sortedPlanets = planets.OrderBy(p => Math.Abs(p.XDistance - currentPlanet.XDistance))
                                         .Where(p => p != currentPlanet)
                                         .Take(3)
