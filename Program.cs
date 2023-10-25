@@ -247,15 +247,28 @@ namespace SpaceConsoleMenu
 
         public static IEnumerable<Planet> GeneratePlanets(TradingStationFactory tradingStationFactory)
         {
+            //Vi använder Lazy Evaluation för att kunna skapa en oändligt lång lista av planeter, som vi sedan kan använda för att skapa en lista av de närmsta planeterna.
 
             List<string> planetNames = new() { "Zephyria", "Bobo", "Pyralis", "Aquillon", "Astronia", "Terravox", "Luminara", "Dracoria", "Nebulon", "Celestria", "Volteron" };
-            while (planetNames.Count > 0)
+            while (true)
             {
-
+                if (planetNames.Count == 0)
+                {
+                    // Return the discovered planets ordered by closeness, skipping the current planet.
+                    //För att effektivisera vår kod använder vi LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet. Men vidare uppdatering hade krävt att vi använder oss av en annan datastruktur. Till exempel en heap.
+                    foreach (var planet in discoveredPlanets.OrderBy(p => Math.Abs(p.Distance - currentPlanet.Distance)))
+                    {
+                        if (planet != currentPlanet)  // Ensure the current planet is not re-returned
+                        {
+                            yield return planet;
+                        }
+                    }
+                    yield break;  // Exit the method once all discovered planets are returned
+                }
                 Random rnd = new();
                 int index = rnd.Next(planetNames.Count);
-                int baseDistance = 3;
-                int distance = baseDistance + rnd.Next(1, 5);
+                int baseDistance = 10;
+                int distance = baseDistance + rnd.Next(5, 60);
                 string planetName = planetNames[index];
                 planetNames.RemoveAt(index);
                 //Här använder i ett "Strategy Pattern"
@@ -264,25 +277,7 @@ namespace SpaceConsoleMenu
                 yield return new(planetName, tradingStationFactory.createTradingStation(), distance);
             }
         }
-        public static List<Planet> GenerateClosestPlanets(List<Planet> closestPlanets, Planet previousPlanet)
-        {
-            //Här använder vi LINQ
-            //Vi använder LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet.
-            //Vi använder LINQ för att kunna ta de tre närmsta planeterna från nuvarande planet.
 
-            //Vi använder här även Lambdas i funktionerna
-            //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
-            //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
-            Random rnd = new();
-            int[] distances = { rnd.Next(1, 5), rnd.Next(1, 5), rnd.Next(1, 5) };
-            if (previousPlanet != null)
-            {
-                distances[2] = 1;
-            }
-
-            closestPlanets = closestPlanets.OrderBy(p => distances[closestPlanets.IndexOf(p)]).ToList();
-            return closestPlanets.Take(3).ToList();
-        }
 
 
 
@@ -300,12 +295,12 @@ namespace SpaceConsoleMenu
             List<string> planetMenuOptions = closestPlanets.Select(p =>
             {
                 int distance = Math.Abs(p.Distance - currentPlanet.Distance);
-                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance})";
+                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance} ML)";
             }).ToList();
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");
 
-            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions);
+            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions, spaceship.FuelInfo());
 
             if (choice == planetMenuOptions.Count - 1)
             {
@@ -329,6 +324,14 @@ namespace SpaceConsoleMenu
                         }
                     }
                     Planet travelledToPlanet = closestPlanets[choice];
+                    if (discoveredPlanets.FirstOrDefault(p => p.Name == travelledToPlanet.Name) != null)
+                    {
+                        travelledToPlanet = discoveredPlanets.FirstOrDefault(p => p.Name == travelledToPlanet.Name);
+                    }
+                    if (travelledToPlanet.IsVisited == false)
+                    {
+                        travelledToPlanet.IsVisited = true;
+                    }
                     closestPlanets.Clear();
                     closestPlanets = planets.Take(2).ToList();
                     closestPlanets.Add(currentPlanet);

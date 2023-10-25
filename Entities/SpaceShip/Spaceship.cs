@@ -4,6 +4,8 @@ namespace RymdRikedomar.Entities.SpaceShip
     public class Spaceship
     {
         public float Fuel { get; set; }
+
+        public float FuelCapacity { get; set; }
         public int CargoCapacity { get; set; }
         public int FuelEfficiency { get; set; }
 
@@ -14,7 +16,8 @@ namespace RymdRikedomar.Entities.SpaceShip
 
         public Spaceship()
         {
-            Fuel = 10;  // Default fuel
+            Fuel = 50;  // Default fuel
+            FuelCapacity = 100;  // Default fuel capacity
             CargoCapacity = 50;  // Default cargo capacity
             FuelEfficiency = 1;
             WeaponDamage = 0;
@@ -32,6 +35,25 @@ namespace RymdRikedomar.Entities.SpaceShip
         public void WeaponDamageUpgrade()
         {
             WeaponDamage += 1;
+        }
+        public string FuelInfo()
+        {
+            int percentage = (int)((float)Fuel / FuelCapacity * 100);
+            int barSize = 50; // Size of the bar in console units
+            int fuelAmount = percentage * barSize / 100;
+
+            string fuelInfo = "[";
+
+            Console.Write("[");
+            for (int i = 0; i < barSize; i++)
+            {
+                if (i < fuelAmount)
+                    fuelInfo += "█";  // Full block character to represent filled portion
+                else
+                    fuelInfo += " ";  // Space to represent unfilled portion
+            }
+            fuelInfo += $"] {percentage}/{FuelCapacity} ML\n";
+            return fuelInfo;
         }
     }
 }

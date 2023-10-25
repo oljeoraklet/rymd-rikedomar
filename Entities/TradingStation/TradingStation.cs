@@ -191,7 +191,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
     public void BuyFuel(Spaceship spaceship, Player player)
     {
         int fuelPrice = 1; // Assuming 1 unit of currency for 1 unit of fuel.
-        float fuelNeeded = 100 - spaceship.Fuel; // Assuming 100 is the max fuel capacity.
+        float fuelNeeded = spaceship.FuelCapacity - spaceship.Fuel; // Assuming 100 is the max fuel capacity.
 
         List<string> buyFuelOptions = new List<string>
             {
