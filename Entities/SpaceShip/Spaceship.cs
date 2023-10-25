@@ -36,5 +36,24 @@ namespace RymdRikedomar.Entities.SpaceShip
         {
             WeaponDamage += 1;
         }
+        public string FuelInfo()
+        {
+            int percentage = (int)((float)Fuel / FuelCapacity * 100);
+            int barSize = 50; // Size of the bar in console units
+            int fuelAmount = percentage * barSize / 100;
+
+            string fuelInfo = "[";
+
+            Console.Write("[");
+            for (int i = 0; i < barSize; i++)
+            {
+                if (i < fuelAmount)
+                    fuelInfo += "█";  // Full block character to represent filled portion
+                else
+                    fuelInfo += " ";  // Space to represent unfilled portion
+            }
+            fuelInfo += $"] {percentage}/{FuelCapacity} ML\n";
+            return fuelInfo;
+        }
     }
 }

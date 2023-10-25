@@ -268,7 +268,7 @@ namespace SpaceConsoleMenu
                 Random rnd = new();
                 int index = rnd.Next(planetNames.Count);
                 int baseDistance = 10;
-                int distance = baseDistance + rnd.Next(5, 100);
+                int distance = baseDistance + rnd.Next(5, 60);
                 string planetName = planetNames[index];
                 planetNames.RemoveAt(index);
                 //Här använder i ett "Strategy Pattern"
@@ -295,12 +295,12 @@ namespace SpaceConsoleMenu
             List<string> planetMenuOptions = closestPlanets.Select(p =>
             {
                 int distance = Math.Abs(p.Distance - currentPlanet.Distance);
-                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance})";
+                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance} ML)";
             }).ToList();
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");
 
-            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions, "Du har just nu: \n" + spaceship.Fuel + " \u03A9l (omega-liter) bränsle.\n");
+            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions, spaceship.FuelInfo());
 
             if (choice == planetMenuOptions.Count - 1)
             {
