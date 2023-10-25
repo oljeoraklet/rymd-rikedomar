@@ -42,27 +42,17 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
             int buyChoice = TradingStationMenu.Menu($"Vilken vara vill du köpa?", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
 
-            IStoreItem chosenProduct = filteredItems.ElementAt(buyChoice).Item;
-
-            if (buyChoice == menuOptions.Count - 1) // Last option is "Tillbaka"
+            if (buyChoice >= 0 && buyChoice < menuOptions.Count && buyChoice != menuOptions.Count - 1) // Check if buyChoice is within the range of valid indices
+            {
+                Transaction(player, filteredItems.ElementAt(buyChoice).Item.Name, true);
+            }
+            else if (buyChoice == menuOptions.Count - 1) // Last option is "Tillbaka"
             {
                 break; // Return to the previous menu
-            }
-            else if (buyChoice >= 0 && buyChoice < filteredItems.Count())
-            {
-                Transaction(player, chosenProduct.Name, true);
-            }
-            else
-            {
-                Console.WriteLine("Invalid choice.");
             }
             // Filter available items based on the provided product type
         }
     }
-
-
-
-
 
     public void SellGoods(Player player)
     {
@@ -83,19 +73,13 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
             // Display menu and get choice
             int choice = TradingStationMenu.Menu("Sell Goods", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
 
-            IStoreItem chosenProduct = filteredItems.ElementAt(choice).Item;
-
-            if (choice == menuOptions.Count - 1) // "Tillbaka" option
+            if (choice < filteredItems.Count() - 1 && choice >= 0) // Check if choice is within the range of valid indices
             {
-                return;
+                Transaction(player, filteredItems.ElementAt(choice).Item.Name, false);
             }
-            else if (choice >= 0 && choice < filteredItems.Count())
+            else // Last option is "Tillbaka"
             {
-                Transaction(player, chosenProduct.Name, false);
-            }
-            else
-            {
-                Console.WriteLine("Invalid choice.");
+                return; // Return to the previous menu
             }
         }
     }
