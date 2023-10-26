@@ -126,6 +126,8 @@ namespace SpaceConsoleMenu
                         noEvent.OnRandomEvent(noEvent);
                         break;
                     case 3:
+                        marketBoom.OnRandomEvent(marketBoom, planets.ToList());
+                        break;
                     default:
                         break;
                 }
