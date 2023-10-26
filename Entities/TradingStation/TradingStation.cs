@@ -19,7 +19,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
     static bool IsModule(StoreItem<T> storeItem) => storeItem.Item is ISpaceshipModule;
     private DisplayMenu TradingStationMenu { get; set; }
-    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems)
+
+    private double demand { get; set; }
+    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems, double demand)
     {
         TradingStationMenu = _displayMenu;
         AvailableItems = availableItems;
