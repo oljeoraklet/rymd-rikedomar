@@ -27,6 +27,16 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         AvailableItems = availableItems;
         this.demand = demand;
     }
+
+    public void IncreaseDemand(int x)
+    {
+        demand *= x;
+    }
+
+    public void DecreaseDemand(int x)
+    {
+        demand /= x;
+    }
     public void BuyGoods(Player player)
     {
         while (true)
