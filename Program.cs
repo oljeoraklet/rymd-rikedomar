@@ -126,6 +126,8 @@ namespace SpaceConsoleMenu
                         noEvent.OnRandomEvent(noEvent);
                         break;
                     case 3:
+                        marketBoom.OnRandomEvent(marketBoom, planets.ToList());
+                        break;
                     default:
                         break;
                 }
@@ -162,6 +164,7 @@ namespace SpaceConsoleMenu
                     "Uppgradera Rymdskeppet",
                     "Tanka Rymdskeppet",
                     "Res till en annan planet",
+                    "Profil",
                     "Avsluta",
                 }))
                     {
@@ -217,7 +220,38 @@ namespace SpaceConsoleMenu
                             currentPlanet = TravelToAnotherPlanet(currentPlanet, spaceship, player, menu);
                             break;
 
-                        case 4:
+                        case 4: // Profile
+                            int profileChoice = menu.Menu($"Profil - {currentPlanet.Name}", new List<string>
+                        {
+                            "Visa förråd",
+                            "Besökta planeter",
+                            "Upptäckta planeter",
+                            "Tillbaka till Huvudmenyn"
+                        }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
+                            switch (profileChoice)
+                            {
+                                case 0:
+
+                                    ProfileInventory profileInventory = new(player.Inventory);
+                                    profileInventory.ShowItems();
+                                    Console.ReadKey();
+                                    break;
+                                case 1:
+                                    Console.WriteLine("Här är dina besökta planeter");
+                                    ProfileVisitedPlanets visitedPlanets = new(player.VisitedPlanets);
+                                    visitedPlanets.ShowItems();
+                                    Console.ReadKey();
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Här är dina upptäckta planeter");
+                                    ProfileDiscoveredPlanets profile = new ProfileDiscoveredPlanets(discoveredPlanets);
+                                    profile.ShowItems();
+                                    Console.ReadKey();
+                                    break;
+                            }
+                            break;
+
+                        case 5:
                             exit = true;
                             turnOver = true;
                             break;

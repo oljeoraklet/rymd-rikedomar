@@ -7,13 +7,23 @@ public class MarketBoom
 
     public event MarketBoomHandler MarketBoomEvent;
 
+
+    Planet currentMarketBoom;
     public void OnRandomEvent(MarketBoom marketBoomEvent, List<Planet> planets)
     {
+
+        if (currentMarketBoom != null)
+        {
+            currentMarketBoom.TradingStation.DecreaseDemand(2);
+        }
+
+
         if (marketBoomEvent != null)
         {
             string planetName = Planet(planets).Name;
             Console.WriteLine($"Efterfrågan går i taket på {planetName}!");
-            Planet(planets).Demand *= 2;
+            currentMarketBoom = Planet(planets);
+            Planet(planets).TradingStation.IncreaseDemand(2);
 
             MarketBoomEvent(marketBoomEvent);
         }
