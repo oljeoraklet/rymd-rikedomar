@@ -231,19 +231,25 @@ namespace SpaceConsoleMenu
                             switch (profileChoice)
                             {
                                 case 0:
-
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- FÖRRÅD ---");
+                                    Console.WriteLine(" ");
                                     ProfileInventory profileInventory = new(player.Inventory);
                                     profileInventory.ShowItems();
                                     Console.ReadKey();
                                     break;
                                 case 1:
-                                    Console.WriteLine("Här är dina besökta planeter");
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- BESÖKTA PLANETER ---");
+                                    Console.WriteLine(" ");
                                     ProfileVisitedPlanets visitedPlanets = new(player.VisitedPlanets);
                                     visitedPlanets.ShowItems();
                                     Console.ReadKey();
                                     break;
                                 case 2:
-                                    Console.WriteLine("Här är dina upptäckta planeter");
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- UPPTÄCKTA PLANETER ---");
+                                    Console.WriteLine(" ");
                                     ProfileDiscoveredPlanets profile = new ProfileDiscoveredPlanets(discoveredPlanets);
                                     profile.ShowItems();
                                     Console.ReadKey();
