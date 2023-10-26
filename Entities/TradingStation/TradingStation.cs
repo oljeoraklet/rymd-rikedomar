@@ -14,14 +14,12 @@ using SpaceConsoleMenu;
 //Vi sätter "where T : IStoreItem" för att säga att T måste implementera IStoreItem. Detta ger oss typsäkerhet att alla varor som finns på en tradingstation är av typen IStoreItem.
 public class TradingStation<T> : ITradingStation where T : IStoreItem
 {
-    public List<StoreItem<T>> AvailableItems { get; set; }
+    public List<IStoreItemWrapper> AvailableItems { get; set; }
     static bool IsGood(StoreItem<T> storeItem) => storeItem.Item is IGood;
 
     static bool IsModule(StoreItem<T> storeItem) => storeItem.Item is ISpaceshipModule;
     private DisplayMenu TradingStationMenu { get; set; }
-
-    private double demand { get; set; }
-    public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems, double demand)
+    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems)
     {
         TradingStationMenu = _displayMenu;
         AvailableItems = availableItems;
@@ -42,8 +40,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         while (true)
         {
             // IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
-            IEnumerable<StoreItem<T>> filteredItems = GetItemsFromItemType(AvailableItems, IsGood);
-            IEnumerator<StoreItem<T>> enumerator = filteredItems.GetEnumerator();
+            IEnumerable<IStoreItemWrapper> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+
+            IEnumerator<IStoreItemWrapper> enumerator = filteredItems.GetEnumerator();
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
 
@@ -81,8 +80,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         while (true)
         {
             // Filter available items based on the provided product type
-            IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
-            IEnumerator<StoreItem<T>> enumerator = filteredItems.GetEnumerator();
+            IEnumerable<IStoreItemWrapper> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
+
+            IEnumerator<IStoreItemWrapper> enumerator = filteredItems.GetEnumerator();
 
             // Generate dynamic menu options based on filtered items
             List<string> menuOptions = new();
@@ -111,6 +111,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         var selectedGoodEntry = AvailableItems.Find(item => item.Item.Name == goodName);
 
 
+
         if (selectedGoodEntry == null)
         {
             Console.WriteLine("Varan är inte tillgänglig!");
@@ -118,7 +119,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
             return;
         }
 
-        T selectedGood = selectedGoodEntry.Item;
+        IStoreItem selectedGood = selectedGoodEntry.Item;
         int stock = selectedGoodEntry.Stock;
         int playerStock = player.Inventory.Find(i => i.Item.Name == goodName)?.Stock ?? 0;
 
@@ -193,16 +194,15 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
-
-    //Build in delegate using Predicate to filter items and using it as a Generic Delegate
-    static List<StoreItem<T>> GetItemsFromItemType(List<StoreItem<T>> items, Predicate<StoreItem<T>> condition)
+    static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
     {
-        List<StoreItem<T>> filtered = new();
-        foreach (StoreItem<T> item in items)
+        List<IStoreItemWrapper> filtered = new();
+        foreach (IStoreItemWrapper item in items)
             if (condition(item))
                 filtered.Add(item);
         return filtered;
     }
+
     public void BuyFuel(Spaceship spaceship, Player player)
     {
         int fuelPrice = 1; // Assuming 1 unit of currency for 1 unit of fuel.
