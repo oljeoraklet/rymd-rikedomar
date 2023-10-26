@@ -21,7 +21,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
     private DisplayMenu TradingStationMenu { get; set; }
 
     private double demand { get; set; }
-    public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems, double demand)
+    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems, double demand)
     {
         TradingStationMenu = _displayMenu;
         AvailableItems = availableItems;
