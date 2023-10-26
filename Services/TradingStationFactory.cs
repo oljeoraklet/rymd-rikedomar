@@ -18,6 +18,13 @@ class TradingStationFactory
         return exclusiveItems[randomNumber];
     }
 
+    double CalculateDemand()
+    {
+        Random random = new();
+        double randomNumber = random.NextDouble() * (1.2 - 0.8) + 0.8;
+        return randomNumber;
+    }
+
     public TradingStation<IStoreItem> createTradingStation()
     {
         DisplayMenu displayMenu = new DisplayMenu();
@@ -29,7 +36,7 @@ class TradingStationFactory
         tradingStationItems.Add(new StoreItem<IStoreItem>(new Metal(), 100));
         tradingStationItems.Add(randomizeStoreList());
 
-        TradingStation<IStoreItem> tradingStation = new TradingStation<IStoreItem>(displayMenu, tradingStationItems);
+        TradingStation<IStoreItem> tradingStation = new TradingStation<IStoreItem>(displayMenu, tradingStationItems, CalculateDemand());
 
         return tradingStation;
 
