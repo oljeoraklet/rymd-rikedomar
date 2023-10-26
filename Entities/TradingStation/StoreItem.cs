@@ -1,10 +1,11 @@
 
 using RymdRikedomar.Entities;
 
-public class StoreItem<T> where T : IStoreItem
+public class StoreItem<T> : IStoreItemWrapper where T : IStoreItem
 {
     public T Item { get; set; }
     public int Stock { get; set; }
+    IStoreItem IStoreItemWrapper.Item => this.Item;
 
     public StoreItem(T item, int stock)
     {
@@ -49,4 +50,12 @@ public interface IStoreItem
     {
         get; set;
     }
+}
+
+public interface IStoreItemWrapper
+{
+    IStoreItem Item { get; }
+    int Stock { get; }
+    void BuyItem(int amount, Player player);
+    void SellItem(int amount, Player player);
 }
