@@ -196,7 +196,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
-    static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
+
+    //Build in delegate using Predicate to filter items and using it as a Generic Delegate
+    static List<StoreItem<T>> GetItemsFromItemType(List<StoreItem<T>> items, Predicate<StoreItem<T>> condition)
     {
         List<IStoreItemWrapper> filtered = new();
         foreach (IStoreItemWrapper item in items)
