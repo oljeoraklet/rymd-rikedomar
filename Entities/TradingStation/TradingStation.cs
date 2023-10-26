@@ -19,7 +19,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
     static bool IsModule(StoreItem<T> storeItem) => storeItem.Item is ISpaceshipModule;
     private DisplayMenu TradingStationMenu { get; set; }
-    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems)
+
+    private double demand { get; set; }
+    public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems, double demand)
     {
         TradingStationMenu = _displayMenu;
         AvailableItems = availableItems;
@@ -194,7 +196,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
-    static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
+
+    //Build in delegate using Predicate to filter items and using it as a Generic Delegate
+    static List<StoreItem<T>> GetItemsFromItemType(List<StoreItem<T>> items, Predicate<StoreItem<T>> condition)
     {
         List<IStoreItemWrapper> filtered = new();
         foreach (IStoreItemWrapper item in items)
