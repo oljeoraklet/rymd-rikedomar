@@ -1,17 +1,19 @@
 using RymdRikedomar.Entities.Goods;
+using RymdRikedomar.Entities.SpaceShip.Modules;
 using SpaceConsoleMenu;
 
 class TradingStationFactory
 {
 
-    List<StoreItem<IStoreItem>> exclusiveItems = new() {
-        new StoreItem<IStoreItem>(new QuesarSilk(), 50),
-        new StoreItem<IStoreItem>(new DarkMatterFuelCells(), 20),
-        new StoreItem<IStoreItem>(new StellarCrystals(), 10),
-    };
+    List<IStoreItemWrapper> exclusiveItems = new()
+{
+    new StoreItem<IGood>(new QuesarSilk(), 50),
+    new StoreItem<IGood>(new DarkMatterFuelCells(), 20),
+    new StoreItem<IGood>(new StellarCrystals(), 10),
+};
 
 
-    private StoreItem<IStoreItem> randomizeStoreList()
+    private IStoreItemWrapper randomizeStoreList()
     {
         Random random = new();
         int randomNumber = random.Next(0, 3);
@@ -23,10 +25,11 @@ class TradingStationFactory
         DisplayMenu displayMenu = new DisplayMenu();
 
 
-        List<StoreItem<IStoreItem>> tradingStationItems = new();
-        tradingStationItems.Add(new StoreItem<IStoreItem>(new Fruit(), 200));
-        tradingStationItems.Add(new StoreItem<IStoreItem>(new Spice(), 100));
-        tradingStationItems.Add(new StoreItem<IStoreItem>(new Metal(), 100));
+        List<IStoreItemWrapper> tradingStationItems = new();
+        tradingStationItems.Add(new StoreItem<IGood>(new Fruit(), 200));
+        tradingStationItems.Add(new StoreItem<IGood>(new Spice(), 100));
+        tradingStationItems.Add(new StoreItem<IGood>(new Metal(), 100));
+        tradingStationItems.Add(new StoreItem<ISpaceshipModule>(new FuelEfficiencyModule(), 100));
         tradingStationItems.Add(randomizeStoreList());
 
         TradingStation<IStoreItem> tradingStation = new TradingStation<IStoreItem>(displayMenu, tradingStationItems);
