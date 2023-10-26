@@ -12,11 +12,6 @@ namespace RymdRikedomar.Entities
 
         public int Distance;
 
-        public double Demand { get; set; }
-
-        public double Supply { get; private set; }
-
-
         //Här använder vi Dependency Injection
         //Vi skapar en instans av interfaceet ITradingStation som vi sedan kan använda för att skapa en TradingStation
         //Vi gör detta för att vi vill kunna skapa olika typer av tradingstations för varje planet. 
@@ -28,8 +23,6 @@ namespace RymdRikedomar.Entities
             AvailableGoods = new();
             IsVisited = false;
             Distance = distance;
-            Demand = CalculateDemand();
-            Supply = Demand + 0.3;
             TradingStation = tradingStation;
         }
 

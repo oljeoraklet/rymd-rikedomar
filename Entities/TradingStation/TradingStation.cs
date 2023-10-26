@@ -19,10 +19,13 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
     static bool IsModule(StoreItem<T> storeItem) => storeItem.Item is ISpaceshipModule;
     private DisplayMenu TradingStationMenu { get; set; }
-    public TradingStation(DisplayMenu _displayMenu, List<IStoreItemWrapper> availableItems)
+
+    private double demand { get; set; }
+    public TradingStation(DisplayMenu _displayMenu, List<StoreItem<T>> availableItems, double demand)
     {
         TradingStationMenu = _displayMenu;
         AvailableItems = availableItems;
+        this.demand = demand;
     }
     public void BuyGoods(Player player)
     {
@@ -37,17 +40,17 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
             while (enumerator.MoveNext())
             {
-                int maxCanBuy = player.Units / enumerator.Current.Item.PurchasePrice;
+                int maxCanBuy = (int)Math.Round(player.Units / (enumerator.Current.Item.PurchasePrice * demand));
                 string itemName = enumerator.Current.Item.Name;
                 int amountPlayerHas = player.Inventory.Find(i => i.Item.Name == itemName)?.Stock ?? 0;
-                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.PurchasePrice} enheter, Tillgängligt: {enumerator.Current.Stock}, Du kan köpa: {Math.Min(maxCanBuy, enumerator.Current.Stock)} med dina nuvarande enheter)");
+                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {(int)Math.Round(enumerator.Current.Item.PurchasePrice * demand)} enheter, Tillgängligt: {enumerator.Current.Stock}, Du kan köpa: {Math.Min(maxCanBuy, enumerator.Current.Stock)} med dina nuvarande enheter)");
             }
             menuOptions.Add("Tillbaka");
 
             // Display prices and available units for filtered items
             foreach (var item in filteredItems)
             {
-                Console.WriteLine($"{item.Item.Name} Pris: {item.Item.PurchasePrice}");
+                Console.WriteLine($"{item.Item.Name} Pris: {(int)Math.Round(item.Item.PurchasePrice * demand)}");
             }
 
             int buyChoice = TradingStationMenu.Menu($"Vilken vara vill du köpa?", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
@@ -78,7 +81,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
             while (enumerator.MoveNext())
             {
                 int amount = player.Inventory.Find(i => i.Item.Name == enumerator.Current.Item.Name)?.Stock ?? 0;
-                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.SellingPrice} enheter, Du har: {amount})");
+                menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {(int)Math.Round(enumerator.Current.Item.SellingPrice * demand)} enheter, Du har: {amount})");
             }
             menuOptions.Add("Tillbaka");
             // Display menu and get choice
@@ -114,14 +117,14 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
         if (isBuying)
         {
-            int maxBuyable = player.Units / selectedGood.PurchasePrice;
+            int maxBuyable = (int)Math.Round(player.Units / selectedGood.PurchasePrice * demand);
             string title = $"Köp {goodName}";
             Console.WriteLine(title);
             Console.WriteLine(new string('-', title.Length));
             Console.WriteLine($"Du har {player.Units} enheter tillgängliga.");
             Console.WriteLine($"Du har {playerStock} {goodName}.\n");
 
-            Console.WriteLine($"{goodName}\n{selectedGood.PurchasePrice} enheter/st");
+            Console.WriteLine($"{goodName}\n{(int)Math.Round(selectedGood.PurchasePrice * demand)} enheter/st");
             Console.WriteLine($"Tillängligt: {stock} st\n");
             Console.WriteLine($"Med dina enheter kan du köpa {Math.Min(maxBuyable, stock)} {goodName}.");
             Console.WriteLine($"Hur många {goodName} vill du köpa?");
@@ -140,7 +143,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         {
             if (isBuying)
             {
-                int totalCost = amount * selectedGood.PurchasePrice;
+                int totalCost = amount * (int)Math.Round(selectedGood.PurchasePrice * demand);
                 if (totalCost <= player.Units && amount <= stock)
                 {
                     selectedGoodEntry.BuyItem(amount, player);
@@ -161,7 +164,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
             }
             else
             {
-                int totalCost = amount * selectedGood.SellingPrice;
+                int totalCost = amount * (int)Math.Round(selectedGood.SellingPrice * demand);
 
                 if (amount <= playerStock)
                 {
