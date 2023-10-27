@@ -50,6 +50,13 @@ namespace RymdRikedomar.Entities
 
 
         //Här använder vi en metod för att uppdatera alla observers i vårt ObserverPattern
+
+
+        //1. Här är början av vårat implementerade "Observer Pattern". 
+        //Detta är en funktion som kallas i slutet av varje omgång, för att undersöka huruvida något av våra EndGameConditions är uppfyllda.
+        // Funktionen nedan återfinns i klassen "Player", som där kan klassas som ett subject/observable. 
+        //Player aggregerar interfacet "IEndGameCondition" som är en observer, som vidare har subklasser som implementerar detta interface.
+        // I och med detta körs också funktioner som returnerar en bool som indikerar huruvida ett endgamecondition är uppnått eller inte. 
         public void notifyConditions()
         {
 

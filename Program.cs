@@ -99,6 +99,10 @@ namespace SpaceConsoleMenu
             donationEvent.DonationEventEvent += player.DonationEventHandler;
 
 
+            //I funtkionen RandomEvent nedan är en del av vår implementation för "Events". 
+            //Här kallar vi på "OnRandomEvent" som skickar in det event som kallas, vilket randomiseras fram i funktionen.
+            // Funktionerna och deras implementationer finns i respektive klasser för varje event.
+
             void RandomEvent()
             {
                 Random rnd = new Random();
@@ -254,6 +258,7 @@ namespace SpaceConsoleMenu
 
 
                 }
+
                 player.notifyConditions();
 
                 if (player.hasWon)
@@ -274,6 +279,11 @@ namespace SpaceConsoleMenu
         }
 
 
+        //Här skapar vi en IEnumerable i returtypen av funktionen.
+        //Det vi gör är att funktionen GeneratePlanets skapar en lista av namn på planeter, som sedan slumpmässigt väljs ut och skapar en planet med ett namn, en tradingstation och ett avstånd.
+        //Detta innebär att vi enbart skapar planeter när de upptäckts, och att vi inte skapar alla planeter i början av spelet.
+        //Inom ramen för detta spel när vi enbart har 10 planeter är det kanske overkill, men om vi skulle vilja lägga till större mängder planeter är det ett smart val
+        //då vi kan skapa planeterna "as we go", och inte kräva av kompilatorn att skapa tiotals/hundratals/tusentals planeter direkt.
         public static IEnumerable<Planet> GeneratePlanets(TradingStationFactory tradingStationFactory)
         {
 
@@ -304,10 +314,8 @@ namespace SpaceConsoleMenu
                 int distance = baseDistance + rnd.Next(5, 60);
                 string planetName = planetNames[index];
                 planetNames.RemoveAt(index);
-                //Här använder i ett "Strategy Pattern"
-                //Vi använder detta genom att skapa en TradingStation med som har olika varor beroende på vilken planet vi är på, som sedan dependency injectas in i planeten.
-                //Vi använder Strategy Pattern för att kunna skapa olika beteenden på en planet genom att ge planeterna olika utbud.
-                yield return new(planetName, tradingStationFactory.createTradingStation(), distance);
+
+                yield return new Planet(planetName, tradingStationFactory.createTradingStation(), distance);
             }
         }
 
