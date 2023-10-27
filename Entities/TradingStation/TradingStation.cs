@@ -195,8 +195,10 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
+    //Här används den inbyggda deligaten Predicate,
+    //Vi använder denna för att kunna filtrera ut alla varor som är av typen IGood eller ISpaceshipModule, där denna deligat kan returnera en bool som undersöker
+    //huruvida det item som skickas in är av typen IGood eller ISpaceshipModule och returnerar en lista med de filtrerade varorna. 
 
-    //Build in delegate using Predicate to filter items and using it as a Generic Delegate
     static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
     {
         List<IStoreItemWrapper> filtered = new();

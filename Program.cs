@@ -24,19 +24,11 @@ namespace SpaceConsoleMenu
         static int turnCounter = 0;
         static void Main(string[] args)
         {
-            //Här använder vi Factory Pattern
+
             //Här använder vi Collections
-            //Vi använder en Colllection genom att initializera en lista där typ-parametern är en Planet. Vi lägger sedan till Planeter till vår lista.
-            //Detta gör vi för att vi vill kunna spara och hålla alla planeter vi skapar och för att vi ska kunna få tillgång till dem i vårt spel.
-
-            //I och med denna collection använder vi också Generics
-            //Vi använder en "List<T>" och använder denna generiska lista för att spara Planets
-            //Vi vill göra detta för att ha någonstans att spara våra planeter. 
-
-
-            //Här använder vi Collection Initializers
-            //Vi skapar en lista av endgameconditions och istället för att använda ordet "add" så använder vi oss av en Collection Initializer för att lägga till våra endgameconditions.
-            //Vi använder detta för att på ett snyggt och smidigt sätt skapa en lista av endgameconditions, genom att minska rader kod och skapa bättre readability.
+            //Vi använder en Colllection genom att initializera en lista där typ-parametern är en IEndGameCondition. Vi lägger sedan till alla olika nuvarande EndGameConditions i listan.
+            //Vi skapar initizaliserar dessa och lägger de i en lista för att kunna använda oss av dem i vår Player-klass, och för att vidare sedan kunna iterera över listan för att se om något av dessa är uppfyllda. 
+            //Detta gör det väldigt enkelt att om man vill lägga till fler conditions, kan man lägga till det i denna lista efter man skapat ett endgamecondition.
 
             List<IEndGameCondition> EndGameConditions = new() { new SpaceCop(), new Diplomat(), new Explorer(), new Capitalist() };
 
@@ -83,10 +75,7 @@ namespace SpaceConsoleMenu
 
             Player player = new("adg", EndGameConditions);
 
-            //Här används Lazy Evaluation
-            //Vi har tidigare skapat "planets" som en IEnumerable, vilket gör det möjligt för oss att använda LINQ. 
-            //Vi använder senare Lazy Evaluation genom att använda .First(), då vi enbart bryr oss om att ta första elementet i listan.
-            //Vi vill ta ut det första elementet ur listan för att göra dett till vår nuvarande planet, vilket är där spelaren startar. 
+
             currentPlanet = new Planet("Tellus", tradingStationFactory.createTradingStation(), 0);
             player.VisitedPlanets.Add(currentPlanet);
             closestPlanets = planets.Take(3).ToList();
@@ -100,9 +89,10 @@ namespace SpaceConsoleMenu
             NoEvent noEvent = new NoEvent();
             DonationEvent donationEvent = new DonationEvent();
 
-            //Här använder vi multicast delegater
-            // Vi vill använda multicast delegater för att kunna skapa en prenumeration för spelaren till eventsen.
-            // Vi använder multicast delegater för att kunna prenumerera på flera events samtidigt.
+            // Här använder vi multicast delegater
+            // Vi använder här multicast delegater för att få spelaren att kunna prenumerara på dessa events. Detta möjliggör i ett senare skede att 
+            // om det skulle vara fler spelare i spelet, så kan vi enkelt med multicast delegater få alla spelare att prenumerera på dessa events.
+
             marketBoom.MarketBoomEvent += player.MarketBoomEventHandler;
             pirateEvent.PirateEventEvent += player.PirateEventHandler;
             noEvent.NoEventEvent += player.NoEventHandler;
@@ -230,19 +220,25 @@ namespace SpaceConsoleMenu
                             switch (profileChoice)
                             {
                                 case 0:
-
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- FÖRRÅD ---");
+                                    Console.WriteLine(" ");
                                     ProfileInventory profileInventory = new(player.Inventory);
                                     profileInventory.ShowItems();
                                     Console.ReadKey();
                                     break;
                                 case 1:
-                                    Console.WriteLine("Här är dina besökta planeter");
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- BESÖKTA PLANETER ---");
+                                    Console.WriteLine(" ");
                                     ProfileVisitedPlanets visitedPlanets = new(player.VisitedPlanets);
                                     visitedPlanets.ShowItems();
                                     Console.ReadKey();
                                     break;
                                 case 2:
-                                    Console.WriteLine("Här är dina upptäckta planeter");
+                                    Console.WriteLine(" ");
+                                    Console.WriteLine("--- UPPTÄCKTA PLANETER ---");
+                                    Console.WriteLine(" ");
                                     ProfileDiscoveredPlanets profile = new ProfileDiscoveredPlanets(discoveredPlanets);
                                     profile.ShowItems();
                                     Console.ReadKey();
@@ -280,7 +276,7 @@ namespace SpaceConsoleMenu
 
         public static IEnumerable<Planet> GeneratePlanets(TradingStationFactory tradingStationFactory)
         {
-            //Vi använder Lazy Evaluation för att kunna skapa en oändligt lång lista av planeter, som vi sedan kan använda för att skapa en lista av de närmsta planeterna.
+
 
             List<string> planetNames = new() { "Zephyria", "Bobo", "Pyralis", "Aquillon", "Astronia", "Terravox", "Luminara", "Dracoria", "Nebulon", "Celestria", "Volteron" };
             while (true)
@@ -289,6 +285,10 @@ namespace SpaceConsoleMenu
                 {
                     // Return the discovered planets ordered by closeness, skipping the current planet.
                     //För att effektivisera vår kod använder vi LINQ för att kunna sortera planeterna efter avstånd från nuvarande planet. Men vidare uppdatering hade krävt att vi använder oss av en annan datastruktur. Till exempel en heap.
+
+                    //Vi använder nedan också yield
+                    // Vi vill returnera en enumerable innehållandes planeter, och vi vill returnera dessa en i taget när denna funktion kallas. Vi skapar dessa också slumpmässigt. så man inte vet vilken planet man kommer att upptäcka
+                    // på förhand. Detta ger en viss replayability till spelet. 
                     foreach (var planet in discoveredPlanets.OrderBy(p => Math.Abs(p.Distance - currentPlanet.Distance)))
                     {
                         if (planet != currentPlanet)  // Ensure the current planet is not re-returned
@@ -322,7 +322,7 @@ namespace SpaceConsoleMenu
             //Vi använder LINQ för att kunna ta de tre närmsta planeterna från nuvarande planet.
 
             //Vi använder här även Lambdas i funktionerna
-            //Vi använder Lambdas för att kunna skapa en funktion som tar in ett argument och returnerar ett värde.
+            //Vi använder Lambdas tillsammans med LINQ där vi skapar korta funktioner för att kunna beräkna distanser mellan planeterna och returnera en lista av närmsta planeter.
             //Vi använder Lambdas för att kunna dra nytta av LINQ på ett enkelt och effektivt sätt, än att skapa massa funktioner som vi bara använder en gång.
 
             List<string> planetMenuOptions = closestPlanets.Select(p =>
