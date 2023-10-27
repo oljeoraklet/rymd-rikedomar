@@ -5,8 +5,8 @@ public interface ITradingStation
 {
     void BuyGoods(Player player);
     void SellGoods(Player player);
-    void BuyFuel(Spaceship spaceship, Player player);
-    void ShowFuelStatus(Spaceship spaceship);
+    void BuyFuel(Player player);
+    void ShowFuelStatus(Player player);
 
     void IncreaseDemand(int x);
 

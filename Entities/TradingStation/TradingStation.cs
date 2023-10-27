@@ -41,7 +41,6 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
     {
         while (true)
         {
-            // IEnumerable<StoreItem<T>> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
             IEnumerable<IStoreItemWrapper> filteredItems = AvailableItems.Where(i => i.Item is IGood).ToList();
 
             IEnumerator<IStoreItemWrapper> enumerator = filteredItems.GetEnumerator();
@@ -207,8 +206,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         return filtered;
     }
 
-    public void BuyFuel(Spaceship spaceship, Player player)
+    public void BuyFuel(Player player)
     {
+        Spaceship spaceship = player.Spaceship;
         int fuelPrice = 1; // Assuming 1 unit of currency for 1 unit of fuel.
         float fuelNeeded = spaceship.FuelCapacity - spaceship.Fuel; // Assuming 100 is the max fuel capacity.
 
@@ -270,8 +270,9 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
     }
 
 
-    public void ShowFuelStatus(Spaceship spaceship)
+    public void ShowFuelStatus(Player player)
     {
+        Spaceship spaceship = player.Spaceship;
         List<string> fuelStatusOptions = new List<string>
     {
         "Tillbaka till tanka menyn"
