@@ -90,7 +90,6 @@ namespace SpaceConsoleMenu
             currentPlanet = new Planet("Tellus", tradingStationFactory.createTradingStation(), 0);
             player.VisitedPlanets.Add(currentPlanet);
             closestPlanets = planets.Take(3).ToList();
-            Spaceship spaceship = new();
             DisplayMenu menu = new();
             bool exit = false;
 
@@ -204,10 +203,10 @@ namespace SpaceConsoleMenu
                             switch (refuelChoice)
                             {
                                 case 0: // Buy Fuel
-                                    currentPlanet.TradingStation.BuyFuel(spaceship, player);
+                                    currentPlanet.TradingStation.BuyFuel(player);
                                     break;
                                 case 1: // Fuel Status
-                                    currentPlanet.TradingStation.ShowFuelStatus(spaceship);
+                                    currentPlanet.TradingStation.ShowFuelStatus(player);
                                     break;
                                 case 2: // Return to Main Menu
                                         // Do nothing, just return to the main menu.
@@ -217,7 +216,7 @@ namespace SpaceConsoleMenu
 
 
                         case 3: // Travel to another planet
-                            currentPlanet = TravelToAnotherPlanet(currentPlanet, spaceship, player, menu);
+                            currentPlanet = TravelToAnotherPlanet(currentPlanet, player, menu);
                             break;
 
                         case 4: // Profile
@@ -315,7 +314,7 @@ namespace SpaceConsoleMenu
 
 
 
-        public static Planet TravelToAnotherPlanet(Planet currentPlanet, Spaceship spaceship, Player player, DisplayMenu menu)
+        public static Planet TravelToAnotherPlanet(Planet currentPlanet, Player player, DisplayMenu menu)
         {
 
             //Här används LINQ
@@ -334,7 +333,7 @@ namespace SpaceConsoleMenu
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");
 
-            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions, spaceship.FuelInfo());
+            int choice = menu.Menu($"Res till en annan planet - {currentPlanet.Name}", planetMenuOptions, player.Spaceship.FuelInfo());
 
             if (choice == planetMenuOptions.Count - 1)
             {
@@ -344,11 +343,11 @@ namespace SpaceConsoleMenu
             {
 
                 int distance = Math.Abs(closestPlanets[choice].Distance - currentPlanet.Distance);
-                float fuelNeeded = distance / spaceship.FuelEfficiency;
+                float fuelNeeded = distance / player.Spaceship.FuelEfficiency;
 
-                if (spaceship.Fuel >= fuelNeeded)
+                if (player.Spaceship.Fuel >= fuelNeeded)
                 {
-                    spaceship.ConsumeFuel(distance);
+                    player.Spaceship.ConsumeFuel(distance);
                     player.VisitedPlanets.Add(closestPlanets[choice]);
                     foreach (Planet planet in closestPlanets)
                     {

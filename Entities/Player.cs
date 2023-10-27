@@ -1,5 +1,6 @@
 using RymdRikedomar.Entities.Goods;
 using RymdRikedomar.Entities.SpaceShip;
+using RymdRikedomar.Entities.SpaceShip.Modules;
 using RymdRikedomar.Services.EndGameConditions;
 
 namespace RymdRikedomar.Entities
@@ -28,7 +29,7 @@ namespace RymdRikedomar.Entities
             Name = name;
             Units = 1000;  // Starting currency, can be adjusted
             Inventory = new List<StoreItem<IStoreItem>>();
-            Spaceship = new Spaceship();  // Initialize with a basic spaceship
+            Spaceship = new(3, new DefaultEngineProvider()); ;  // Initialize with a basic spaceship
             VisitedPlanets = new List<Planet>();
             this.endGameCondtions = endGameConditions;
             DefeatedPirates = 0;

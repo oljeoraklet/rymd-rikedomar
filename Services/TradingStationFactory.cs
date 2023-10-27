@@ -36,7 +36,6 @@ class TradingStationFactory
         tradingStationItems.Add(new StoreItem<IGood>(new Fruit(), 200));
         tradingStationItems.Add(new StoreItem<IGood>(new Spice(), 100));
         tradingStationItems.Add(new StoreItem<IGood>(new Metal(), 100));
-        tradingStationItems.Add(new StoreItem<ISpaceshipModule>(new FuelEfficiencyModule(), 100));
         tradingStationItems.Add(randomizeStoreList());
 
         TradingStation<IStoreItem> tradingStation = new TradingStation<IStoreItem>(displayMenu, tradingStationItems, CalculateDemand());
