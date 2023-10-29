@@ -3,9 +3,9 @@ using RymdRikedomar.Entities.Goods;
 
 public class DonationEvent
 {
-    //Här använder vi en delegat
-    //Vi skapar en delegat för att skapa en signatur för vår event-metod (DonationEventHandler) och sedan instansierar delegaten i DonationEventEvent
-    //Detta gör det möjligt för andra klasser att ta del av detta event.
+    //1. Här använder vi en delegat
+    //2. Vi skapar en delegat för att skapa en signatur för vår event-metod (DonationEventHandler) och sedan instansierar delegaten i DonationEventEvent
+    //3. Detta gör det möjligt för andra klasser att ta del av detta event.
     public delegate void DonationEventHandler(DonationEvent donationEvent);
 
     public event DonationEventHandler DonationEventEvent;
