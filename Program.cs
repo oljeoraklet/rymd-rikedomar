@@ -53,33 +53,33 @@ namespace SpaceConsoleMenu
             }
 
 
-            // Console.Clear();
-            // Print("Välkommen till RymdRikedomar!");
-            // Console.WriteLine(" ");
-            // Print("Spelet går ut på att du ska utforska ett universum, där du kan besöka olika planeter och handla med dem.");
-            // Console.WriteLine(" ");
-            // Print("Du kan vinna på fyra olika sätt:");
-            // Console.WriteLine(" ");
-            // Console.WriteLine("1. Bli en rymdpolis genom att besegra fem rymdpirater!");
-            // Console.WriteLine("2. Utforska alla planeter i universumet");
-            // Console.WriteLine("3. Bli inflytelserik genom att skapa goda relationer genom donationer till planeterna.");
-            // Console.WriteLine("4. Vinn genom att bli så rik som möjligt!");
-            // Console.WriteLine(" ");
-            // Print("Tryck valfri tangent för att fortsätta...");
-            // Console.ReadKey();
-            // Console.Clear();
-            // Print("Vad heter du?");
-            // string playerName = Console.ReadLine();
-            // Console.Clear();
-            // Print("Tack!");
-            // Console.WriteLine(" ");
-            // Console.WriteLine("Tryck på valfri tangent för att sätta igång spelet.");
-            // Console.ReadKey();
+            Console.Clear();
+            Print("Välkommen till RymdRikedomar!");
+            Console.WriteLine(" ");
+            Print("Spelet går ut på att du ska utforska ett universum, där du kan besöka olika planeter och handla med dem.");
+            Console.WriteLine(" ");
+            Print("Du kan vinna på fyra olika sätt:");
+            Console.WriteLine(" ");
+            Console.WriteLine("1. Bli en rymdpolis genom att besegra fem rymdpirater!");
+            Console.WriteLine("2. Utforska alla planeter i universumet");
+            Console.WriteLine("3. Bli inflytelserik genom att skapa goda relationer genom donationer till planeterna.");
+            Console.WriteLine("4. Vinn genom att bli så rik som möjligt!");
+            Console.WriteLine(" ");
+            Print("Tryck valfri tangent för att fortsätta...");
+            Console.ReadKey();
+            Console.Clear();
+            Print("Vad heter du?");
+            string playerName = Console.ReadLine();
+            Console.Clear();
+            Print("Tack!");
+            Console.WriteLine(" ");
+            Console.WriteLine("Tryck på valfri tangent för att sätta igång spelet.");
+            Console.ReadKey();
 
-            // if (playerName == null)
-            // {
-            //     playerName = "Utforskare";
-            // }
+            if (playerName == null)
+            {
+                playerName = "Utforskare";
+            }
 
             Player player = new("adg", EndGameConditions);
 
@@ -185,12 +185,7 @@ namespace SpaceConsoleMenu
                             break;
 
                         case 1:
-                            menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
-                        {
-                            "Uppgradera Motor",
-                            "Uppgradera Vapen",
-                            "Tillbaka till Huvudmenyn"
-                        }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
+                            currentPlanet.TradingStation.BuyModules(player);
                             break;
                         case 2:
                             int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
@@ -328,7 +323,7 @@ namespace SpaceConsoleMenu
             List<string> planetMenuOptions = closestPlanets.Select(p =>
             {
                 int distance = Math.Abs(p.Distance - currentPlanet.Distance);
-                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance} ML)";
+                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {(float)distance / player.Spaceship.FuelEfficiency} ML)";
             }).ToList();
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");

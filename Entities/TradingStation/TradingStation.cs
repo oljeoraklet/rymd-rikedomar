@@ -195,6 +195,93 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
         }
     }
 
+    public void BuyModules(Player player)
+    {
+        while (true)
+        {
+            // Filter available items to get only those that are of type ISpaceshipModule
+            IEnumerable<IStoreItemWrapper> filteredItems = AvailableItems.Where(i => i.Item is ISpaceshipModule).ToList();
+
+            IEnumerator<IStoreItemWrapper> enumerator = filteredItems.GetEnumerator();
+            List<string> menuOptions = new();
+
+            if (!filteredItems.Any())
+            {
+                Console.Clear();
+                Console.WriteLine("Inga moduler tillgängliga för köp!");
+                Console.ReadKey();
+                return; // Return from the method without doing anything further
+            }
+
+            // Generate dynamic menu options based on filtered modules
+            while (enumerator.MoveNext())
+            {
+                bool canBuy = (player.Units - enumerator.Current.Item.PurchasePrice) > 0;
+                if (canBuy)
+                {
+                    menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.PurchasePrice} enheter)");
+                }
+                else
+                {
+                    menuOptions.Add($"{enumerator.Current.Item.Name} (Pris: {enumerator.Current.Item.PurchasePrice} enheter, Du har inte råd)");
+                }
+            }
+            menuOptions.Add("Tillbaka");
+
+            // Display menu and get choice
+            int buyChoice = TradingStationMenu.Menu($"Vilken modul vill du köpa?", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
+
+            if (buyChoice >= 0 && buyChoice < menuOptions.Count - 1) // Check if buyChoice is within the range of valid indices
+            {
+                ModuleTransaction(player, filteredItems.ElementAt(buyChoice).Item.Name);
+            }
+            else if (buyChoice == menuOptions.Count - 1) // Last option is "Tillbaka"
+            {
+                break; // Return to the previous menu
+            }
+        }
+    }
+
+    void ModuleTransaction(Player player, string moduleName)
+    {
+        var selectedModuleEntry = AvailableItems.Find(item => item.Item.Name == moduleName);
+
+        if (selectedModuleEntry == null)
+        {
+            Console.WriteLine("Modulen är inte tillgänglig!");
+            Console.ReadKey();
+            return;
+        }
+
+        ISpaceshipModule selectedModule = (ISpaceshipModule)selectedModuleEntry.Item;
+
+        // Check if player can afford the module
+        if (player.Units >= selectedModule.PurchasePrice)
+        {
+            // Find an empty slot on the spaceship
+            var emptySlot = player.Spaceship.Slots.Find(slot => slot.Module == null);
+
+            if (emptySlot != null)
+            {
+                emptySlot.AddModule(selectedModule);
+                player.Spaceship.UpdateSpaceShipModules();
+                player.Units -= selectedModule.PurchasePrice;
+                Console.WriteLine($"Du köpte modulen {moduleName}.");
+            }
+            else
+            {
+                Console.WriteLine("Inga lediga slots på ditt rymdskepp!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Du har inte tillräckligt med enheter för att köpa denna modul!");
+        }
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+
 
     //Build in delegate using Predicate to filter items and using it as a Generic Delegate
     static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
