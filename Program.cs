@@ -73,8 +73,6 @@ namespace SpaceConsoleMenu
             }
 
             Player player = new(playerName, EndGameConditions);
-
-
             currentPlanet = new Planet("Tellus", tradingStationFactory.createTradingStation(), 0);
             player.VisitedPlanets.Add(currentPlanet);
             closestPlanets = planets.Take(3).ToList();
@@ -175,12 +173,7 @@ namespace SpaceConsoleMenu
                             break;
 
                         case 1:
-                            menu.Menu($"Uppgradera Rymdskeppet - {currentPlanet.Name}", new List<string>
-                        {
-                            "Uppgradera Motor",
-                            "Uppgradera Vapen",
-                            "Tillbaka till Huvudmenyn"
-                        }, "Tillgängliga Enheter: " + player.Units + " enheter \n");
+                            currentPlanet.TradingStation.BuyModules(player);
                             break;
                         case 2:
                             int refuelChoice = menu.Menu($"Tanka Rymdskeppet  - {currentPlanet.Name}", new List<string>
@@ -333,7 +326,7 @@ namespace SpaceConsoleMenu
             List<string> planetMenuOptions = closestPlanets.Select(p =>
             {
                 int distance = Math.Abs(p.Distance - currentPlanet.Distance);
-                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {distance} ML)";
+                return $"{p.Name} (Avstånd: {distance} parsecs, Bränslekostnad: {(float)distance / player.Spaceship.FuelEfficiency} ML)";
             }).ToList();
 
             planetMenuOptions.Add("Tillbaka till Huvudmenyn");

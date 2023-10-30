@@ -27,7 +27,7 @@ namespace RymdRikedomar.Entities.SpaceShip
     {
         public float Fuel { get; set; }
         public float FuelCapacity { get; set; }
-        public int FuelEfficiency { get; set; }
+        public float FuelEfficiency { get; set; }
 
         public int WeaponDamage { get; private set; }
         public int Health = 3;
@@ -69,7 +69,7 @@ namespace RymdRikedomar.Entities.SpaceShip
             DefaultModuleProvider = defaultModuleProvider;
             for (int i = 0; i < numberOfSlots; i++)
             {
-                Slots.Add(null); // Default value for a list of ModuleSlots is null
+                Slots.Add(new ModuleSlot()); // Default value for a list of ModuleSlots is null
             }
             ModuleSlot defaultModuleSlot = new ModuleSlot();
             defaultModuleSlot.AddModule(DefaultModuleProvider.ProvideDefaultModule());
@@ -78,7 +78,7 @@ namespace RymdRikedomar.Entities.SpaceShip
 
         public void ConsumeFuel(int distance)
         {
-            int fuelNeeded = distance / FuelEfficiency;
+            float fuelNeeded = distance / FuelEfficiency;
             Fuel -= fuelNeeded;
         }
 
@@ -106,6 +106,21 @@ namespace RymdRikedomar.Entities.SpaceShip
             }
             fuelInfo += $"] {percentage}/{FuelCapacity} ML\n";
             return fuelInfo;
+        }
+
+        public void UpdateSpaceShipModules()
+        {
+            foreach (var slot in Slots)
+            {
+                if (slot.Module != null && slot.Module is EngineModule)
+                {
+                    FuelEfficiency = 1.5f;
+                }
+                else if (slot.Module != null && slot.Module is WeaponModule)
+                {
+                    WeaponDamage = 1;
+                }
+            }
         }
     }
 }

@@ -8,9 +8,9 @@ namespace RymdRikedomar.Entities.SpaceShip.Modules
 
         public string Usage => throw new NotImplementedException();
 
-        public int PurchasePrice => throw new NotImplementedException();
+        public int PurchasePrice => 12000;
 
-        public int SellingPrice { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int SellingPrice { get => 12000; set => throw new NotImplementedException(); }
     }
 
     public class DefaultWeaponProvider : IDefaultModuleProvider<WeaponModule>

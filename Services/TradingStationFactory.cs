@@ -10,6 +10,7 @@ class TradingStationFactory
     new StoreItem<IGood>(new QuesarSilk(), 50),
     new StoreItem<IGood>(new DarkMatterFuelCells(), 20),
     new StoreItem<IGood>(new StellarCrystals(), 10),
+    new StoreItem<ISpaceshipModule> (new WeaponModule(), 1),
 };
 
 
@@ -36,6 +37,7 @@ class TradingStationFactory
         tradingStationItems.Add(new StoreItem<IGood>(new Fruit(), 200));
         tradingStationItems.Add(new StoreItem<IGood>(new Spice(), 100));
         tradingStationItems.Add(new StoreItem<IGood>(new Metal(), 100));
+        tradingStationItems.Add(new StoreItem<ISpaceshipModule>(new EngineModule(), 1));
         tradingStationItems.Add(randomizeStoreList());
 
         TradingStation<IStoreItem> tradingStation = new TradingStation<IStoreItem>(displayMenu, tradingStationItems, CalculateDemand());
