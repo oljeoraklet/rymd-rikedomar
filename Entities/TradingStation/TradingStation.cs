@@ -5,13 +5,13 @@ using RymdRikedomar.Entities.SpaceShip;
 using RymdRikedomar.Entities.SpaceShip.Modules;
 using SpaceConsoleMenu;
 
-//Här används generic types
-//Vi använder generic types för TradingStation för att denna klass ska kunna användas för alla typer av varor.
-//Detta gör att vi kan skapa en TradingStation för alla typer av varor, och inte bara för IStoreItem.
+//1. Här används generic types
+//2. Vi använder generic types för TradingStation för att denna klass ska kunna användas för alla typer av IStoreItems och inte bara en specifik typ av vara. 
+//3. Detta gör att vi kan skapa en TradingStation för alla typer av varor, och inte bara för IStoreItem.
 
-//Vi använder även Type Parameter Constraints
-//Vi använder dettta genom att sätta "where" efter type parametern.
-//Vi sätter "where T : IStoreItem" för att säga att T måste implementera IStoreItem. Detta ger oss typsäkerhet att alla varor som finns på en tradingstation är av typen IStoreItem.
+//1. Vi använder även Type Parameter Constraints
+//2. Vi använder dettta genom att sätta "where" efter type parametern.
+//3. Vi sätter "where T : IStoreItem" för att säga att T måste implementera IStoreItem. Detta ger oss typsäkerhet att alla varor som finns på en tradingstation är av typen IStoreItem.
 public class TradingStation<T> : ITradingStation where T : IStoreItem
 {
     public List<IStoreItemWrapper> AvailableItems { get; set; }
@@ -283,7 +283,12 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
 
 
 
-    //Build in delegate using Predicate to filter items and using it as a Generic Delegate
+    //1. Här används den inbyggda deligaten Predicate,
+    //2. Vi använder denna för att kunna filtrera ut alla varor som är av typen IGood eller ISpaceshipModule, där denna deligat kan returnera en bool som undersöker
+    //huruvida det item som skickas in är av typen IGood eller ISpaceshipModule och returnerar en lista med de filtrerade varorna. 
+    //3. Vi använder predicate för att på ett smidigt sätt kunna impementera och ge ett condition i vår foreach-loop. 
+
+
     static List<IStoreItemWrapper> GetItemsFromItemType(List<IStoreItemWrapper> items, Predicate<IStoreItemWrapper> condition)
     {
         List<IStoreItemWrapper> filtered = new();
