@@ -40,9 +40,9 @@ namespace RymdRikedomar.Entities
         //Methods to subscribe to events
 
 
-        //Här använder vi events
-        //Vi skapar en metod för varje event som vi vill prenumerera på
-        //Vi använder events för att vi vill at vår player ska kunna få ta del av events som sker i spelets gång. 
+        //1. Här använder vi events
+        //2. Detta är vår instansmetod som hanterar våra event som vi låter spelaren prenumerera på. 
+        //3. Vi använder events för att vi vill at vår player ska kunna få ta del av events som sker i spelets gång. 
         public void MarketBoomEventHandler(MarketBoom marketBoomEvent) { }
         public void DonationEventHandler(DonationEvent donationEvent) { }
         public void PirateEventHandler(PirateEvent pirateEvent) { }
@@ -50,6 +50,12 @@ namespace RymdRikedomar.Entities
 
 
         //Här använder vi en metod för att uppdatera alla observers i vårt ObserverPattern
+
+
+        //1. Här är vårt observerpattern. 
+        //2. Detta är en funktion som kallas i slutet av varje omgång, för att undersöka huruvida något av våra EndGameConditions är uppfyllda.
+        //Player tar in interfacet "IEndGameCondition" som är en observer, som i sin tur har subklasser som är de konkreta observerarna. 
+        //3. I och med detta körs också funktioner som returnerar en bool som indikerar huruvida ett endgamecondition är uppnått eller inte. 
         public void notifyConditions()
         {
 
