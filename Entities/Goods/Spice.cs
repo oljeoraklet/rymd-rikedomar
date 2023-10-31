@@ -11,7 +11,7 @@ public class Spice : IGood
         if (Quality == "Fresh")
         {
             PurchasePrice = 200;
-            SellingPrice = 150;
+            SellingPrice = 200;
         }
         else if (Quality == "Stale")
         {
@@ -26,7 +26,7 @@ public class Spice : IGood
         else
         {
             PurchasePrice = 20;
-            SellingPrice = 15;
+            SellingPrice = 20;
         }
     }
 
