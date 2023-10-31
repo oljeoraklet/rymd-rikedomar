@@ -10,23 +10,23 @@ public class Spice : IGood
     {
         if (Quality == "Fresh")
         {
-            PurchasePrice = 100;
-            SellingPrice = 200;
+            PurchasePrice = 200;
+            SellingPrice = 150;
         }
         else if (Quality == "Stale")
         {
-            PurchasePrice = 50;
-            SellingPrice = 100;
+            PurchasePrice = 100;
+            SellingPrice = 75;
         }
         else if (Quality == "Rancid")
         {
-            PurchasePrice = 25;
-            SellingPrice = 50;
+            PurchasePrice = 50;
+            SellingPrice = 40;
         }
         else
         {
-            PurchasePrice = 10;
-            SellingPrice = 20;
+            PurchasePrice = 20;
+            SellingPrice = 15;
         }
     }
 

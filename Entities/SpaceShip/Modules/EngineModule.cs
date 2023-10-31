@@ -8,7 +8,7 @@ namespace RymdRikedomar.Entities.SpaceShip.Modules
 
         public string Usage => throw new NotImplementedException();
 
-        public int PurchasePrice => 10;
+        public int PurchasePrice => 10000;
 
         int IStoreItem.SellingPrice { get => 10; set => throw new NotImplementedException(); }
     }
