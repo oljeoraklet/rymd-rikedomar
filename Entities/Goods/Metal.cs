@@ -13,7 +13,7 @@ public class Metal : IGood
     public Metal()
     {
         PurchasePrice = 100;
-        SellingPrice = 50;
+        SellingPrice = 100;
         MetalType = "Iron";
         Purity = 0.5m;
     }

@@ -13,6 +13,6 @@ public class QuesarSilk : IGood
     public QuesarSilk()
     {
         PurchasePrice = 250;
-        SellingPrice = 150;
+        SellingPrice = 250;
     }
 }

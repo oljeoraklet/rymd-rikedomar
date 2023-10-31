@@ -12,7 +12,7 @@ public class DarkMatterFuelCells : IGood
     public DarkMatterFuelCells()
     {
         PurchasePrice = 500;
-        SellingPrice = 400;
+        SellingPrice = 500;
 
     }
 }

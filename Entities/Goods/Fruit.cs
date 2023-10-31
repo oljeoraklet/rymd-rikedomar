@@ -13,7 +13,7 @@ public class Fruit : IGood
     public Fruit()
     {
         PurchasePrice = 30;
-        SellingPrice = 10;
+        SellingPrice = 30;
 
     }
 }
