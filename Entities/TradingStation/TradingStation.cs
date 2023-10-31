@@ -96,7 +96,7 @@ public class TradingStation<T> : ITradingStation where T : IStoreItem
             // Display menu and get choice
             int choice = TradingStationMenu.Menu("Sell Goods", menuOptions, $"Tillgängliga Enheter: {player.Units} enheter \n");
 
-            if (choice < filteredItems.Count() - 1 && choice >= 0) // Check if choice is within the range of valid indices
+            if (choice < filteredItems.Count() && choice >= 0) // Check if choice is within the range of valid indices
             {
                 Transaction(player, filteredItems.ElementAt(choice).Item.Name, false);
             }
